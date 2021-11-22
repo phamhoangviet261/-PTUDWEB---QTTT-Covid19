@@ -1,3 +1,3 @@
 # PTUDWEB QTTT Covid19
-Frontend: https://handlebarsjs.com/
-backend: https://www.postgresql.org/
+1. Frontend: https://handlebarsjs.com/
+2. Backend: https://www.postgresql.org/

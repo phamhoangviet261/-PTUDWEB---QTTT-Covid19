@@ -1,0 +1,10 @@
+29/12/2021: Luồng login
+https://viblo.asia/p/ban-da-hieu-ro-ve-http-cookie-djeZ1DvGKWz
+- Mới vào homepage --> Kiểm tra token trong cookie
+(2) + Nếu chưa có -> Trang đăng nhập -> đăng nhập -> server auth trả về token -> lưu vào cookie 
+(3) + Nếu có -> gửi token đó về server auth -> Kiểm tra token
+	+ Nếu token hết hạn -> Redirect về login page (2)
+	+ Nếu chưa hết hạn -> verify token -> thu được username + password
+	Kiểm tra trong Database:
+		+ Nếu khớp -> Chuyển về homepage kèm token -> Lưu token vào cookie -> homepage verify token lấy ra username để hiển thị
+		+ Nếu không khớp -> Báo lỗi đăng nhập sai và về login page

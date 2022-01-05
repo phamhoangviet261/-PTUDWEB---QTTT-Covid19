@@ -1,0 +1,127 @@
+<style>
+    .navbar{
+        position: fixed;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 20px;
+        background-color: var(--primary-color);
+        z-index: 9999;
+    }
+    .navbar--left{
+        font-size: calc(3*var(--primary-font-size));
+        font-weight: bold;
+        color: #ffffff;
+    }
+    .navbar--middle > form{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .navbar--middle > form > input{
+        width: calc(40 * var(--primary-font-size));
+        height: calc(3 * var(--primary-font-size));
+        padding-left: 20px;
+        font-size: calc(1.5 * var(--primary-font-size));
+    }
+    .navbar--middle > form > input:focus{
+        outline: none;
+    }
+    .navbar--middle > form > button {
+        width: calc(8 * var(--primary-font-size));
+        height: calc(3 * var(--primary-font-size));
+        cursor: pointer;
+    }
+
+    .navbar--right > form > div{
+        display: flex;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .navbar--right, .navbar--right  a{
+        display: flex;
+        justify-content: center;
+        color: #ffffff;
+        text-decoration: none;
+    }
+    .navbar--right  a{
+        margin-left: 20px;
+    }
+
+    {{!-- RESPONSIVE --}}
+    @media only screen and (max-width: 768px){
+        .navbar--middle > form > input{
+            width: calc(20 * var(--primary-font-size));
+            height: calc(3 * var(--primary-font-size));
+            padding-left: 20px;
+        }
+
+        .navbar--middle > form > button {
+            width: calc(6 * var(--primary-font-size));
+            height: calc(3 * var(--primary-font-size));
+            cursor: pointer;
+        }
+    }
+    @media only screen and (max-width: 425px){
+        .navber-hamburger{
+            display: inline-block !important;
+            width: 20%;
+        }
+        .navbar{
+            padding: 10px;
+        }
+        .navbar--left{
+            font-size: calc(2.5 * var(--primary-font-size));
+        }
+        
+        .navbar--middle > form > input{
+            width: calc(15 * var(--primary-font-size));
+            height: calc(3 * var(--primary-font-size));
+            padding-left: 20px;
+        }
+
+        .navbar--middle > form > button {
+            width: calc(3 * var(--primary-font-size));
+            height: calc(3 * var(--primary-font-size));
+            cursor: pointer;
+        }
+
+        .navbar--right{
+            width: 20%;
+        }
+        .navbar--right > form > div > span{
+            display: none;
+        }
+        .navbar--right  i{
+            margin: 0px;
+            
+        }
+        .navbar--right  a{
+            margin: 0px;
+            display: none;
+        }
+    }
+</style>
+
+<div class="navbar">
+    
+    <a class="navbar--left">COVINA</a>
+
+    <div class="navbar--middle">
+        <form method="POST" action="/search">
+            <input type="text" name="search" value="" placeholder="Tim kiem..."/>
+            <button type="submit">Tim kiem</button>
+        </form>    
+    </div>
+
+    <div class="navbar--right">
+        
+        <i class="fas fa-shopping-cart"></i>
+        <form class="">
+            {{#if isLogin}}
+            <div style="margin-left: 20px;"><span class="text-hover">{{current}}</span><a class="text-hover" href="/signout"> Log out</a></div>
+            {{/if}}
+        </form>
+    </div>
+</div>

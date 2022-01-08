@@ -21,5 +21,8 @@ module.exports = {
     },
     update: async (id, dataUpdate) => {
         return res = await db.update(tbName, dataUpdate, idFieldName, id);        
+    },
+    updateToken: async (id, dataUpdate) => {
+        return res = await db.updateToken(tbName, dataUpdate, idFieldName, id);        
     }
 }

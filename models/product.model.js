@@ -19,8 +19,8 @@ module.exports = {
 
         return null;
     },
-    add: async user => {
-        const res = await db.add(tbName, user);
+    add: async product => {
+        const res = await db.add(tbName, product);
         return res;
     },
     update: async (id, dataUpdate) => {

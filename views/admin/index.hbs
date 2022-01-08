@@ -11,7 +11,6 @@
     }
     .sidebar > ul > li{
         border-bottom: 1px solid #1f1f1f;
-        padding: 20px 10px;
         cursor: pointer;
     }
     .sidebar > ul > li:hover{
@@ -30,7 +29,6 @@
     }
     .manage-neccessary{
         display: flex;
-        padding: 0 20px;
         
     }
     .neccessary-heading{
@@ -55,9 +53,14 @@
         margin: 20px;
     }
     .a-heading{
+        display: block;
         font-size: 16px;
         font-weight: 900;
+        padding: 20px 10px;
         text-transform: uppercase;
+    }
+    .table-product-image{
+        width: 100px;
     }
 </style>
 
@@ -75,6 +78,176 @@
         {{#if isManageAccount}}
         {{/if}}
         {{#if isManageProduct}}
+        <div class="manage-neccessary">
+            <div class="list-neccessary">
+                <h4 style="margin-top: 10px; font-weight: 700;">Danh Sách Sản Phẩm: </h4>
+                {{#each listNeccessary as |item| }}
+                <p class="neccessary-heading"><a class="hightlight-neccessary" href="/admin/manage-neccessary/{{item.MaNYP}}">{{item.MaNYP}}</a></p>
+                {{/each}}
+                <p style="margin-top: 50px;">Thêm Sản Phẩm 
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAddProduct">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </p>
+                <!-- Modal -->
+                <div class="modal fade" id="modalAddProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Thêm Sản Phẩm</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="masp-1" class="col-form-label">Mã Sản Phẩm: </label>
+                                        <input style="min-width: 200px;" type="text" class="form-control" id="masp-1" value="{{newProductID}}" disabled/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tensp-1" class="col-form-label">Tên Sản Phẩm: </label>
+                                        <input type="text" min="1" class="form-control" id="tensp-1"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="gt-1" class="col-form-label">Giá Tiền: </label>
+                                        <input type="number" step="1000" min="0" class="form-control" id="gt-1"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dvdl-1" class="col-form-label">Đơn Vị Định Lượng:</label>                                        
+                                        <input class="form-control" id="dvdl-1"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sl-1" class="col-form-label">Số Lượng:</label>                                        
+                                        <input type="number" min="1" class="form-control" id="sl-1"></input>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
+                                <button type="button" class="btn btn-primary" onclick="handleSubmitModalAddProduct()">Xác Nhận</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="neccessary-info">
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                        <th scope="col"></th>
+                        <th scope="col">MaSP</th>
+                        <th scope="col">TenSP</th>                        
+                        <th scope="col">GiaTien</th>
+                        <th scope="col">DonViDinhLuong</th>
+                        <th scope="col">SoLuong</th>
+                        <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each products}}
+                        <tr>
+                            <th scope="row"><img src="/products/{{this.key}}/1.jpg" alt="Hihi" class="table-product-image" /></th>
+                            <td>{{this.MaSP}}</td>
+                            <td>{{this.TenSP}}</td>
+                            <td>{{this.GiaTien}}</td>
+                            <td>{{this.DonViDinhLuong}}</td>                            
+                            <td>{{this.SoLuong}}</td>                            
+                            <td>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEditProduct{{@index}}">
+                                    <i class="fas fa-edit" data-toggle="tooltip" data-placement="right" title="Edit"></i>
+                                </button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="modalEditProduct{{@index}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Chỉnh Sửa Sản Phẩm </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label for="masp-edit" class="col-form-label">Mã Sản Phẩm:</label>
+                                                        <input style="min-width: 200px;" type="text" class="form-control" id="masp-edit" value="{{this.MaSP}}" disabled/>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="tensp-edit" class="col-form-label">Tên Sản Phẩm:</label>
+                                                        <input type="text" class="form-control" id="tensp-edit" value="{{this.TenSP}}"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="gt-edit" class="col-form-label">Giá Tiền:</label>
+                                                        <input type="number" step="1000" min="0" class="form-control" id="gt-edit" value="{{this.GiaTien}}"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="dvdl-edit" class="col-form-label">Đơn Vị Định Lượng:</label>                                        
+                                                        <input class="form-control" id="dvdl-edit" value="{{this.DonViDinhLuong}}"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="sl-edit" class="col-form-label">Số Lượng:</label>                                        
+                                                        <input type="number" min="1" class="form-control" id="sl-edit" value="{{this.SoLuong}}"></input>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ Bỏ</button>
+                                                <button type="button" class="btn btn-primary" onclick="">Xác Nhận</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                <!-- Modal -->
+                <div class="modal fade" id="modalAddProductNeccessary" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Thêm Gói Nhu Yếu Phẩm </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="manyp" class="col-form-label">Mã Nhu Yếu Phẩm:</label>
+                                        <input style="min-width: 200px;" type="text" class="form-control" id="manyp" value="{{neccessary.MaNYP}}" disabled/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sl" class="col-form-label">Số Lượng:</label>
+                                        <input type="number" min="1" class="form-control" id="sl"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ghsl" class="col-form-label">Giới Hạn Số Lượng:</label>
+                                        <input type="number" min="1" class="form-control" id="ghsl"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="msp" class="col-form-label">Mã Sản Phẩm:</label>                                        
+                                        <select class="form-control" id="msp">
+                                            {{#each listProduct}}
+                                            <option>{{this.MaSP}}</option>
+                                            {{/each}}
+                                        </select>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ Bỏ</button>
+                                <button type="button" class="btn btn-primary" onclick="handleSubmitModalAddProductNeccessary()">Xác Nhận</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         {{/if}}
         {{#if isManageNeccessary}}
         <div class="manage-neccessary">
@@ -144,11 +317,11 @@
                             <td>{{neccessary.GioiHanGoiNguoi}}</td>
                             <td>{{neccessary.ThoiGianGioiHan}}</td>                            
                             <td>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEditNeccessary">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEditNeccessary{{@index}}">
                                     <i class="fas fa-edit" data-toggle="tooltip" data-placement="right" title="Edit"></i>
                                 </button>
                                 <!-- Modal -->
-                                <div class="modal fade" id="modalEditNeccessary" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal fade" id="modalEditNeccessary{{@index}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -242,7 +415,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Ma NYP</th>
                         <th scope="col">So Luong</th>                        
-                        <th scope="col">Giai Han So Luong</th>
+                        <th scope="col">Gioi Han So Luong</th>
                         <th scope="col">Ma SP</th>
                         <th scope="col">Action</th>
                         </tr>
@@ -256,11 +429,11 @@
                             <td>{{item.GioiHanSL}}</td>                            
                             <td>{{item.MaSP}}</td>
                             <td>
-                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEditProductNeccessary">
+                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEditProductNeccessary{{@index}}">
                                     <i class="fas fa-edit" data-toggle="tooltip" data-placement="right" title="Edit"></i>
                                 </button>                                
                                 <!-- Modal -->
-                                <div class="modal fade" id="modalEditProductNeccessary" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal fade" id="modalEditProductNeccessary{{@index}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -324,6 +497,36 @@
             }
             console.log(data)
             fetch('/admin/api/neccessaryDetail/add', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
+
+    function handleSubmitModalAddProduct() {
+        $(function () {
+            $('#modalAddProduct').modal('toggle');
+            let data = {
+                "MaSP": $('#masp-1').val(),
+                "TenSP": $('#tensp-1').val(),
+                "GiaTien": $('#gt-1').val(),
+                "DonViDinhLuong": $('#dvdl-1').val(),
+                "SoLuong": $('#sl-1').val(),
+            }
+            console.log(data)
+            fetch('/admin/manage-product/add', {
                 method: 'POST', // or 'PUT'
                 headers: {
                     'Content-Type': 'application/json',

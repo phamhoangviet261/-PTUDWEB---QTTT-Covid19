@@ -29,13 +29,28 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/manage-product', async (req, res) => {
+    let lp = await productModel.all()
+    lp.map(product => {
+        let temp = product.MaSP.substring(product.MaSP.length - 3) - 0;
+        product["key"] = temp;
+    })
     res.render('admin/index', {
         cssP: () => 'css',
         scriptsP: () => 'script',
         navP: () => 'nav',
         footerP: () => 'footer',
         isManageProduct: true,
+        products: lp,
+        newProductID: lp[lp.length-1].MaSP.substring(0, lp[lp.length-1].MaSP.length - 3) + '0' + (lp.length + 1).toString()
     });
+})
+
+router.post('/manage-product/add', async (req, res) => {
+    let product = req.body;
+    console.log(product);
+    let temp = await productModel.add(product);
+    console.log(product);
+    res.json(product);
 })
 
 router.get('/manage-neccessary', async (req, res) => {

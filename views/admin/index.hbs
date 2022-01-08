@@ -1,1 +1,427 @@
-heelo
+<style>
+    .admin{
+        display: grid;
+        grid-template-columns: 1fr 7fr;
+    }
+    .sidebar{
+        background: rgb(102,103,171);
+        background: linear-gradient(90deg, rgba(102,103,171,1) 0%, rgba(75,75,200,1) 50%);
+        height: 100vh;
+        color: #ffffff;
+    }
+    .sidebar > ul > li{
+        border-bottom: 1px solid #1f1f1f;
+        padding: 20px 10px;
+        cursor: pointer;
+    }
+    .sidebar > ul > li:hover{
+        color: #b8b8b8;
+    }
+
+    .choosen{
+        background-color: #ffffff;
+        color: #000000;
+    }
+    {{!-- Account --}}
+    {{!-- Product --}}
+    {{!-- Neccessary --}}
+    .hightlight-neccessary:hover{
+        color: aqua;
+    }
+    .manage-neccessary{
+        display: flex;
+        padding: 0 20px;
+        
+    }
+    .neccessary-heading{
+        font-size: 16px;
+        font-weight: 600;
+        border-bottom: 1px solid #a5a5a5;
+        padding: 5px;
+        margin: 5px;
+        cursor: pointer;
+    }
+    .neccessary-heading:hover{
+        color:aqua;
+    }
+    .list-neccessary{
+        width: 20%;
+        height: 100vh;
+        border-right: 1px solid #a5a5a5;
+        border-right: 1px solid #a5a5a5;
+    }
+    .neccessary-info{
+        width: 70%;
+        margin: 20px;
+    }
+    .a-heading{
+        font-size: 16px;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+</style>
+
+<div class="admin">
+    <div class="sidebar">
+        <h2>ADMIN</h2>
+        <ul>
+            <li class="manage-account {{#if isManageAccount}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin">Manage account</a></li>
+            <li class="manage-product {{#if isManageProduct}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-product">Manage product</a></li>
+            <li class="manage-neccessary {{#if isManageNeccessary}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-neccessary">Manage Neccessary</a></li>
+        </ul>
+        
+    </div>
+    <div class="content">
+        {{#if isManageAccount}}
+        {{/if}}
+        {{#if isManageProduct}}
+        {{/if}}
+        {{#if isManageNeccessary}}
+        <div class="manage-neccessary">
+            <div class="list-neccessary">
+                <h4 style="margin-top: 10px; font-weight: 700;">Cac goi nhu yeu pham: </h4>
+                {{#each listNeccessary as |item| }}
+                <p class="neccessary-heading"><a class="hightlight-neccessary" href="/admin/manage-neccessary/{{item.MaNYP}}">{{item.MaNYP}}</a></p>
+                {{/each}}
+                <p style="margin-top: 50px;">Them goi nhu yeu pham 
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAddNeccessary">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </p>
+                <!-- Modal -->
+                <div class="modal fade" id="modalAddNeccessary" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Them goi nhu yeu pham </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="manyp-1" class="col-form-label">Ma NYP:</label>
+                                        <input style="min-width: 200px;" type="text" class="form-control" id="manyp-1" value="{{next_gnyp}}" disabled/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tengoi-1" class="col-form-label">Ten goi:</label>
+                                        <input type="text" min="1" class="form-control" id="tengoi-1"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ghgn-1" class="col-form-label">Gioi Han Goi/Nguoi:</label>
+                                        <input type="number" min="1" class="form-control" id="ghgn-1"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tggh-1" class="col-form-label">Thoi Gian Gioi Han:</label>                                        
+                                        <input type="number" min="1" class="form-control" id="tggh-1"></input>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" onclick="handleSubmitModalAddNeccessary()">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="neccessary-info">
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                        <th scope="col">Ma NYP</th>
+                        <th scope="col">TenGoi</th>                        
+                        <th scope="col">GioiHanGoi/Nguoi</th>
+                        <th scope="col">ThoiGianGioiHan</th>
+                        <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">{{neccessary.MaNYP}}</th>
+                            <td>{{neccessary.TenGoi}}</td>
+                            <td>{{neccessary.GioiHanGoiNguoi}}</td>
+                            <td>{{neccessary.ThoiGianGioiHan}}</td>                            
+                            <td>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEditNeccessary">
+                                    <i class="fas fa-edit" data-toggle="tooltip" data-placement="right" title="Edit"></i>
+                                </button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="modalEditNeccessary" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Chinh sua goi nhu yeu pham </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label for="manyp-edit" class="col-form-label">Ma NYP:</label>
+                                                        <input style="min-width: 200px;" type="text" class="form-control" id="manyp-edit" value="{{neccessary.MaNYP}}" disabled/>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="tengoi-edit" class="col-form-label">Ten goi:</label>
+                                                        <input type="text" class="form-control" id="tengoi-edit" value="{{neccessary.TenGoi}}"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="ghgn-edit" class="col-form-label">Gioi Han Goi/Nguoi:</label>
+                                                        <input type="number" min="1" class="form-control" id="ghgn-edit" value="{{neccessary.GioiHanGoiNguoi}}"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="tggh-edit" class="col-form-label">Thoi Gian Gioi Han:</label>                                        
+                                                        <input type="number" min="1" class="form-control" id="tggh-edit" value="{{neccessary.ThoiGianGioiHan}}"></input>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                <button type="button" class="btn btn-primary" onclick="handleSubmitModalEditNeccessary()">Save changes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 50px;">Them san pham vao goi nhu yeu pham 
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAddProductNeccessary">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </p>
+                <!-- Modal -->
+                <div class="modal fade" id="modalAddProductNeccessary" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Them goi nhu yeu pham </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="manyp" class="col-form-label">Ma NYP:</label>
+                                        <input style="min-width: 200px;" type="text" class="form-control" id="manyp" value="{{neccessary.MaNYP}}" disabled/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sl" class="col-form-label">So Luong:</label>
+                                        <input type="number" min="1" class="form-control" id="sl"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ghsl" class="col-form-label">Gioi Han So Luong:</label>
+                                        <input type="number" min="1" class="form-control" id="ghsl"></input>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="msp" class="col-form-label">Ma San Pham:</label>                                        
+                                        <select class="form-control" id="msp">
+                                            {{#each listProduct}}
+                                            <option>{{this.MaSP}}</option>
+                                            {{/each}}
+                                        </select>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" onclick="handleSubmitModalAddProductNeccessary()">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Ma NYP</th>
+                        <th scope="col">So Luong</th>                        
+                        <th scope="col">Giai Han So Luong</th>
+                        <th scope="col">Ma SP</th>
+                        <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each neccessaryDetail as |item i| }}
+                        <tr>
+                            <th scope="row">{{i}}</th>
+                            <td>{{item.MaNYP}}</td>
+                            <td>{{item.SoLuong}}</td>
+                            <td>{{item.GioiHanSL}}</td>                            
+                            <td>{{item.MaSP}}</td>
+                            <td>
+                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEditProductNeccessary">
+                                    <i class="fas fa-edit" data-toggle="tooltip" data-placement="right" title="Edit"></i>
+                                </button>                                
+                                <!-- Modal -->
+                                <div class="modal fade" id="modalEditProductNeccessary" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Chinh sua goi nhu yeu pham </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label for="manyp-2" class="col-form-label">Ma NYP:</label>
+                                                        <input style="min-width: 200px;" type="text" class="form-control" id="manyp-2" value="{{item.MaNYP}}" disabled/>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="sl-2" class="col-form-label">So Luong:</label>
+                                                        <input type="number" min="1" class="form-control" id="sl-2" value="{{item.SoLuong}}"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="ghsl-2" class="col-form-label">Gioi Han So Luong:</label>
+                                                        <input type="number" min="1" class="form-control" id="ghsl-2" value="{{item.GioiHanSL}}"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="msp-2" class="col-form-label">Ma San Pham:</label>                                        
+                                                        <select class="form-control" id="msp-2">
+                                                            {{#each listProduct as |p|}}
+                                                            <option>{{p.MaSP}}</option>
+                                                            {{/each}}
+                                                        </select>
+
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                <button type="button" class="btn btn-primary" onclick="handleSubmitModalEditProductNeccessary()">Save changes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {{/if}}
+    </div>
+</div>
+<script>
+    function handleSubmitModalAddProductNeccessary() {
+        $(function () {
+            $('#modalAddProductNeccessary').modal('toggle');
+            let data = {
+                "MaNYP": $('#manyp').val(),
+                "SoLuong": $('#sl').val(),
+                "GioiHanSL": $('#ghsl').val(),
+                "MaSP": $('#msp').val(),
+            }
+            console.log(data)
+            fetch('/admin/api/neccessaryDetail/add', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
+    function handleSubmitModalEditProductNeccessary() {
+        $(function () {
+            $('#modalAddProductNeccessary').modal('toggle');
+            let data = {
+                "MaNYP": $('#manyp-2').val(),
+                "SoLuong": $('#sl-2').val(),
+                "GioiHanSL": $('#ghsl-2').val(),
+                "MaSP": $('#msp-2').val(),
+            }
+            console.log(data)
+            fetch('/admin/api/neccessaryDetail/update', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                {{!-- window.location.reload(); --}}
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
+    function handleSubmitModalAddNeccessary() {
+        $(function () {
+            $('#modalAddNeccessary').modal('toggle');
+            let data = {
+                "MaNYP": $('#manyp-1').val(),
+                "TenGoi": $('#tengoi-1').val(),
+                "GioiHanGoiNguoi": $('#ghgn-1').val(),
+                "ThoiGianGioiHan": $('#tggh-1').val(),
+            }
+            console.log(data)
+            fetch('/admin/api/neccessary/add', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
+    function handleSubmitModalEditNeccessary() {
+        $(function () {
+            $('#modalEditNeccessary').modal('toggle');
+            let data = {
+                "MaNYP": $('#manyp-edit').val(),
+                "TenGoi": $('#tengoi-edit').val(),
+                "GioiHanGoiNguoi": $('#ghgn-edit').val(),
+                "ThoiGianGioiHan": $('#tggh-edit').val(),
+            }
+            console.log(data)
+            fetch('/admin/api/neccessary/update', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                {{!-- window.location.reload(); --}}
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    }
+</script>

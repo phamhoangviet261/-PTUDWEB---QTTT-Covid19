@@ -23,7 +23,7 @@ module.exports = {
         const res = await db.add(tbName, user);
         return res;
     },
-    update: async (user, newToken) => {
-        return res = await db.update(tbName, newToken, idFieldName, user.username);        
+    update: async (id, dataUpdate) => {
+        return res = await db.update(tbName, dataUpdate, idFieldName, id);        
     }
 }

@@ -1,0 +1,59 @@
+<style>
+    .product--item{
+        display: flex;
+    }
+
+    .product--image{
+        width: 50%;
+    }
+
+    .product--image img{
+        width: 100%;
+    }
+
+    .product--info{
+        width: 50%;
+        padding: 50px 40px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product--title{
+        font-size: 40px;
+        font-weight: 500;
+    }
+
+    .product--des{
+        margin-bottom: 20px;
+    }
+
+    .product--price{
+        font-size: 20px;
+        
+    }
+
+    .product--unit{
+        font-size: 20px;
+        
+    }
+    .row-title{
+        font-weight: bold;
+    }
+</style>
+<div class="product--item">
+    <div class="product--image">
+        <img src="/products/{{product.key}}/1.jpg" alt="Hihi" />
+    </div>
+    <div class="product--info">
+        <div class="product--title">{{product.TenSP}}</div>
+        <div class="product--des"><span class="row-title">Description:</span></div>
+        <div class="product--price"><span class="row-title">Gia:</span> {{product.GiaTien}} d</div>
+        <div class="product--unit"><span class="row-title">Don vi tinh:</span> {{product.DonViDinhLuong}}</div>
+        <p style="margin: 20px 0px;">San pham ton tai trong cac goi: </p>
+        <div class="product--bypackage">
+            {{#each package}}
+            sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg
+            {{/each}}
+        </div>
+    </div>
+</div>

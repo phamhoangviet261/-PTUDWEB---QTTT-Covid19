@@ -6,14 +6,14 @@
     }
     .home--banner{
         position: relative;
-        width: 800px;
+        
         
         display: flex;
         overflow: hidden;
     }
     .home--banner img{
-        width: 800px;
-        height: 450px;
+        
+        
     }
     .home--banner i{
         position: absolute;
@@ -131,146 +131,374 @@
             opacity: 1;
         }
     }
+    .default-hold {
+        position: relative;
+        width: 100vw;
+        height: calc(100vw * 1/2);
+    }
 
+    .paging-group {
+        position: absolute;
+        z-index: 5;
+        background-color: transparent !important;
+        width: fit-content;
+        height: fit-content;
+        display: flex;
+        top: 90%;
+        left: 42%;
+    }
+
+    .paging {
+        position: relative;
+        height: 10px;
+        width: 50px;
+        background-color: gray !important;
+        opacity: 80%;
+        cursor: pointer;
+        margin-left: 20px;
+        border-radius: 3px;
+        z-index: 6;
+    }
+
+    .paging:hover {
+        opacity: 50%;
+    }
+
+    #pic-3 {
+        transition: 1s;
+    }
+
+    #pic-1, #pic-2, #pic-3 {
+        display: block;
+        position: absolute;
+        top: 0;
+        width: 100vw;
+        height: calc(100vw * 1/2);
+    }
+    #pic-1 {
+        transition: 1s;
+        z-index: 2;
+    }
+    
+    #pic-2 {
+        transition: 1s;
+        z-index: 1;
+    }
+    #toRight {
+        position: absolute;
+        font-size: 150px;
+        font-weight: 900;
+        right: 20px;
+        color: white;
+        top: 38%;
+        z-index: 999;
+        cursor: pointer;
+    }
+
+    #toRight:hover, #toLeft:hover {
+        color: #DDD;
+    }
+
+    #toLeft {
+        position: absolute;
+        font-size: 150px;
+        color: white;
+        font-weight: 900;
+        left: 20px;
+        top: 38%;
+        z-index: 999;
+        cursor: pointer;
+    }
+
+    @media only screen and (max-width: 425px)
+    {
+        #toRight, #toLeft {
+            font-size: 36px;
+        }
+        .paging-group {
+            left: 26%;
+        }
+        .paging {
+            height: 8px;
+            width: 40px;
+        }
+    }
     {{!-- PRODUCT ITEM --}}
     .home--products{
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
+        gap: 50px;        
     }
-
+    @media only screen and (max-width: 768px) {
+        .home--products{            
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;        
+        }
+    }
+    @media only screen and (max-width: 425px) {
+        .home--products{            
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;        
+        }
+    }
+    .home--products__bar{
+        position: relative;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: calc( 1.5 * var(--primary-font-size));
+        margin-top: 100px;
+        margin-bottom: 20px;
+        
+    }
+    .home--products__bar::before{
+        content: '';
+        border-left: 4px solid var(--primary-color);
+        padding-right: 10px;
+    }
     .product--item{
+        height: calc(35 * var(--primary-font-size));
+        
         display: flex;
-
+        flex-direction: column;
+        cursor: pointer;
+        
+        padding: 20px 10px;
+        border: 1px solid #ffffff;
+    }
+    .product--item:hover{
+        border: 1px solid var(--primary-color);
     }
     .product--item > img{
         width: 100%;
-        height: 100%;
+        height: 300px;
+        flex-shrink: 0;
+    }
+
+    .product--item__info {
+        
+    }
+    
+    .product--item  h4{
+        font-size: calc(2 * var(--primary-font-size));
+        height: calc(5 * var(--primary-font-size));
+        font-weight: bold;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-word;
+    }
+    .product--item  span{
+        display: inline-block;
+        margin-top: 4px;
     }
 
     {{!-- END PRODUCT ITEM --}}
 </style>
 <div class="home">
     <div class="home--cataloges"></div>
+
     <div class="home--banner">
-        <div class="container">
-
-            <div class="slide fade">
-                <div class="numbertext">1 / 3</div>
-                <img src="/home-banner-1.jpg" alt="1" />
-                <div class="text"></div>
+        <div class="default-hold">
+            <p id="toLeft"><</p>
+            <p id="toRight">></p>
+            <div class="paging-group">
+                <div class="paging"></div>
+                <div class="paging"></div>
+                <div class="paging"></div>
             </div>
-
-            <div class="slide fade">
-                <div class="numbertext">2 / 3</div>
-                <img src="/home-banner-3.jpg" alt="2" />
-                <div class="text"></div>
-            </div>
-
-            <div class="slide fade">
-                <div class="numbertext">3 / 3</div>
-                <img src="/home-banner-4.jpg" alt="3" />
-                <div class="text"></div>
-            </div>
-
-            
-
-            <a class="prev" onclick="manualControl(-1)">&#10094;</a>
-            <a class="next" onclick="manualControl(1)">&#10095;</a>
         </div>
-
-        <div class="center">
-            <span class="dot fade" onclick="currentSlide(1)"></span>
-            <span class="dot fade" onclick="currentSlide(2)"></span>
-            <span class="dot fade" onclick="currentSlide(3)"></span>
-        </div>
-        <div class="center">
-            <button class="controls center" id="pause">Pause</button>
-        </div>
+        <img src="home-1.jpg" id="pic-1" />
+        <img src="home-2.jpg" id="pic-2" />
+        <img src="home-3.jpg" id="pic-3" />
     </div>
+
+    <div class="home--products__bar">
+            San Pham Ua Thich
+        </div>
     <div class="home--products">
+        
         {{#each products as |product i|}}
-        <div class="product--item">
+        <a class="product--item" href="/product/{{product.link}}">
             <img src="/products/{{product.key}}/1.jpg" alt="hihi" />
-        </div>  
+            <div class="product--item__info">
+                <h4>{{product.TenSP}}</h4>
+                <span>{{product.GiaTien}} dong</span>
+            </div>
+        </a>  
         {{/each}}
     </div>
+
+    <div class="home--products__bar">
+            San Pham Ban Chay
+        </div>
+    <div class="home--products">
+        
+        {{#each productsHalfRun as |product i|}}
+        <a class="product--item" href="/product/{{product.link}}">
+            <img src="/products/{{product.key}}/1.jpg" alt="hihi" />
+            <div class="product--item__info">
+                <h4>{{product.TenSP}}</h4>
+                <span>{{product.GiaTien}} dong</span>
+            </div>
+        </a>  
+        {{/each}}
+    </div>
+
 </div>
+
 <script>
+
+    let current = 1;
+    let next = 0;
+    let max = 3;
+    let rightButton = document.querySelector("#toRight");
+    let leftButton = document.querySelector("#toLeft");
+    const page = document.querySelectorAll(".paging");
+
+    page[0].addEventListener('click', handlePageClick1);
+    page[1].addEventListener('click', handlePageClick2);
+    page[2].addEventListener('click', handlePageClick3);
+
+
+    function handleRightClick(){
+        page[0].removeEventListener('click', handlePageClick1);
+        page[1].removeEventListener('click', handlePageClick2);
+        page[2].removeEventListener('click', handlePageClick3);
+        rightButton.removeEventListener('click', handleRightClick)
+        leftButton.removeEventListener('click', handleLeftClick)
+        if (current != max) {
+            next = current + 1;
+        }
+        else {
+            next = 1;
+        }
+        $(`#pic-${next}`).css("z-index", '1');
+        $(`#pic-${current}`).css("transition", "1s");
+        $(`#pic-${current}`).css("transform", `translateX(-100vw)`);
+        setTimeout(() => {$(`#pic-${next}`).css("z-index", "2"); resetTransform(next);}, 1000);
+        current = next;
+    }
+
+    function handleLeftClick(){
+        page[0].removeEventListener('click', handlePageClick1);
+        page[1].removeEventListener('click', handlePageClick2);
+        page[2].removeEventListener('click', handlePageClick3);
+        rightButton.removeEventListener('click', handleRightClick)
+        leftButton.removeEventListener('click', handleLeftClick)
+        if (current != 1) {
+            next = current - 1;
+        }
+        else {
+            next = max;
+        }
+        $(`#pic-${next}`).css("z-index", '1');
+        $(`#pic-${current}`).css("transition", "1s");
+        $(`#pic-${current}`).css("transform", "translateX(100vw)");
+        setTimeout(() => {$(`#pic-${next}`).css("z-index", "2"); resetTransform(next);}, 1000);
+        
+        current = next;
+    }
+
     
-  let slideIndex = 0;
-  let slides = document.getElementsByClassName("slide");
-  let dots = document.getElementsByClassName("dot");
-  let myTimer;
-  let playing = true;
 
-  showSlides();
+    rightButton.addEventListener('click', handleRightClick)
 
-  function showSlides() {
-    if (playing) {
-      for (let i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
-        dots[i].className = dots[i].className.replace(" active", "");
-      }
-      slideIndex++;
-      if (slideIndex > slides.length) {
-        slideIndex = 1;
-      }
-      dots[slideIndex - 1].className += " active";
-      slides[slideIndex - 1].style.display = "block";
-      myTimer = setTimeout(showSlides, 10000); // Change every 2 seconds
-    } else {
-      return;
-    }
-  }
+    leftButton.addEventListener('click', handleLeftClick)
 
-  function currentSlide(no) {
-    for (let i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
-      dots[i].className = dots[i].className.replace(" active", "");
+    function handlePageClick1(){
+        if (1 == current){
+            return;
+        }
+        page[0].removeEventListener('click', handlePageClick1);
+        page[1].removeEventListener('click', handlePageClick2);
+        page[2].removeEventListener('click', handlePageClick3);
+        rightButton.removeEventListener('click', handleRightClick);
+        leftButton.removeEventListener('click', handleLeftClick);
+        if (current == 1){
+            return;
+        }
+        next = 1;
+        $(`#pic-${next}`).css("z-index", '1');
+        $(`#pic-${current}`).css("transition", "1s");
+        if (next < current){
+            $(`#pic-${current}`).css("transform", "translateX(100vw)");
+        }
+        else {
+            $(`#pic-${current}`).css("transform", "translateX(-100vw)");
+        }
+        setTimeout(() => {$(`#pic-${next}`).css("z-index", "2"); resetTransform(next);}, 1000);
+        
+        current = next;
     }
-    slideIndex = no;
-    slides[no - 1].style.display = "block";
-    dots[no - 1].className += " active";
-    clearTimeout(myTimer);
-    myTimer = setTimeout(showSlides, 2000);
-  }
 
-  function manualControl(IncrementNumber) {
-    var newslideIndex = slideIndex + IncrementNumber;
-    if (newslideIndex < 4 && newslideIndex > 0) {
-      currentSlide(newslideIndex);
+    function handlePageClick2(){
+        if (2 == current){
+            return;
+        }
+        page[0].removeEventListener('click', handlePageClick1);
+        page[1].removeEventListener('click', handlePageClick2);
+        page[2].removeEventListener('click', handlePageClick3);
+        rightButton.removeEventListener('click', handleRightClick);
+        leftButton.removeEventListener('click', handleLeftClick);
+        next = 2;
+        $(`#pic-${next}`).css("z-index", '1');
+        $(`#pic-${current}`).css("transition", "1s");
+        if (next < current){
+            $(`#pic-${current}`).css("transform", "translateX(100vw)");
+        }
+        else {
+            $(`#pic-${current}`).css("transform", "translateX(-100vw)");
+        }
+        setTimeout(() => {$(`#pic-${next}`).css("z-index", "2"); resetTransform(next);}, 1000);
+        
+        current = next;
     }
-    if (newslideIndex == 4) {
-      currentSlide(1);
+
+    function handlePageClick3(){
+        if (3 == current){
+            return;
+        }
+        page[0].removeEventListener('click', handlePageClick1);
+        page[1].removeEventListener('click', handlePageClick2);
+        page[2].removeEventListener('click', handlePageClick3);
+        rightButton.removeEventListener('click', handleRightClick);
+        leftButton.removeEventListener('click', handleLeftClick);
+        next = 3;
+        $(`#pic-${next}`).css("z-index", '1');
+        $(`#pic-${current}`).css("transition", "1s");
+        if (next < current){
+            $(`#pic-${current}`).css("transform", "translateX(100vw)");
+        }
+        else {
+            $(`#pic-${current}`).css("transform", "translateX(-100vw)");
+        }
+        setTimeout(() => {$(`#pic-${next}`).css("z-index", "2"); resetTransform(next);}, 1000);
+        
+        current = next;
     }
-    if (newslideIndex == 0) {
-      currentSlide(3);
+
+    function resetTransform(target) {
+        
+        for (let i = 1; i <= max; i++){
+            if (i != target){
+                setTimeout(() => {
+                    $(`#pic-${i}`).css("transform", "translateX(0)");
+                }, 1)
+                $(`#pic-${i}`).css("transition", "0s");
+                $(`#pic-${i}`).css("z-index", '0');
+                console.log("Run")
+            }
+        }
+        rightButton.addEventListener('click', handleRightClick)
+        leftButton.addEventListener('click', handleLeftClick)
+        page[0].addEventListener('click', handlePageClick1);
+        page[1].addEventListener('click', handlePageClick2);
+        page[2].addEventListener('click', handlePageClick3);
     }
+
     
-  }
-
-  let pauseButton = document.getElementById("pause");
-
-  pauseButton.onclick = function () {
-    if (playing) {
-      pauseSlideshow();
-    } else {
-      playSlideshow();
-    }
-  };
-
-  function pauseSlideshow() {
-    pauseButton.innerHTML = "Play";
-    playing = false;
-  }
-
-  function playSlideshow() {
-    pauseButton.innerHTML = "Pause";
-    playing = true;
-    showSlides();
-  }
-
 </script>
 
 

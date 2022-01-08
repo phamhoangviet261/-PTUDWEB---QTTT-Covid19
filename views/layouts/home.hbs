@@ -22,7 +22,9 @@
             </div>
         </div>
 
-        <div class="" style="padding-top: 82px;">
+        <div class=""  {{#if notloginandsignup}}
+                style="padding-top: 82px;"     
+                {{/if}}>
             <div class="" style="">
                 {{{body}}}
             </div>
@@ -30,7 +32,10 @@
 
         <div class="">
             <div class="">
-                {{>  footer abcd = this.abcd }}
+                 {{#if notloginandsignup}}
+                {{>  footer abcd = this.abcd }}         
+                {{/if}}
+                
             </div>
         </div>
     </div>

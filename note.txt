@@ -8,3 +8,9 @@ https://viblo.asia/p/ban-da-hieu-ro-ve-http-cookie-djeZ1DvGKWz
 	Kiểm tra trong Database:
 		+ Nếu khớp -> Chuyển về homepage kèm token -> Lưu token vào cookie -> homepage verify token lấy ra username để hiển thị
 		+ Nếu không khớp -> Báo lỗi đăng nhập sai và về login page
+
+**ADMIN PAGE
+- Side bar
++ Manage account
++ Manage product
++ Manage Neccessary

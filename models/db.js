@@ -60,6 +60,18 @@ exports.add = async (tbName, entity) => {
 exports.update = async (tbName, entity, fieldName, id) => {
     const table = new pgp.helpers.TableName({ table: tbName, schema })
     const condition = pgp.as.format(` WHERE "${fieldName}" = '${id}' `, entity);
+    const qStr = pgp.helpers.update(entity, null, table) + condition + 'RETURNING *'
+    try {
+        const res = await db.one(qStr)
+        return res
+    } catch (error) {
+        console.log('error db/update : ', error)
+    }
+}
+
+exports.updateToken = async (tbName, entity, fieldName, id) => {
+    const table = new pgp.helpers.TableName({ table: tbName, schema })
+    const condition = pgp.as.format(` WHERE "${fieldName}" = '${id}' `, entity);
     const qStr = pgp.helpers.update(entity, ['token'], table)+ condition + 'RETURNING *'
     try {
         const res = await db.one(qStr)

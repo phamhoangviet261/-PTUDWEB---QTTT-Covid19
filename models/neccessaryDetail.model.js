@@ -1,6 +1,6 @@
 const db = require('./db');
 const tbName = 'ChiTietNhuYeuPham';
-const idFieldName = 'MaCTNYP'
+const idFieldName = 'MaNYP'
 
 module.exports = {
     all: async () => {
@@ -14,7 +14,7 @@ module.exports = {
     get: async username => {
         const res = await db.get(tbName, idFieldName, username);
         if (res.length > 0){
-            return res[0];
+            return res;
         }
 
         return null;
@@ -23,7 +23,7 @@ module.exports = {
         const res = await db.add(tbName, user);
         return res;
     },
-    update: async (user, newToken) => {
-        return res = await db.update(tbName, newToken, idFieldName, user.username);        
+    update: async (id, dataUpdate) => {
+        return res = await db.update(tbName, dataUpdate, idFieldName, id);        
     }
 }

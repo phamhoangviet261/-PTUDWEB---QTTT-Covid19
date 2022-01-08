@@ -13,6 +13,10 @@
         font-size: calc(3*var(--primary-font-size));
         font-weight: bold;
         color: #ffffff;
+        text-decoration: none;
+    }
+    .navbar--left:hover{
+        text-decoration: none;
     }
     .navbar--middle > form{
         display: flex;
@@ -106,10 +110,10 @@
 
 <div class="navbar">
     
-    <a class="navbar--left">COVINA</a>
+    <a class="navbar--left" href="/">COVINA</a>
 
     <div class="navbar--middle">
-        <form method="POST" action="/search">
+        <form method="POST" action="/product/search">
             <input type="text" name="search" value="" placeholder="Tim kiem..."/>
             <button type="submit">Tim kiem</button>
         </form>    

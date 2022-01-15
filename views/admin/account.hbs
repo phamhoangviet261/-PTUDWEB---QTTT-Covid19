@@ -1,0 +1,132 @@
+<style>
+    .admin{
+        display: grid;
+        grid-template-columns: 1fr 7fr;
+    }
+    .sidebar{
+        background: rgb(102,103,171);
+        background: linear-gradient(90deg, rgba(102,103,171,1) 0%, rgba(75,75,200,1) 50%);
+        height: 100vh;
+        color: #ffffff;
+    }
+    .sidebar > ul > li{
+        border-bottom: 1px solid #1f1f1f;
+        cursor: pointer;
+    }
+    .sidebar > ul > li:hover{
+        color: #b8b8b8;
+    }
+
+    .choosen{
+        background-color: #ffffff;
+        color: #000000;
+    }
+    {{!-- Account --}}
+    {{!-- Product --}}
+    {{!-- Neccessary --}}
+    .hightlight-neccessary:hover{
+        color: aqua;
+    }
+
+    .a-heading{
+        display: block;
+        font-size: 16px;
+        font-weight: 900;
+        padding: 20px 10px;
+        text-transform: uppercase;
+    }
+
+</style>
+
+<div class="admin">
+    <div class="sidebar">
+        <h2>ADMIN</h2>
+        <ul>
+            <li class="manage-account {{#if isManageAccount}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin">Manage account</a></li>
+            <li class="manage-product {{#if isManageProduct}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-product">Manage product</a></li>
+            <li class="manage-neccessary {{#if isManageNeccessary}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-neccessary">Manage Neccessary</a></li>
+        </ul>
+        
+    </div>
+    <div class="content">
+        <div class="manage-neccessary">
+            <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Ma NLQ</th>
+                        <th scope="col">Ho Ten</th>                        
+                        <th scope="col">CMND/CCCD</th>
+                        <th scope="col">Ngay Sinh</th>
+                        <th scope="col">Gioi Tinh</th>
+                        <th scope="col">Dia Chi</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each listUser as |item i| }}
+                        <tr>
+                            <th scope="row">{{item.key}}</th>
+                            <td>{{item.MaNLQ}}</td>
+                            <td>{{item.HoTen}}</td>
+                            <td>{{item.CCCD}}</td>                            
+                            <td>{{item.NgaySinh}}</td>
+                            <td>{{item.GioiTinh}}</td>
+                            <td>{{item.DiaChi}}</td>
+                            <td>{{item.username}}</td>
+                            <td>
+                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEditProductNeccessary{{@index}}">
+                                    <i class="fas fa-edit" data-toggle="tooltip" data-placement="right" title="Edit"></i>
+                                </button>                                
+                                <!-- Modal -->
+                                <div class="modal fade" id="modalEditProductNeccessary{{@index}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Chinh sua san pham goi nhu yeu pham </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label for="manyp-2" class="col-form-label">Ma NYP:</label>
+                                                        <input style="min-width: 200px;" type="text" class="form-control" id="manyp-2-{{@index}}" value="{{item.MaNYP}}" disabled/>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="sl-2" class="col-form-label">So Luong:</label>
+                                                        <input type="number" min="1" class="form-control" id="sl-2-{{@index}}" value="{{item.SoLuong}}"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="ghsl-2" class="col-form-label">Gioi Han So Luong:</label>
+                                                        <input type="number" min="1" class="form-control" id="ghsl-2-{{@index}}" value="{{item.GioiHanSL}}"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="msp-2-{{@index}}" class="col-form-label">Ma San Pham:</label>                                        
+                                                        <select class="form-control" id="msp-2-{{@index}}">
+                                                            {{#each listProduct}}
+                                                            <option>{{this.MaSP}}</option>
+                                                            {{/each}}
+                                                        </select>
+
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                <button type="button" class="btn btn-primary" onclick="handleSubmitModalEditProductNeccessary()">Save changes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+        </div>
+    </div>
+</div>

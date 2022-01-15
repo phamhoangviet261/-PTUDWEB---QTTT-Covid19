@@ -19,14 +19,58 @@ const wardModel = require('../models/ward.model')
 const router = require('express').Router();
 
 router.get('/', async (req, res) => {
-    res.render('admin/index', {
+    let makeColorPeople= (lu, min) => {
+        // change key CMND/CCCD --> CCCD
+        let newLu = lu.slice(min, min+10)
+
+        newLu.forEach((item)=>item.NgaySinh = item.NgaySinh.toDateString().split(' ')[2]+'/'+(item.NgaySinh.getMonth()+1)+'/'+item.NgaySinh.toDateString().split(' ')[3])
+        
+        newLu.forEach((item)=>{
+            return delete Object.assign(item, {['CCCD']: item['CMND/CCCD'] })['CMND/CCCD'];
+        })
+        return newLu;
+        
+    }
+    let lu = await covidPeopleModel.all()
+    
+    res.render('admin/account', {
         cssP: () => 'css',
         scriptsP: () => 'script',
         navP: () => 'nav',
         footerP: () => 'footer',
         isManageAccount: true,
+        listUser: makeColorPeople(lu, 0)
     });
 })
+
+router.get('/manage-account', async (req, res) => {
+    console.log(req.query.page)
+    let makeColorPeople= (lu, min=0) => {
+        // change key CMND/CCCD --> CCCD
+        let newLu = lu.slice(min, min+10)
+        console.log(newLu)
+        newLu.forEach((item)=>item.NgaySinh = item.NgaySinh.toDateString().split(' ')[2]+'/'+(item.NgaySinh.getMonth()+1)+'/'+item.NgaySinh.toDateString().split(' ')[3])
+        
+        newLu.forEach((item)=>{
+            return delete Object.assign(item, {['CCCD']: item['CMND/CCCD'] })['CMND/CCCD'];
+        })
+        return newLu;
+        
+    }
+    let lu = await covidPeopleModel.all()
+    lu.forEach(item => item['key'] = item.MaNLQ.slice(3)-0)
+    res.render('admin/account', {
+        cssP: () => 'css',
+        scriptsP: () => 'script',
+        navP: () => 'nav',
+        footerP: () => 'footer',
+        isManageAccount: true,
+        listUser: makeColorPeople(lu, parseInt(req.query.page)*10),
+        pageNow: parseInt(req.query.page),
+        maxPage: lu.length/10+1,
+    });
+})
+
 
 router.get('/manage-product', async (req, res) => {
     let lp = await productModel.all()

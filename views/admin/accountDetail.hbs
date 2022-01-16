@@ -1,0 +1,230 @@
+<style>
+    .admin{
+        
+    }
+    .sidebar{
+        background: rgb(102,103,171);
+        background: linear-gradient(90deg, rgba(102,103,171,1) 0%, rgba(75,75,200,1) 50%);
+        height: 100vh;
+        color: #ffffff;
+        position: fixed;
+        display: block;
+        width: 10vw;
+    }
+    .sidebar > ul > li{
+        border-bottom: 1px solid #1f1f1f;
+        cursor: pointer;
+    }
+    .sidebar > ul > li:hover{
+        color: #b8b8b8;
+    }
+    .content{
+        margin-left: 10vw;
+        padding: 20px;
+        width: calc(100% - 10vw);
+    }
+    .choosen{
+        background-color: #ffffff;
+        color: #000000;
+    }
+    {{!-- Account --}}
+    {{!-- Product --}}
+    {{!-- Neccessary --}}
+    .hightlight-neccessary:hover{
+        color: aqua;
+    }
+
+    .a-heading{
+        display: block;
+        font-size: 16px;
+        font-weight: 900;
+        padding: 20px 10px;
+        text-transform: uppercase;
+    }
+    .link-hover{
+        
+        text-decoration: underline;
+    }
+    .link-hover:hover{
+        color:aqua;
+    }
+    .manage{
+        
+        width: 100%;
+    }
+</style>
+
+<div class="admin">
+    <div class="sidebar">
+        <h2>ADMIN</h2>
+        <ul>
+            <li class="manage-account {{#if isManageAccount}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin">Manage account</a></li>
+            <li class="manage-product {{#if isManageProduct}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-product">Manage product</a></li>
+            <li class="manage-neccessary {{#if isManageNeccessary}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-neccessary">Manage Neccessary</a></li>
+        </ul>
+        
+    </div>
+    <div class="content">
+        <div class="manage">
+            <h3>Trang thai hien tai: F</h3>
+            <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                        
+                        <th scope="col">Ma NLQ</th>
+                        <th scope="col">Ho Ten</th>                        
+                        <th scope="col">CMND/CCCD</th>
+                        <th scope="col">Ngay Sinh</th>
+                        <th scope="col">Gioi Tinh</th>
+                        <th scope="col">Dia Chi</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            
+                            <td>{{user.MaNLQ}}</td>
+                            <td>{{user.HoTen}}</td>
+                            <td>{{user.CCCD}}</td>                            
+                            <td>{{user.NgaySinh}}</td>
+                            <td>{{user.GioiTinh}}</td>
+                            <td>{{user.DiaChi}}</td>
+                            <td>{{user.username}}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEditProduct{{@index}}">
+                                    <i class="fas fa-edit" data-toggle="tooltip" data-placement="right" title="Edit"></i>
+                                </button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="modalEditProduct{{@index}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Chỉnh Sửa Tai Khoan</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label for="masp-edit" class="col-form-label">Mã NLQ:</label>
+                                                        <input style="min-width: 200px;" type="text" class="form-control" id="manlq" value="{{user.MaNLQ}}" disabled/>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="tensp-edit" class="col-form-label">Tên NLQ:</label>
+                                                        <input type="text" class="form-control" id="hoten" value="{{user.HoTen}}"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="gt-edit" class="col-form-label">CMND/CCCD:</label>
+                                                        <input type="number" min="0" class="form-control" id="cccd" value="{{user.CCCD}}"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="dvdl-edit" class="col-form-label">Ngay Sinh:</label>                                        
+                                                        <input class="form-control" id="ngaysinh" value="{{user.NgaySinh}}" type="datetime"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="sl-edit" class="col-form-label">Gioi Tinh:</label>                                        
+                                                        <select class="form-control" id="gioitinh">                                                            
+                                                            <option>Nam</option>
+                                                            <option>Nu</option>                                                            
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="dvdl-edit" class="col-form-label">Dia Chi:</label>                                        
+                                                        <input class="form-control" id="diachi" value="{{user.DiaChi}}" type="datetime"></input>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ Bỏ</button>
+                                                <button type="button" class="btn btn-primary" onclick="">Xác Nhận</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+            </table>
+
+            <h3>Danh sach nguoi lien quan:</h3>
+            <h4>F1: </h4>
+            <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                        
+                        <th scope="col">Ma NLQ</th>
+                        <th scope="col">Ho Ten</th>                        
+                        <th scope="col">CMND/CCCD</th>
+                        <th scope="col">Ngay Sinh</th>
+                        <th scope="col">Gioi Tinh</th>
+                        <th scope="col">Dia Chi</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each listF1 as |item i| }}
+                        <tr>
+                            
+                            <td><a class="link-hover" href="/admin/manage-account/account?manlq={{item.MaNLQ}}">{{item.MaNLQ}}</a></td>
+                            <td>{{item.HoTen}}</td>
+                            <td>{{item.CCCD}}</td>                            
+                            <td>{{item.NgaySinh}}</td>
+                            <td>{{item.GioiTinh}}</td>
+                            <td>{{item.DiaChi}}</td>
+                            <td>{{item.username}}</td>
+                            <td>
+                                
+                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+            </table>
+
+            <h4>F2: </h4>
+            <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                        
+                        <th scope="col">Ma NLQ</th>
+                        <th scope="col">Ma NLQ Truoc</th>
+                        <th scope="col">Ho Ten</th>                        
+                        <th scope="col">CMND/CCCD</th>
+                        <th scope="col">Ngay Sinh</th>
+                        <th scope="col">Gioi Tinh</th>
+                        <th scope="col">Dia Chi</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each listF2 as |item i| }}
+                        <tr>
+                            
+                            <td><a class="link-hover" href="/admin/manage-account/account?manlq={{item.MaNLQ}}">{{item.MaNLQ}}</a></td>
+                            <td><a class="link-hover" href="/admin/manage-account/account?manlq={{item.MaNLQTruoc}}">{{item.MaNLQTruoc}}</a></td>
+                            <td>{{item.HoTen}}</td>
+                            <td>{{item.CCCD}}</td>                            
+                            <td>{{item.NgaySinh}}</td>
+                            <td>{{item.GioiTinh}}</td>
+                            <td>{{item.DiaChi}}</td>
+                            <td>{{item.username}}</td>
+                            <td>
+                                
+                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+            </table>
+
+            
+        </div>
+    </div>
+</div>

@@ -25,5 +25,23 @@ module.exports = {
     },
     update: async (id, dataUpdate) => {
         return res = await db.update(tbName, dataUpdate, idFieldName, id);        
-    }
+    },
+    findF1: async (manlq) => {
+        return res = await db.run(`SELECT *
+        FROM "NguoiLienQuanCovid" 
+        where "MaNLQ" IN (SELECT "MaNLQ" FROM "NguoiLienQuanCovid" where "MaNLQTruoc" = '${manlq}')`);   
+    },
+    findF2: async (manlq) => {
+        return res = await db.run(`SELECT *
+        FROM "NguoiLienQuanCovid"
+        where "MaNLQTruoc" IN (SELECT "MaNLQ"
+        FROM "NguoiLienQuanCovid" 
+        where "MaNLQ" IN (SELECT "MaNLQ" FROM "NguoiLienQuanCovid" where "MaNLQTruoc" = '${manlq}'))
+        `);   
+    },
+    findF3: async (manlq) => {
+        return res = await db.run(`SELECT *
+        FROM "NguoiLienQuanCovid" 
+        where "MaNLQ" IN (SELECT "MaNLQ" FROM "NguoiLienQuanCovid" where "MaNLQTruoc" = '${manlq}')`);   
+    },
 }

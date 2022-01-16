@@ -86,3 +86,9 @@ exports.getN = async (n) => {
     const res = await db.any('select * from "SanPham" order by random() desc limit $1', n);
     return res;
 }
+
+exports.run = async (s) => {
+    console.log("Q: ", s)
+    const res = await db.any(s);
+    return res;
+}

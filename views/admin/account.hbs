@@ -50,10 +50,23 @@
     </div>
     <div class="content">
         <div class="manage-neccessary">
+            <div class="input-group">
+                <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search...">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tim theo</button>
+                    <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">ID</a>
+                    <a class="dropdown-item" href="#">Name</a>
+                    <a class="dropdown-item" href="#">CCCD</a>
+                    <div role="separator" class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                    </div>
+                </div>
+            </div>
             <table class="table">
                     <thead class="thead-light">
                         <tr>
-                        <th scope="col">#</th>
+                        
                         <th scope="col">Ma NLQ</th>
                         <th scope="col">Ho Ten</th>                        
                         <th scope="col">CMND/CCCD</th>
@@ -67,8 +80,8 @@
                     <tbody>
                         {{#each listUser as |item i| }}
                         <tr>
-                            <th scope="row">{{item.key}}</th>
-                            <td>{{item.MaNLQ}}</td>
+                            
+                            <td><a href="/admin/manage-account/account?manlq={{item.MaNLQ}}">{{item.MaNLQ}}</a></td>
                             <td>{{item.HoTen}}</td>
                             <td>{{item.CCCD}}</td>                            
                             <td>{{item.NgaySinh}}</td>
@@ -76,51 +89,7 @@
                             <td>{{item.DiaChi}}</td>
                             <td>{{item.username}}</td>
                             <td>
-                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEditProductNeccessary{{@index}}">
-                                    <i class="fas fa-edit" data-toggle="tooltip" data-placement="right" title="Edit"></i>
-                                </button>                                
-                                <!-- Modal -->
-                                <div class="modal fade" id="modalEditProductNeccessary{{@index}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLongTitle">Chinh sua san pham goi nhu yeu pham </h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form>
-                                                    <div class="form-group">
-                                                        <label for="manyp-2" class="col-form-label">Ma NYP:</label>
-                                                        <input style="min-width: 200px;" type="text" class="form-control" id="manyp-2-{{@index}}" value="{{item.MaNYP}}" disabled/>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="sl-2" class="col-form-label">So Luong:</label>
-                                                        <input type="number" min="1" class="form-control" id="sl-2-{{@index}}" value="{{item.SoLuong}}"></input>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="ghsl-2" class="col-form-label">Gioi Han So Luong:</label>
-                                                        <input type="number" min="1" class="form-control" id="ghsl-2-{{@index}}" value="{{item.GioiHanSL}}"></input>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="msp-2-{{@index}}" class="col-form-label">Ma San Pham:</label>                                        
-                                                        <select class="form-control" id="msp-2-{{@index}}">
-                                                            {{#each listProduct}}
-                                                            <option>{{this.MaSP}}</option>
-                                                            {{/each}}
-                                                        </select>
-
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                <button type="button" class="btn btn-primary" onclick="handleSubmitModalEditProductNeccessary()">Save changes</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <i class="fas fa-edit" data-toggle="tooltip" data-placement="right" title="Edit"></i>
                                 <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
                             </td>
                         </tr>

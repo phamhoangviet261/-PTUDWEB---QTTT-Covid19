@@ -19,10 +19,37 @@ const wardModel = require('../models/ward.model')
 const router = require('express').Router();
 
 router.get('/', async (req, res) => {
-    let makeColorPeople= (lu, min) => {
+    // let makeColorPeople= (lu, min) => {
+    //     // change key CMND/CCCD --> CCCD
+    //     let newLu = lu.slice(min, min+10)
+
+    //     newLu.forEach((item)=>item.NgaySinh = item.NgaySinh.toDateString().split(' ')[2]+'/'+(item.NgaySinh.getMonth()+1)+'/'+item.NgaySinh.toDateString().split(' ')[3])
+        
+    //     newLu.forEach((item)=>{
+    //         return delete Object.assign(item, {['CCCD']: item['CMND/CCCD'] })['CMND/CCCD'];
+    //     })
+    //     return newLu;
+        
+    // }
+    // let lu = await covidPeopleModel.all()
+    
+    // res.render('admin/account', {
+    //     cssP: () => 'css',
+    //     scriptsP: () => 'script',
+    //     navP: () => 'nav',
+    //     footerP: () => 'footer',
+    //     isManageAccount: true,
+    //     listUser: makeColorPeople(lu, 0)
+    // });
+    res.redirect('/admin/manage-account?page=0')
+})
+
+router.get('/manage-account', async (req, res) => {
+    
+    let makeColorPeople= (lu, min=0) => {
         // change key CMND/CCCD --> CCCD
         let newLu = lu.slice(min, min+10)
-
+        console.log(newLu)
         newLu.forEach((item)=>item.NgaySinh = item.NgaySinh.toDateString().split(' ')[2]+'/'+(item.NgaySinh.getMonth()+1)+'/'+item.NgaySinh.toDateString().split(' ')[3])
         
         newLu.forEach((item)=>{
@@ -39,16 +66,15 @@ router.get('/', async (req, res) => {
         navP: () => 'nav',
         footerP: () => 'footer',
         isManageAccount: true,
-        listUser: makeColorPeople(lu, 0)
+        listUser: makeColorPeople(lu, parseInt(req.query.page)*10),
+        pageNow: parseInt(req.query.page),
+        maxPage: lu.length/10+1,
     });
 })
 
-router.get('/manage-account', async (req, res) => {
-    console.log(req.query.page)
-    let makeColorPeople= (lu, min=0) => {
+router.get('/manage-account/account', async (req, res)=>{
+    let makeColorPeople= (newLu) => {
         // change key CMND/CCCD --> CCCD
-        let newLu = lu.slice(min, min+10)
-        console.log(newLu)
         newLu.forEach((item)=>item.NgaySinh = item.NgaySinh.toDateString().split(' ')[2]+'/'+(item.NgaySinh.getMonth()+1)+'/'+item.NgaySinh.toDateString().split(' ')[3])
         
         newLu.forEach((item)=>{
@@ -57,20 +83,29 @@ router.get('/manage-account', async (req, res) => {
         return newLu;
         
     }
-    let lu = await covidPeopleModel.all()
-    lu.forEach(item => item['key'] = item.MaNLQ.slice(3)-0)
-    res.render('admin/account', {
-        cssP: () => 'css',
-        scriptsP: () => 'script',
-        navP: () => 'nav',
-        footerP: () => 'footer',
-        isManageAccount: true,
-        listUser: makeColorPeople(lu, parseInt(req.query.page)*10),
-        pageNow: parseInt(req.query.page),
-        maxPage: lu.length/10+1,
-    });
+    if(req.query.manlq){    
+        let u = await covidPeopleModel.get(req.query.manlq)
+        u.NgaySinh = u.NgaySinh.toDateString().split(' ')[2]+'/'+(u.NgaySinh.getMonth()+1)+'/'+u.NgaySinh.toDateString().split(' ')[3]
+        Object.assign(u, {['CCCD']: u['CMND/CCCD'] })['CMND/CCCD'];
+        console.log("NLQ: ", u)
+        let f1 = await covidPeopleModel.findF1(req.query.manlq)
+        let f2 = await covidPeopleModel.findF2(req.query.manlq)
+        
+        console.log("f2: ", f2)
+        res.render('admin/accountDetail', {
+            cssP: () => 'css',
+            scriptsP: () => 'script',
+            navP: () => 'nav',
+            footerP: () => 'footer',
+            isManageAccount: true,
+            user: u,
+            listF1: makeColorPeople(f1),
+            listF2: makeColorPeople(f2),
+            
+        });
+    }
+    
 })
-
 
 router.get('/manage-product', async (req, res) => {
     let lp = await productModel.all()

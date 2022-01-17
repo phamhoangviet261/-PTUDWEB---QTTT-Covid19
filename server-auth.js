@@ -62,7 +62,7 @@ app.post('/login', async (req, res) => {
 	const tokens = generateTokens(user)
 	updateRefreshToken(username, tokens.refreshToken)
 
-	const setToken = await userModel.updateToken(user, {"token":tokens.refreshToken})
+	const setToken = await userModel.updateToken(user.username, {"token":tokens.refreshToken})
 
 	// res.redirect("http://localhost:3000/?token="+tokens.accessToken+"?refreshToken="+tokens.)
 	res.redirect(url.format({

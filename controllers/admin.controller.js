@@ -133,7 +133,7 @@ router.post('/manage-product/add', async (req, res) => {
 })
 
 router.get('/manage-neccessary', async (req, res) => {
-    let ln = await neccessaryModel.all()
+    let ln = await packageModel.all()
 
     // let nd = await neccessaryuDetailModel.all()
 
@@ -153,10 +153,10 @@ router.get('/manage-neccessary', async (req, res) => {
 })
 
 router.get('/manage-neccessary/:id', async (req, res) => {
-    let n = await neccessaryModel.get(req.params.id)
+    let n = await packageModel.get(req.params.id)
     
-    let ln = await neccessaryModel.all()
-    let nd = await neccessaryuDetailModel.get(req.params.id)
+    let ln = await packageModel.all()
+    let nd = await packageDetailModel.get(req.params.id)
     let listProduct = await productModel.all()
     let id_next = ln.length
     let xx = "NYP" + ((parseInt(id_next+1) <= 9 ? ("00" + (parseInt(id_next)+1)) : ("0" + (parseInt(id_next)+1))))
@@ -176,7 +176,7 @@ router.get('/manage-neccessary/:id', async (req, res) => {
 })
 
 router.post('/api/neccessaryDetail/add', async (req, res) => {
-    let x = await neccessaryuDetailModel.add(req.body)
+    let x = await packageDetailModel.add(req.body)
     res.json(req.body)
 })
 
@@ -186,15 +186,15 @@ router.post('/api/neccessaryDetail/update', async (req, res) => {
 })
 
 router.post('/api/neccessary/add', async (req, res) => {
-    let x = await neccessaryModel.add(req.body)
+    let x = await packageModel.add(req.body)
     res.json(req.body)
 })
 
 router.post('/api/neccessary/update', async (req, res) => {
     // get list neccessary -> get 1 neccessary to edit
-    let n = await neccessaryModel.get(req.body['MaNYP'])
+    let n = await packageModel.get(req.body['MaNYP'])
     
-    let x = await neccessaryModel.update(n['MaNYP'], req.body)
+    let x = await packageModel.update(n['MaNYP'], req.body)
     res.json(req.body)
 })
 

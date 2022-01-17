@@ -167,6 +167,13 @@ app.post('/signin', (req, res) => {
     res.json({"user": req.session.user})
 })
 
+app.get('/signout', (req, res) => {
+    res.clearCookie("refresh-token") 
+    res.clearCookie("access-token") 
+    res.redirect('/login')
+})
+
+
 app.use('/product', require('./controllers/product.controller'))
 app.use('/package', require('./controllers/package.controller'))
 app.use('/cart', require('./controllers/cart.controller'))

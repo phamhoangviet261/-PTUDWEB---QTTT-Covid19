@@ -5,7 +5,7 @@
         justify-content: space-between;
         align-items: center;
         width: 100%;
-        padding: 20px;
+        padding: 6px 20px;
         background-color: var(--primary-color);
         z-index: 9999;
     }
@@ -30,6 +30,8 @@
         padding-left: 20px;
         border-radius: 6px;
         font-size: calc(1.5 * var(--primary-font-size));
+        border-color: #fff;
+        outline: none;
     }
     .navbar--middle > form > input:focus{
         outline: none;
@@ -42,21 +44,20 @@
         color: #333;
         font-weight: 600;
         cursor: pointer;
-        border: 2px solid rgb(95, 95, 95);
+        border: 2px solid #fff;
+        margin-left: 14px;
     }
     .navbar--middle > form > button:hover {
         opacity: .8;
         background-color: var(--primary-color);
         color: #fff;
-        border: 2px solid #fff;
 
     }
 
-    .navbar--right > form > div{
-        display: flex;
-        font-weight: bold;
-        cursor: pointer;
+    .navbar--right {
+        margin-right: 20px;
     }
+    
     .navbar--right, .navbar--right  a{
         display: flex;
         justify-content: center;
@@ -64,11 +65,17 @@
         text-decoration: none;
     }
     .navbar--right  a{
-        margin-left: 20px;
+        margin-left: 30px;
+        font-weight: 600;
     }
     .navbar--right a i{
         text-align: center;
         vertical-align: middle;
+    }
+
+    .navbar--right a i:hover{
+        opacity: .8;
+        color: rgb(204, 204, 204);
     }
 
     {{!-- RESPONSIVE --}}
@@ -78,7 +85,7 @@
             height: calc(3 * var(--primary-font-size));
             padding-left: 20px;
         }
-
+        
         .navbar--middle > form > button {
             width: calc(6 * var(--primary-font-size));
             height: calc(3 * var(--primary-font-size));
@@ -128,7 +135,7 @@
 
 <div class="navbar">
     
-    <a style="color: #fff;" class="navbar--left" href="/">COVINA</a>
+    <a style="color: #fff;margin-left: 20px;" class="navbar--left" href="/">COVINA</a>
 
     <div class="navbar--middle">
         <form method="POST" action="/product/search">
@@ -138,7 +145,7 @@
     </div>
 
     <div class="navbar--right">
-        <a href="/cart"><i class="fas fa-shopping-cart"></i></a>
+        <a style="display: flex; align-items: center; justify-content: center" href="/cart"><i style="font-size: 24px;" class="fas fa-shopping-cart"></i></a>
         {{#if isLogin}}
             <a class="text-hover" href="/user">
             {{current}}

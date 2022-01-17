@@ -137,6 +137,7 @@ app.get('/', async (req, res) =>{
         scriptsP: () => 'script',
         navP: () => 'nav',
         footerP: () => 'footer',
+        title: "Trang chủ",
         current: req.session.name,
         isLogin: req.session.user,
         notloginandsignup: 1,

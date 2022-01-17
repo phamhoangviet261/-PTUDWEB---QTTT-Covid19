@@ -5,6 +5,19 @@ const passwordHashedLen = 64;
 let userRemem = '';
 let passRemem = '';
 
+router.get('/', (req, res) => {
+    res.render('user/information',{
+        cssP: () => 'css',
+        scriptsP: () => 'script',
+        navP: () => 'nav',
+        footerP: () => 'footer',
+        title: "Thông tin",
+        current: req.session.name,
+        isLogin: req.session.user,
+        notloginandsignup: 1,
+    })
+})
+
 router.get('/signin', async (req, res) => {
     if (req.session.user) {
             res.redirect('../categories/category');
@@ -75,3 +88,5 @@ router.post('/signin', async (req, res) => {
         return;
     }
 });
+
+module.exports = router;

@@ -1,0 +1,105 @@
+<style>
+    .wrap {
+        display: flex;
+        padding: 0 50px;
+    }
+    .wrap-left {
+        padding-top: 40px;
+        width: 240px;
+    }
+    .wrap-left .list {
+        list-style: none;
+    }
+    .wrap-left .list h3 {
+        font-weight: bold;
+        font-size: 28px;
+        margin-bottom: 14px;
+    }
+    .wrap-left .list li {
+        font-size: 22px;
+        font-weight: 500;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: all 0.2s linear;
+    }
+    .wrap-left .list li:hover {
+        color: blue;
+        transform: translateX(-4px);
+    }
+    .wrap-right {
+        padding: 20px;
+        margin-left: 50px;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        flex: 1;
+    }
+    .wrap-right .form-info {
+        padding-left: 50px;
+    }
+    .wrap-right .form-info .form-group {
+        font-size: 20px;
+    }
+    .wrap-right .form-info .form-group label {
+        font-weight: 600;
+        color: #333;
+    }
+    .wrap-right .form-info .form-group input {
+        padding:0 12px;
+        display: inline-block;
+        width: 100px !important;
+        min-width: 100px;
+    }
+</style>
+<div class="wrap">
+    <div class="wrap-left">
+        <ul class="list">
+            <h3>Người liên quan 0001</h3>
+            <li class="list-item">Thông tin của tôi</li>
+            <li class="list-item">Đơn hàng của tôi</li>
+            <li class="list-item">Hình thức thanh toán</li>
+        </ul>
+    </div>
+    <div class="wrap-right">
+        <form action="" class="form-info">
+            <div class="form-group">
+                <label for="id">Mã: </label>
+                <input id="id" disabled  type="text" name="id" value="hello"/>
+            </div>
+            <div class="form-group">
+                <label for="name">Họ và tên: </label>
+                <input id="name" disabled type="text" name="name" value="hello" />
+            </div>
+            <div class="form-group">
+                <label for="sex">Họ và tên: </label>
+                <input id="sex" disabled type="text" name="sex" value="hello" />
+            </div>
+            <div class="form-group">
+                <label for="CMND">CMND/CCCD: </label>
+                <input id="CMND" disabled type="text" name="CMND" value="hello" />
+            </div>
+            <div class="form-group">
+                <label for="phone">Số điện thoại: </label>
+                <input id="phone" disabled type="text" name="phone" value="hello" />
+            </div>
+            <div class="form-group">
+                <label for="address">Địa chỉ: </label>
+                <input name="address" disabled type="text" id="address" value="hello"/>
+            </div>
+            <div class="form-group">
+                <label>Tỉnh/Thành phố: </label>
+                <input disabled name="city" id="city" type="text" value="HCM" value="hello" >
+            </div>
+            <div class="form-group">
+                <label>Quận/Huyện: </label>
+                <input disabled name="district" id="district" type="text" value="Quận 1">
+
+            </div>
+            <div class="form-group">
+                <label>Phường/Xã: </label>
+                <input disabled name="ward" id="ward" type="text" value="Đa kao" >
+
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,4 +1,7 @@
 <style>
+    html {
+        scroll-behavior: smooth;
+    }
     .home{
         
         width: 100%;
@@ -6,10 +9,58 @@
     }
     .home--banner{
         position: relative;
-        
-        
         display: flex;
         overflow: hidden;
+    }
+    .home--banner__title {
+        position: absolute;
+        left: 10%;
+        top: 32%;
+        width: 600px;
+        z-index: 999;
+        height: 300px;
+        
+    }
+    .home--banner__title h1 {
+        font-weight: 900;
+        font-size: 70px;
+        color: var(--primary-color);
+        padding: 20px;
+        padding-left: 36px;
+        background-color: rgba(255, 255, 255, 0.6);
+        border-radius: 10px;
+        
+    }
+    .home--banner__title a {
+        font-size: 30px;
+        padding: 10px 26px;
+        background-color: var(--primary-color);
+        color: #fff !important;
+        border-radius: 6px;
+        font-weight: 600;  
+        cursor: pointer;
+    }
+    .home--banner__title a:hover {
+        
+        background-color: #fff ;
+        color: var(--primary-color) !important;
+        
+    }
+    @media only screen and (max-width: 425px){
+        .home--banner__title {
+            height: 120px;
+            top: 20%;
+            left: 20%;
+            max-width: 60%;
+        }
+        .home--banner__title h1 {
+            font-size: 20px;
+            padding: 10px;
+        }
+        .home--banner__title a {
+            font-size: 16px;
+            padding: 6px 10px;
+        }
     }
     .home--banner img{
         
@@ -238,8 +289,12 @@
     }
     @media only screen and (max-width: 425px) {
         .home--products{            
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;        
+            {{!-- grid-template-columns: repeat(2, 1fr); --}}
+            grid-template-columns: 1fr;
+            gap: 10px;        
+        }
+        .product--item {
+            min-width: 300px;
         }
     }
     .home--products__bar{
@@ -321,10 +376,14 @@
         <img src="home-1.jpg" id="pic-1" />
         <img src="home-2.jpg" id="pic-2" />
         <img src="home-3.jpg" id="pic-3" />
+        <div class="home--banner__title">
+            <h1>Cùng chung tay đẩy lùi dịch Covid-19</h1>
+            <a href="#favoriteProduct">Mua ngay</a>
+        </div>
     </div>
 
-    <div class="home--products__bar">
-            San Pham Ua Thich
+    <div id="favoriteProduct" class="home--products__bar">
+            Sản phẩm ưa thích
         </div>
     <div class="home--products">
         
@@ -340,7 +399,7 @@
     </div>
 
     <div class="home--products__bar">
-            San Pham Ban Chay
+            Sản phẩm bán chạy
         </div>
     <div class="home--products">
         

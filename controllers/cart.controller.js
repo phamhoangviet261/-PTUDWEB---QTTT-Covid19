@@ -1,13 +1,9 @@
 const router = require('express').Router();
-const productModel = require('../models/product.model')
-
 router.use(require('express').urlencoded({extended:true}));
 router.use(require('express').json())
 
-router.get('/api/getAll', async (req, res) => {
-    let p = await productModel.topN(12);
-    return res.json(p)
-})
+const packageModel = require('../models/package.model')
+const productModel = require('../models/product.model')
 
 function nonAccentVietnamese(str) {
     str = str.toLowerCase();
@@ -32,49 +28,8 @@ function nonAccentVietnamese(str) {
     return str;
 }
 
-router.post('/search', async (req, res) => {
-    let products = await productModel.all();
-    let strSearch = nonAccentVietnamese(req.body.search)
-    products.forEach(item => {
-        item["key"] = item.MaSP.substr(3, 2) - 0
-        item['altName'] = nonAccentVietnamese(item.TenSP)
-        item['link'] = nonAccentVietnamese(item.TenSP).split(" ").join("-")+"-"+item["key"]
-    })
-
-    let result = products.filter(item => item.altName.includes(strSearch)
-    )    
-    
-    console.log(result)
-    res.render('search/index', {
-        cssP: () => 'css',
-        scriptsP: () => 'script',
-        navP: () => 'nav',
-        footerP: () => 'footer',
-        current: req.session.name,
-        isLogin: req.session.user,
-        notloginandsignup: 1,
-        products: result,
-    });
-})
-
-router.get('/:productName', async (req, res) => {
-    let idParam = req.params.productName.split("-").pop()
-    let id = "SP0" + (idParam.length == 2 ? idParam : "0" + idParam)
-    let p = await productModel.get(id)
-    p['key'] = idParam;
-    let listPackage = await productModel.getPackage(id)
-    console.log(listPackage)
-    res.render('product/index', {
-        cssP: () => 'css',
-        scriptsP: () => 'script',
-        navP: () => 'nav',
-        footerP: () => 'footer',
-        current: req.session.name,
-        isLogin: req.session.user,
-        notloginandsignup: 1,
-        product: p,
-        package: listPackage,
-    });
+router.get('/', async (req, res) => {
+    res.json({})
 })
 
 module.exports = router;

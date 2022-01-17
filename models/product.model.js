@@ -25,5 +25,9 @@ module.exports = {
     },
     update: async (id, dataUpdate) => {
         return res = await db.update(tbName, dataUpdate, idFieldName, id);        
+    },
+    getPackage: async (productId) => {
+        return res = await db.run(`SELECT * FROM "GoiNhuYeuPham" 
+        where "MaNYP" in ( select "MaNYP" from "ChiTietNhuYeuPham" where "MaSP" = '${productId}' )`);   
     }
 }

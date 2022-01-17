@@ -227,7 +227,8 @@
     .home--products{
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 50px;        
+        gap: 50px;    
+        padding: 10px 150px;    
     }
     @media only screen and (max-width: 768px) {
         .home--products{            
@@ -264,9 +265,12 @@
         
         padding: 20px 10px;
         border: 1px solid #ffffff;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        transition-duration: .5s;
+
     }
     .product--item:hover{
-        border: 1px solid var(--primary-color);
+        transform: translateY(20px);
     }
     .product--item > img{
         width: 100%;
@@ -289,9 +293,13 @@
         text-overflow: ellipsis;
         word-break: break-word;
     }
-    .product--item  span{
+    .product--item  p{
         display: inline-block;
-        margin-top: 4px;
+        margin-top: -4px;
+        font-size: 20px;
+        font-weight: 800;
+        color:#6ab04c;
+        
     }
 
     {{!-- END PRODUCT ITEM --}}
@@ -324,7 +332,7 @@
             <img src="/products/{{product.key}}/1.jpg" alt="hihi" />
             <div class="product--item__info">
                 <h4>{{product.TenSP}}</h4>
-                <span>{{product.GiaTien}} dong</span>
+                <p>{{product.GiaTien}} dong</p>
             </div>
         </a>  
         {{/each}}
@@ -340,7 +348,7 @@
             <img src="/products/{{product.key}}/1.jpg" alt="hihi" />
             <div class="product--item__info">
                 <h4>{{product.TenSP}}</h4>
-                <span>{{product.GiaTien}} dong</span>
+                <p>{{product.GiaTien}} dong</p>
             </div>
         </a>  
         {{/each}}

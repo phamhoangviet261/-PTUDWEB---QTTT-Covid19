@@ -1,0 +1,121 @@
+<style>
+    .package{
+        display: flex;
+        flex-direction: column;
+        padding: 60px 250px;
+    }
+    .product--package{
+        font-size: 22px;
+    }
+    .product--package>div{
+        margin: 10px 0 0 20px;
+    }
+    .package--title{
+        color: var(--primary-color);
+        font-weight: 700;
+        
+    }
+
+    
+    .button--buy{
+        margin-top: 30px !important;
+    }
+
+    /* CSS */
+    .button-36 {
+    background-image: linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%);
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-family: "Inter UI","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    height: 4rem;
+    padding: 0 1.6rem;
+    text-align: center;
+    text-shadow: rgba(0, 0, 0, 0.25) 0 3px 8px;
+    transition: all .5s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    }
+
+    .button-36:hover {
+    box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
+    transition-duration: .1s;
+    }
+
+    @media (min-width: 768px) {
+    .button-36 {
+        padding: 0 2.6rem;
+    }
+    }
+
+
+    .listproduct{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        
+    }
+
+    .listproduct > a{
+        display: flex;
+        box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
+        height: 200px;
+        margin: 0 150px 50px 0;
+        border-radius: 20px;
+        padding: 50px;
+        transition-duration: .5s;
+        font-size: 16px;
+    }
+    .listproduct > a:hover{
+        transform: scale(1.1);
+        font-size: 18px;
+    }
+    .product--image{
+        width: 30%;
+    }
+    .product--image > img{
+        max-width: 100%;
+        max-height: 80%;
+    }
+    .product--info{
+        font-weight: 600;
+    }
+    h2{
+        font-weight: bold;
+    }
+</style>
+
+<div class="package">
+    <h2>Thông tin gói nhu yếu phẩm: </h2>
+    <div class="product--package">
+        <div class="package--name"><span class="package--title">Gói:</span> {{package.TenGoi}}</div>
+        <div class="package--timelimit"><span class="package--title">Giá tiền: </span> {{GiaTien}} đồng</div>
+        <div class="package--limit"><span class="package--title">Só lượng giới hạn:</span> {{package.GioiHanGoiNguoi}}</div>
+        <div class="package--timelimit"><span class="package--title">Thời gian giới hạn:</span> {{package.ThoiGianGioiHan}} ngày</div>
+        <div class="button--buy">
+            <button class="button-36" role="button">MUA NGAY</button>
+            <button class="button-36" role="button" style="margin-left: 20px;">THÊM VÀO GIỎ HÀNG</button>
+        </div>
+    </div>
+    <h2 style="margin-top: 50px; margin-bottom: 30px;">Gói bao gồm các sản phẩm:</h2>
+    <div class="listproduct">
+        {{#each listProduct}}
+            <a href="/product/{{this.link}}">
+                <div class="product--image">
+                    <img src="/products/{{this.key}}/1.jpg" alt="{{this.TenSP}}">
+                </div>
+                <div class="product">
+                    <div class="product--name"><span class="product--info">Tên sản phẩm: </span>{{this.TenSP}}</div>
+                    <div class="product--price"><span class="product--info">Giá: </span>{{this.GiaTien}} đồng</div>
+                    <div class="product--unit"><span class="product--info">Đơn vị tính: </span>{{this.DonViDinhLuong}}</div>
+                    <div class="product--quantity"><span class="product--info">Số lượng: </span>{{this.SoLuong}}</div>
+                </div>
+            </a>
+        {{/each}}
+    </div>
+</div>

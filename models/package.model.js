@@ -25,5 +25,9 @@ module.exports = {
     },
     update: async (id, dataUpdate) => {
         return res = await db.update(tbName, dataUpdate, idFieldName, id);        
+    },
+    getSPfromNYP: async (nypid) => {
+        return res = await db.run(`select * from "SanPham"
+        where "MaSP" in (SELECT "MaSP" FROM "ChiTietNhuYeuPham" where "MaNYP" = '${nypid}')`);  
     }
 }

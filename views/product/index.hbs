@@ -1,14 +1,19 @@
 <style>
     .product--item{
         display: flex;
+        justify-content: center;
+        padding-top: 60px;
     }
 
     .product--image{
         width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .product--image img{
-        width: 100%;
+        width: 60%;
     }
 
     .product--info{
@@ -20,7 +25,7 @@
 
     .product--title{
         font-size: 40px;
-        font-weight: 500;
+        font-weight: 800;
     }
 
     .product--des{
@@ -36,8 +41,29 @@
         font-size: 20px;
         
     }
+    .product--info > p {
+        font-size: 24px;
+    }
     .row-title{
         font-weight: bold;
+    }
+    {{!-- package --}}
+    .product--list-package{
+        display: flex;
+        flex-direction: column;
+    }
+    .product--package{
+        box-shadow: rgba(70, 70, 197, 0.05) 0px 1px 10px, rgba(12, 12, 206, 0.1) 0px 0px 18px;
+        padding: 20px;
+        margin-bottom: 20px;
+        transition-duration: .5s;
+    }
+    .product--package:hover{
+        transform: translateX(-40px);
+    }
+    .package--title{
+        font-size: 20px;
+        font-weight: 600;
     }
 </style>
 <div class="product--item">
@@ -46,13 +72,19 @@
     </div>
     <div class="product--info">
         <div class="product--title">{{product.TenSP}}</div>
-        <div class="product--des"><span class="row-title">Description:</span></div>
-        <div class="product--price"><span class="row-title">Gia:</span> {{product.GiaTien}} d</div>
-        <div class="product--unit"><span class="row-title">Don vi tinh:</span> {{product.DonViDinhLuong}}</div>
-        <p style="margin: 20px 0px;">San pham ton tai trong cac goi: </p>
-        <div class="product--bypackage">
+        <div class="product--des"><span class="row-title">Mô tả:</span></div>
+        <div class="product--price"><span class="row-title">Giá:</span> {{product.GiaTien}} đồng</div>
+        <div class="product--unit"><span class="row-title">Đơn vị tính:</span> {{product.DonViDinhLuong}}</div>
+        <p style="margin: 20px 0px;">Sản phẩm tồn tại trong các gói sau: </p>
+        <div class="product--list-package">
             {{#each package}}
-            sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg
+            <a href="/package/{{this.MaNYP}}">
+                <div class="product--package">
+                    <div class="package--name"><span class="package--title">Gói:</span> {{this.TenGoi}}</div>
+                    <div class="package--limit"><span class="package--title">Só lượng giới hạn:</span> {{this.GioiHanGoiNguoi}}</div>
+                    <div class="package--timelimit"><span class="package--title">Thời gian giới hạn:</span> {{this.ThoiGianGioiHan}} ngày</div>
+                </div>
+            </a>
             {{/each}}
         </div>
     </div>

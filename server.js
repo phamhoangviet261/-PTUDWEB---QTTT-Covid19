@@ -128,7 +128,7 @@ app.get('/', async (req, res) =>{
     let productsHalfRun = await productModel.topN(12);
     productsHalfRun.forEach(item => {
         item["key"] = item.MaSP.substr(3, 2) - 0
-        item['link'] = nonAccentVietnamese(item.TenSP).split(" ").join("-")
+        item['link'] = nonAccentVietnamese(item.TenSP).split(" ").join("-")+"-"+item["key"]
     })
 
 
@@ -168,7 +168,8 @@ app.post('/signin', (req, res) => {
 })
 
 app.use('/product', require('./controllers/product.controller'))
-
+app.use('/package', require('./controllers/package.controller'))
+app.use('/cart', require('./controllers/cart.controller'))
 app.use('/admin', require('./controllers/admin.controller'))
 
 serverAuth.listen(3001, () => {

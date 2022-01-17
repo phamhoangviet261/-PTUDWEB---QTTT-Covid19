@@ -3,7 +3,7 @@
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 50px;   
-        padding: 10px 40px;     
+        padding: 10px 150px;    
     }
     @media only screen and (max-width: 768px) {
         .home--products{            
@@ -38,11 +38,12 @@
         display: flex;
         flex-direction: column;
         cursor: pointer;
-        
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        transition-duration: .5s;
         padding: 10px 5px;
     }
     .product--item:hover{
-        border: 1px solid var(--primary-color);
+        transform: translateY(20px);
     }
     .product--item > img{
         width: 100%;
@@ -61,12 +62,14 @@
     <div class="home--products">
         
         {{#each products as |product i|}}
-        <div class="product--item">
-            <img src="/products/{{product.key}}/1.jpg" alt="hihi" />
-            <div class="product--item__info">
-                <h4>{{product.TenSP}}</h4>
-                <span>{{product.GiaTien}}</span>
-            </div>
-        </div>  
+        <a href="/product/{{product.link}}">
+            <div class="product--item">
+                <img src="/products/{{product.key}}/1.jpg" alt="hihi" />
+                <div class="product--item__info">
+                    <h4>{{product.TenSP}}</h4>
+                    <span>{{product.GiaTien}}</span>
+                </div>
+            </div>  
+        </a>
         {{/each}}
     </div>

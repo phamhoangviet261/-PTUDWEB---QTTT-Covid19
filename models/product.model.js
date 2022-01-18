@@ -29,5 +29,9 @@ module.exports = {
     getPackage: async (productId) => {
         return res = await db.run(`SELECT * FROM "GoiNhuYeuPham" 
         where "MaNYP" in ( select "MaNYP" from "ChiTietNhuYeuPham" where "MaSP" = '${productId}' )`);   
+    },
+    delete: async (productId) => {
+        return res = await db.run(`DELETE FROM "SanPham" WHERE "MaSP" = '${productId}'`);
     }
+    
 }

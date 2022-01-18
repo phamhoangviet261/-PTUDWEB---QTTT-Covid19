@@ -171,34 +171,34 @@
                                                 <form>
                                                     <div class="form-group">
                                                         <label for="masp-edit" class="col-form-label">Mã Sản Phẩm:</label>
-                                                        <input style="min-width: 200px;" type="text" class="form-control" id="masp-edit" value="{{this.MaSP}}" disabled/>
+                                                        <input style="min-width: 200px;" type="text" class="form-control" id="masp-edit-{{@index}}" value="{{this.MaSP}}" disabled/>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="tensp-edit" class="col-form-label">Tên Sản Phẩm:</label>
-                                                        <input type="text" class="form-control" id="tensp-edit" value="{{this.TenSP}}"></input>
+                                                        <input type="text" class="form-control" id="tensp-edit-{{@index}}" value="{{this.TenSP}}"></input>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="gt-edit" class="col-form-label">Giá Tiền:</label>
-                                                        <input type="number" step="1000" min="0" class="form-control" id="gt-edit" value="{{this.GiaTien}}"></input>
+                                                        <input type="number" step="1000" min="0" class="form-control" id="gt-edit-{{@index}}" value="{{this.GiaTien}}"></input>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="dvdl-edit" class="col-form-label">Đơn Vị Định Lượng:</label>                                        
-                                                        <input class="form-control" id="dvdl-edit" value="{{this.DonViDinhLuong}}"></input>
+                                                        <input class="form-control" id="dvdl-edit-{{@index}}" value="{{this.DonViDinhLuong}}"></input>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="sl-edit" class="col-form-label">Số Lượng:</label>                                        
-                                                        <input type="number" min="1" class="form-control" id="sl-edit" value="{{this.SoLuong}}"></input>
+                                                        <input type="number" min="1" class="form-control" id="sl-edit-{{@index}}" value="{{this.SoLuong}}"></input>
                                                     </div>
                                                 </form>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ Bỏ</button>
-                                                <button type="button" class="btn btn-primary" onclick="">Xác Nhận</button>
+                                                <button type="button" class="btn btn-primary" onclick="handleSubmitModalEditProduct({{@index}})">Xác Nhận</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
+                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete" onclick="handleSubmitModalDeleteProduct('{{this.MaSP}}')"></i>
                             </td>
                         </tr>
                         {{/each}}
@@ -525,8 +525,60 @@
                 "DonViDinhLuong": $('#dvdl-1').val(),
                 "SoLuong": $('#sl-1').val(),
             }
-            console.log(data)
             fetch('/admin/manage-product/add', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
+    function handleSubmitModalEditProduct(index) {
+        $(function () {
+            
+            let data = {
+                "MaSP": $(`#masp-edit-${index}`).val(),
+                "TenSP": $(`#tensp-edit-${index}`).val(),
+                "GiaTien": $(`#gt-edit-${index}`).val(),
+                "DonViDinhLuong": $(`#dvdl-edit-${index}`).val(),
+                "SoLuong": $(`#sl-edit-${index}`).val(),
+            }
+            console.log("Index: ", index)
+            fetch('/admin/manage-product/edit', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
+    function handleSubmitModalDeleteProduct(productID) {
+        $(function () {
+            
+            let data = {
+                "MaSP": productID
+            }
+            fetch('/admin/manage-product/delete', {
                 method: 'POST', // or 'PUT'
                 headers: {
                     'Content-Type': 'application/json',

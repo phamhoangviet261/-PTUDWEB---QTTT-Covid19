@@ -126,9 +126,19 @@ router.get('/manage-product', async (req, res) => {
 
 router.post('/manage-product/add', async (req, res) => {
     let product = req.body;
-    console.log(product);
     let temp = await productModel.add(product);
-    console.log(product);
+    res.json(product);
+})
+
+router.post('/manage-product/edit', async (req, res) => {
+    let product = req.body;
+    let temp = await productModel.update(product.MaSP, product);
+    res.json(product);
+})
+
+router.post('/manage-product/delete', async (req, res) => {
+    let product = req.body;
+    let temp = await productModel.delete(product.MaSP);
     res.json(product);
 })
 

@@ -46,15 +46,26 @@ router.get('/', async (req, res) => {
 
 router.get('/manage-account', async (req, res) => {
     
-    let makeColorPeople= (lu, min=0) => {
+    let makeColorPeople = (lu, min=0) => {
         // change key CMND/CCCD --> CCCD
         let newLu = lu.slice(min, min+10)
         console.log(newLu)
         newLu.forEach((item)=>item.NgaySinh = item.NgaySinh.toDateString().split(' ')[2]+'/'+(item.NgaySinh.getMonth()+1)+'/'+item.NgaySinh.toDateString().split(' ')[3])
+        newLu.forEach(async u => {
+            let px = await wardModel.get(u['MaPhuongXa'])
+            let qh = await districtModel.get(px['MaQuanHuyen'])
+            let ttp = await cityModel.get(qh['MaTinhTP'])
+
+            u['TenPhuongXa'] = px['TenPhuongXa']
+            u['TenQuanHuyen'] = qh['TenQuanHuyen']
+            u['TenTinhTP'] = ttp['TenTinhTP']
+        })
+        console.log("----------------------")
         
         newLu.forEach((item)=>{
             return delete Object.assign(item, {['CCCD']: item['CMNDCCCD'] })['CMNDCCCD'];
         })
+        
         return newLu;
         
     }
@@ -63,6 +74,8 @@ router.get('/manage-account', async (req, res) => {
     let dsqh = await districtModel.all();
     let dsttp = await cityModel.all()
 
+    let listUser = makeColorPeople(lu, parseInt(req.query.page)*10)
+    console.log(listUser)
     let manlqMax = 'NLQ'+  (lu.slice(-1)[0]['MaNLQ'].slice(3,7)-0+1)
 
     res.render('admin/account', {
@@ -71,7 +84,7 @@ router.get('/manage-account', async (req, res) => {
         navP: () => 'nav',
         footerP: () => 'footer',
         isManageAccount: true,
-        listUser: makeColorPeople(lu, parseInt(req.query.page)*10),
+        listUser: listUser,
         pageNow: parseInt(req.query.page),
         maxPage: lu.length/10+1,
         dspx: dspx,

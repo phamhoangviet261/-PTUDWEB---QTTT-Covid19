@@ -74,6 +74,12 @@
         display: flex;
         margin:30px 0; 
     }
+
+    .input-group form {
+        display: flex;
+        width: 100%;
+        height: 38px;
+    }
 </style>
 
 <div class="admin">
@@ -89,17 +95,16 @@
     <div class="content"  style="padding:20px;">
         <div class="manage-neccessary">
             <div class="input-group">
-                <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search...">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tim theo</button>
-                    <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">ID</a>
-                    <a class="dropdown-item" href="#">Name</a>
-                    <a class="dropdown-item" href="#">CCCD</a>
-                    <div role="separator" class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                    </div>
-                </div>
+                <form action="" method="post">
+                    <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search...">
+                    <select name="type" id="typeSearch">
+                        <option value="id">Mã NLQ</option>
+                        <option value="name">Họ Tên</option>
+                        <option value="CMND">CMND/CCCD</option>
+                        <option value="city">Tỉnh/Thành Phố</option>
+                    </select>
+                    <button class="button-37" role="button" onclick="">Tìm</button>
+                </form>
             </div>
             <div class="action">
                 <div class="action-item">
@@ -198,6 +203,9 @@
                         <th scope="col">Ngay Sinh</th>
                         <th scope="col">Gioi Tinh</th>
                         <th scope="col">Dia Chi</th>
+                        <th scope="col">Phuong/Xa</th>
+                        <th scope="col">Quan/Huyen</th>
+                        <th scope="col">Tinh/Thanh Pho</th>
                         <th scope="col">Username</th>
                         <th scope="col">Action</th>
                         </tr>
@@ -212,6 +220,9 @@
                             <td>{{item.NgaySinh}}</td>
                             <td>{{item.GioiTinh}}</td>
                             <td>{{item.DiaChi}}</td>
+                            <td>{{item.TenPhuongXa}}</td>
+                            <td>{{item.TenQuanHuyen}}</td>
+                            <td>{{item.TenTinhTP}}</td>
                             <td>{{item.username}}</td>
                             <td>
                                 <i class="fas fa-edit" data-toggle="tooltip" data-placement="right" title="Edit"></i>

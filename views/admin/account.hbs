@@ -36,6 +36,44 @@
         text-transform: uppercase;
     }
 
+    /* CSS */
+    .button-37 {
+        background-color: #13aa52;
+        border: 1px solid #13aa52;
+        border-radius: 4px;
+        box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        font-family: "Akzidenz Grotesk BQ Medium", -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        outline: none;
+        outline: 0;
+        padding: 10px 25px;
+        text-align: center;
+        transform: translateY(0);
+        transition: transform 150ms, box-shadow 150ms;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        margin-right: 20px;
+    }
+
+    .button-37:hover {
+        box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
+        transform: translateY(-2px);
+    }
+
+    @media (min-width: 768px) {
+        .button-37 {
+            padding: 10px 30px;
+        }
+    }
+    .action{
+        display: flex;
+        margin:30px 0; 
+    }
 </style>
 
 <div class="admin">
@@ -48,7 +86,7 @@
         </ul>
         
     </div>
-    <div class="content">
+    <div class="content"  style="padding:20px;">
         <div class="manage-neccessary">
             <div class="input-group">
                 <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search...">
@@ -61,6 +99,93 @@
                     <div role="separator" class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Separated link</a>
                     </div>
+                </div>
+            </div>
+            <div class="action">
+                <div class="action-item">
+                    <button class="button-37" role="button"                    
+                    data-toggle="modal" data-target="#modalAddPeople">Thêm người liên quan</button>
+                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="modalAddPeople" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Chỉnh Sửa Tai Khoan</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="masp-edit" class="col-form-label">Mã NLQ:</label>
+                                            <input style="min-width: 200px;" type="text" class="form-control" id="manlq" value="{{manlqMAX}}" disabled/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tensp-edit" class="col-form-label">Tên NLQ:</label>
+                                            <input type="text" class="form-control" id="hoten" value=""></input>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="gt-edit" class="col-form-label">CMND/CCCD:</label>
+                                            <input type="number" min="0" class="form-control" id="cccd" value=""></input>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dvdl-edit" class="col-form-label">Ngay Sinh:</label>                                        
+                                            <input class="form-control" id="ngaysinh" value="" type="datetime"></input>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sl-edit" class="col-form-label">Gioi Tinh:</label>                                        
+                                            <select class="form-control" id="gioitinh">                                                            
+                                                <option value="Nam">Nam</option>
+                                                <option value="Nu">Nu</option>                                                            
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dvdl-edit" class="col-form-label">Dia Chi:</label>                                        
+                                            <input class="form-control" id="diachi" value="" type="datetime"></input>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sl-edit" class="col-form-label">Tinh/Thanh Pho:</label>                                        
+                                            <select class="form-control" id="tinhthanhpho">                                                            
+                                                {{#each dsttp}}                                                      
+                                                <option value="{{this.TenTinhTP}}">{{this.TenTinhTP}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sl-edit" class="col-form-label">Quan/Huyen:</label>                                        
+                                            <select class="form-control" id="quanhuyen">                                                            
+                                                {{#each dsqh}}                                                      
+                                                <option value="{{this.TenQuanHuyen}}">{{this.TenQuanHuyen}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sl-edit" class="col-form-label">Phuong/Xa:</label>                                        
+                                            <select class="form-control" id="phuongxa">                                                            
+                                                {{#each dspx}}                                                      
+                                                <option value="{{this.MaPhuongXa}}">{{this.TenPhuongXa}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ Bỏ</button>
+                                    <button type="button" class="btn btn-primary" onclick="submitAddpeople()">Xác Nhận</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-item">
+                    <button class="button-37" role="button" 
+                    onclick="">Thêm F1</button>
+                </div>
+                <div class="action-item">
+                    <button class="button-37" role="button"
+                    onclick="">Thêm F2</button>
                 </div>
             </div>
             <table class="table">
@@ -95,7 +220,40 @@
                         </tr>
                         {{/each}}
                     </tbody>
-                </table>
+            </table>
         </div>
     </div>
 </div>
+<script>
+    let submitAddpeople = () => {
+        $(function () {
+            $('#modalAddPeople').modal('toggle');
+            let data = {
+                "MaNLQ": $('#manlq').val(),
+                "HoTen": $('#hoten').val(),
+                "CMNDCCCD": $('#cccd').val(),
+                "NgaySinh": $('#ngaysinh').val(),
+                "GioiTinh": $('#gioitinh').val(),
+                "DiaChi": $('#diachi').val(),
+                "MaPhuongXa": $('#phuongxa').val(),
+                "username": $('#manlq').val(),
+                            }
+            console.log(data)
+            fetch('/admin/manage-account/add', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    }
+</script>

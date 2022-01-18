@@ -53,13 +53,18 @@ router.get('/manage-account', async (req, res) => {
         newLu.forEach((item)=>item.NgaySinh = item.NgaySinh.toDateString().split(' ')[2]+'/'+(item.NgaySinh.getMonth()+1)+'/'+item.NgaySinh.toDateString().split(' ')[3])
         
         newLu.forEach((item)=>{
-            return delete Object.assign(item, {['CCCD']: item['CMND/CCCD'] })['CMND/CCCD'];
+            return delete Object.assign(item, {['CCCD']: item['CMNDCCCD'] })['CMNDCCCD'];
         })
         return newLu;
         
     }
     let lu = await covidPeopleModel.all()
-    
+    let dspx = await wardModel.all();
+    let dsqh = await districtModel.all();
+    let dsttp = await cityModel.all()
+
+    let manlqMax = 'NLQ'+  (lu.slice(-1)[0]['MaNLQ'].slice(3,7)-0+1)
+
     res.render('admin/account', {
         cssP: () => 'css',
         scriptsP: () => 'script',
@@ -69,7 +74,16 @@ router.get('/manage-account', async (req, res) => {
         listUser: makeColorPeople(lu, parseInt(req.query.page)*10),
         pageNow: parseInt(req.query.page),
         maxPage: lu.length/10+1,
+        dspx: dspx,
+        dsqh: dsqh,
+        dsttp: dsttp,
+        manlqMAX: manlqMax,
     });
+})
+
+router.post('/manage-account/add', async (req, res) =>{
+    let p = await covidPeopleModel.add(req.body)
+    res.json(req.body)
 })
 
 router.get('/manage-account/account', async (req, res)=>{
@@ -78,7 +92,7 @@ router.get('/manage-account/account', async (req, res)=>{
         newLu.forEach((item)=>item.NgaySinh = item.NgaySinh.toDateString().split(' ')[2]+'/'+(item.NgaySinh.getMonth()+1)+'/'+item.NgaySinh.toDateString().split(' ')[3])
         
         newLu.forEach((item)=>{
-            return delete Object.assign(item, {['CCCD']: item['CMND/CCCD'] })['CMND/CCCD'];
+            return delete Object.assign(item, {['CCCD']: item['CMNDCCCD'] })['CMNDCCCD'];
         })
         return newLu;
         
@@ -86,12 +100,24 @@ router.get('/manage-account/account', async (req, res)=>{
     if(req.query.manlq){    
         let u = await covidPeopleModel.get(req.query.manlq)
         u.NgaySinh = u.NgaySinh.toDateString().split(' ')[2]+'/'+(u.NgaySinh.getMonth()+1)+'/'+u.NgaySinh.toDateString().split(' ')[3]
-        Object.assign(u, {['CCCD']: u['CMND/CCCD'] })['CMND/CCCD'];
-        console.log("NLQ: ", u)
+        Object.assign(u, {['CCCD']: u['CMNDCCCD'] })['CMNDCCCD'];
+        
+        let f0 = []
         let f1 = await covidPeopleModel.findF1(req.query.manlq)
         let f2 = await covidPeopleModel.findF2(req.query.manlq)
-        
-        console.log("f2: ", f2)
+
+        let px = await wardModel.get(u['MaPhuongXa'])
+        let qh = await districtModel.get(px['MaQuanHuyen'])
+        let ttp = await cityModel.get(qh['MaTinhTP'])
+
+        u['TenPhuongXa'] = px['TenPhuongXa']
+        u['TenQuanHuyen'] = qh['TenQuanHuyen']
+        u['TenTinhTP'] = ttp['TenTinhTP']
+
+        let dspx = await wardModel.all();
+        let dsqh = await districtModel.all();
+        let dsttp = await cityModel.all()
+        console.log(u)
         res.render('admin/accountDetail', {
             cssP: () => 'css',
             scriptsP: () => 'script',
@@ -99,10 +125,15 @@ router.get('/manage-account/account', async (req, res)=>{
             footerP: () => 'footer',
             isManageAccount: true,
             user: u,
+            listF0: makeColorPeople(f0),
             listF1: makeColorPeople(f1),
             listF2: makeColorPeople(f2),
-            
+            dspx: dspx,
+            dsqh: dsqh,
+            dsttp: dsttp,
         });
+    } else {
+        res.json({})
     }
     
 })

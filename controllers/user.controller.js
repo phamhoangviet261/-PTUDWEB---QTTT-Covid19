@@ -5,7 +5,9 @@ const passwordHashedLen = 64;
 let userRemem = '';
 let passRemem = '';
 
-router.get('/', (req, res) => {
+router.get('/info/:id',async (req, res) => {
+    let userInfo = await userM.getUserInfo(req.params.id);
+    console.log(userInfo)
     res.render('user/information',{
         cssP: () => 'css',
         scriptsP: () => 'script',
@@ -15,6 +17,44 @@ router.get('/', (req, res) => {
         current: req.session.name,
         isLogin: req.session.user,
         notloginandsignup: 1,
+        userInfo,
+    })
+})
+
+router.get('/my-order', async (req, res) => {
+    // let listOrder = await userM.getListOrder(req.session.user.username)
+    let listOrder = await userM.getListOrder('NLQ0001')
+    listOrder.forEach((item) => {
+        let i = item.ThoiGian
+        item.ThoiGian = i.toString().substring(0,i.toString().indexOf(' GMT'))
+    })
+    res.render('user/myOrder',{
+        cssP: () => 'css',
+        scriptsP: () => 'script',
+        navP: () => 'nav',
+        footerP: () => 'footer',
+        title: "Thông tin",
+        current: req.session.name,
+        isLogin: req.session.user,
+        notloginandsignup: 1,
+        listOrder,
+    })
+})
+
+router.get('/my-order/:id', async (req, res) => {
+    let listDetailOrder = await userM.getListDetailOrder(req.params.id)
+    let listOrder = await userM.getListOrder('NLQ0001')
+    res.render('user/myOrder',{
+        cssP: () => 'css',
+        scriptsP: () => 'script',
+        navP: () => 'nav',
+        footerP: () => 'footer',
+        title: "Thông tin",
+        current: req.session.name,
+        isLogin: req.session.user,
+        notloginandsignup: 1,
+        listOrder,
+        listDetailOrder,
     })
 })
 

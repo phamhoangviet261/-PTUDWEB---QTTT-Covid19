@@ -1,0 +1,92 @@
+<style>
+    .wrap { display: flex; padding: 0 50px; } .wrap-left { padding-top: 40px;
+    width: 240px; } .wrap-left .list { list-style: none; } .wrap-left .list h3 {
+    font-weight: bold; font-size: 28px; margin-bottom: 14px; } .wrap-left .list
+    li { font-size: 22px; font-weight: 500; border-bottom: 1px solid #ccc;
+    margin-bottom: 16px; cursor: pointer; transition: all 0.2s linear; }
+    .wrap-left .list li a { padding-left: 10px; } .wrap-left .list .active-wrap
+    { background-color: var(--primary-color); border-radius: 8px 0 0 8px; }
+    .wrap-left .list .active { color: #fff; font-weight: 900; } .wrap-left .list
+    li:hover { color: blue; transform: translateX(-4px); } .wrap-right {
+    padding: 20px; margin-left: 50px; margin-top: 20px; border: 2px solid #ccc;
+    border-radius: 8px; flex: 1; } .wrap-right .form-info { padding-left: 50px;
+    } .wrap-right .form-info .form-group { font-size: 20px; } .wrap-right
+    .form-info .form-group label { font-weight: 600; color: #333; } .wrap-right
+    .form-info .form-group input { padding:0 12px; display: inline-block; width:
+    100px !important; min-width: 100px; }
+    .hover:hover { 
+        color: var(--primary-color);
+     }
+</style>
+<div class="wrap">
+    <div class="wrap-left">
+        <ul class="list">
+            <h3>Người liên quan 0001</h3>
+            <li class="list-item"><a href="/user">Thông tin của tôi</a></li>
+            <li class="list-item active-wrap"><a
+                    class="active"
+                    href="/user/my-order"
+                >Đơn hàng của tôi</a></li>
+            <li class="list-item"><a href="/user/payment">Lịch sử thanh toán</a></li>
+            <li class="list-item"><a href="/user/banlance">Xem dư nợ</a></li>
+            <li class="list-item"><a href="/user/change-password">Đổi mật khẩu</a></li>
+            <li class="list-item"><a href="/user/history-management">Lịch sử
+                    được quản lí</a></li>
+        </ul>
+    </div>
+    <div class="wrap-right">
+        <div class="wrap-right--order">
+            <h3>Đơn hàng</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Mã ĐH</th>
+                        <th scope="col">Mã Gói NYP</th>
+                        <th scope="col">Thời gian</th>
+                        <th scope="col">Tổng tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each listOrder}}
+                        <tr>
+                            <th scope="row"><a class="hover" href="/user/my-order/{{this.MaDH}}">{{this.MaDH}}</a></th>
+                            <td><a href="/package/{{this.MaNYP}}">{{this.TenGoi}}</a></td>
+                            <td>{{this.ThoiGian}}</td>
+                            <td>{{this.TongTien}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <div class="wrap-right--detail">
+            <h3>Chi tiết đơn Hàng</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Mã CTĐH</th>
+                        <th scope="col">Mã ĐH</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Đơn vị định lượng</th>
+                        <th scope="col">Giá tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#if listDetailOrder}}
+                        {{#each listDetailOrder}}
+                            <tr>
+                                <th scope="row">{{this.MaCTDH}}</th>
+                                <td>{{this.MaDH}}</td>
+                                <td><a href="/product/{{this.MaSP}}">{{this.TenSP}}</a></td>
+                                <td>{{this.SoLuong}}</td>
+                                <td>{{this.DonViDinhLuong}}</td>
+                                <td>{{this.GiaTien}}</td>
+                            </tr>
+                        {{/each}}
+                    {{/if}}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -19,9 +19,20 @@
         font-size: 22px;
         font-weight: 500;
         border-bottom: 1px solid #ccc;
-        margin-bottom: 10px;
+        margin-bottom: 16px;
         cursor: pointer;
         transition: all 0.2s linear;
+    }
+    .wrap-left .list li a {
+        padding-left: 10px;
+    }
+    .wrap-left .list .active-wrap {
+        background-color: var(--primary-color);
+        border-radius: 8px 0 0 8px;
+    }
+    .wrap-left .list .active {
+        color: #fff;
+        font-weight: 900;
     }
     .wrap-left .list li:hover {
         color: blue;
@@ -30,12 +41,15 @@
     .wrap-right {
         padding: 20px;
         margin-left: 50px;
+        margin-top: 20px;
         border: 2px solid #ccc;
         border-radius: 8px;
         flex: 1;
     }
     .wrap-right .form-info {
         padding-left: 50px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
     }
     .wrap-right .form-info .form-group {
         font-size: 20px;
@@ -48,58 +62,71 @@
         padding:0 12px;
         display: inline-block;
         width: 100px !important;
-        min-width: 100px;
+        overflow: visible;
+        min-width: fit-content;
     }
 </style>
 <div class="wrap">
     <div class="wrap-left">
         <ul class="list">
             <h3>Người liên quan 0001</h3>
-            <li class="list-item">Thông tin của tôi</li>
-            <li class="list-item">Đơn hàng của tôi</li>
-            <li class="list-item">Hình thức thanh toán</li>
+            <li class="list-item active-wrap"><a class="active" href="/user">Thông tin của tôi</a></li>
+            <li class="list-item"><a href="/user/my-order">Đơn hàng của tôi</a></li>
+            <li class="list-item"><a href="/user/payment">Lịch sử thanh toán</a></li>
+            <li class="list-item"><a href="/user/banlance">Xem dư nợ</a></li>
+            <li class="list-item"><a href="/user/change-password">Đổi mật khẩu</a></li>
+            <li class="list-item"><a href="/user/history-management">Lịch sử được quản lí</a></li>
         </ul>
     </div>
     <div class="wrap-right">
         <form action="" class="form-info">
-            <div class="form-group">
-                <label for="id">Mã: </label>
-                <input id="id" disabled  type="text" name="id" value="hello"/>
-            </div>
-            <div class="form-group">
-                <label for="name">Họ và tên: </label>
-                <input id="name" disabled type="text" name="name" value="hello" />
-            </div>
-            <div class="form-group">
-                <label for="sex">Họ và tên: </label>
-                <input id="sex" disabled type="text" name="sex" value="hello" />
-            </div>
-            <div class="form-group">
-                <label for="CMND">CMND/CCCD: </label>
-                <input id="CMND" disabled type="text" name="CMND" value="hello" />
-            </div>
-            <div class="form-group">
-                <label for="phone">Số điện thoại: </label>
-                <input id="phone" disabled type="text" name="phone" value="hello" />
-            </div>
-            <div class="form-group">
-                <label for="address">Địa chỉ: </label>
-                <input name="address" disabled type="text" id="address" value="hello"/>
-            </div>
-            <div class="form-group">
-                <label>Tỉnh/Thành phố: </label>
-                <input disabled name="city" id="city" type="text" value="HCM" value="hello" >
-            </div>
-            <div class="form-group">
-                <label>Quận/Huyện: </label>
-                <input disabled name="district" id="district" type="text" value="Quận 1">
+            {{#if userInfo}}
+                <div class="form-group">
+                    <label for="id">Mã: </label>
+                    <input id="id" disabled  type="text" name="id" value="{{userInfo.[0].MaNLQ}}"/>
+                </div>
+                <div class="form-group">
+                    <label for="name">Họ và tên: </label>
+                    <input id="name" disabled type="text" name="name" value="{{userInfo.[0].HoTen}}" />
+                </div>
+                <div class="form-group">
+                    <label for="sex">Giới tính: </label>
+                    <input id="sex" disabled type="text" name="sex" value="{{userInfo.[0].GioiTinh}}" />
+                </div>
+                <div class="form-group">
+                    <label for="birth">Ngày sinh: </label>
+                    <input id="birth" disabled type="text" name="birth" value="{{userInfo.[0].NgaySinh}}" />
+                </div>
+                <div class="form-group">
+                    <label for="CMND">CMND/CCCD: </label>
+                    <input id="CMND" disabled type="text" name="CMND" value="{{userInfo.[0].CMNDCCCD}}" />
+                </div>
+                <div class="form-group">
+                    <label for="phone">Số điện thoại: </label>
+                    <input id="phone" disabled type="text" name="phone" value="{{userInfo.[0].SDT}}" />
+                </div>
+                <div class="form-group">
+                    <label for="address">Địa chỉ: </label>
+                    <input name="address" disabled type="text" id="address" value="{{userInfo.[0].DiaChi}}"/>
+                </div>
+                <div class="form-group">
+                    <label>Tỉnh/Thành phố: </label>
+                    <input disabled name="city" id="city" type="text" value="{{userInfo.[0].TenTinhTP}}" >
+                </div>
+                <div class="form-group">
+                    <label>Quận/Huyện: </label>
+                    <input disabled name="district" id="district" type="text" value="{{userInfo.[0].TenQuanHuyen}}">
 
-            </div>
-            <div class="form-group">
-                <label>Phường/Xã: </label>
-                <input disabled name="ward" id="ward" type="text" value="Đa kao" >
-
-            </div>
+                </div>
+                <div class="form-group">
+                    <label>Phường/Xã: </label>
+                    <input disabled name="ward" id="ward" type="text" value="{{userInfo.[0].TenPhuongXa}}" >
+                </div>
+                <div class="form-group">
+                    <label>Mã Người liên quan trước: </label>
+                    <input disabled name="relate" id="relate" type="text" value="{{userInfo.[0].MaNLQTruoc}}" >
+                </div>
+            {{/if}}
         </form>
     </div>
 </div>

@@ -19,29 +19,20 @@ const wardModel = require('../models/ward.model')
 const router = require('express').Router();
 
 router.get('/', async (req, res) => {
-    // let makeColorPeople= (lu, min) => {
-    //     // change key CMND/CCCD --> CCCD
-    //     let newLu = lu.slice(min, min+10)
-
-    //     newLu.forEach((item)=>item.NgaySinh = item.NgaySinh.toDateString().split(' ')[2]+'/'+(item.NgaySinh.getMonth()+1)+'/'+item.NgaySinh.toDateString().split(' ')[3])
-        
-    //     newLu.forEach((item)=>{
-    //         return delete Object.assign(item, {['CCCD']: item['CMND/CCCD'] })['CMND/CCCD'];
-    //     })
-    //     return newLu;
-        
-    // }
-    // let lu = await covidPeopleModel.all()
-    
-    // res.render('admin/account', {
-    //     cssP: () => 'css',
-    //     scriptsP: () => 'script',
-    //     navP: () => 'nav',
-    //     footerP: () => 'footer',
-    //     isManageAccount: true,
-    //     listUser: makeColorPeople(lu, 0)
-    // });
+    if(!req.cookies['admin-access-token']){
+        return res.redirect('/admin/login')
+    } else {
     res.redirect('/admin/manage-account?page=0')
+    }
+})
+
+router.get('/login', (req, res) => {
+    res.render('admin/login', {
+        cssP: () => 'css',
+        scriptsP: () => 'script',
+        navP: () => 'nav',
+        footerP: () => 'footer',        
+    });
 })
 
 router.get('/manage-account', async (req, res) => {    
@@ -197,7 +188,14 @@ router.get('/manage-account/account', async (req, res)=>{
         let dspx = await wardModel.all();
         let dsqh = await districtModel.all();
         let dsttp = await cityModel.all()
-        console.log(u)
+
+        // get nơi điều trị
+        let ndt = await treatmentPlaceModel.getNDT(u['MaNLQ'])
+        let ndt_px = await wardModel.get(ndt[0]['MaPhuongXa'])
+        let ndt_qh = await districtModel.get(ndt_px['MaQuanHuyen'])
+        let ndt_ttp = await cityModel.get(ndt_qh['MaTinhTP'])
+        // console.log(u)
+        
         res.render('admin/accountDetail', {
             cssP: () => 'css',
             scriptsP: () => 'script',
@@ -211,11 +209,18 @@ router.get('/manage-account/account', async (req, res)=>{
             dspx: dspx,
             dsqh: dsqh,
             dsttp: dsttp,
+            ten_ndt: ndt[0]['TenNDT'],
+            diachi_ndt: ndt[0]['DiaChi']+", "+ndt_px['TenPhuongXa']+", "+ndt_qh['TenQuanHuyen']+", "+ndt_ttp['TenTinhTP'],
         });
     } else {
         res.json({})
     }
     
+})
+
+router.post('/manage-account/delete-account', async (req, res) => {
+    let p = await covidPeopleModel.delete(req.body.manlq)
+    res.json(req.body)
 })
 
 router.get('/manage-product', async (req, res) => {

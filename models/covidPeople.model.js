@@ -47,4 +47,7 @@ module.exports = {
     getAll: async () => {
         return res = await db.run(`SELECT * FROM public."NguoiLienQuanCovid" ORDER BY "MaNLQ" ASC `);   
     },
+    delete: async (manlq) => {
+        return res = await db.run(`DELETE FROM public."NguoiLienQuanCovid" WHERE "MaNLQ" = '${manlq}' `);   
+    },
 }

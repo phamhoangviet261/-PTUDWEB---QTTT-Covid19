@@ -107,7 +107,15 @@
     </div>
     <div class="content">
         <div class="manage">
-            <h3>Trang thai hien tai: F</h3>
+            <h3>Trang thai hien tai: F <span></span> </h3>
+            <div class="treatment-place" style="margin-bottom: 20px;">
+                <h5><b>Hiện đang điều trị tại:</b> <span>Khu điều trị {{ten_ndt}}</span> </h5>
+                <h5><b>Địa chỉ:</b> {{diachi_ndt}}</h5>
+                <div class="action-item">
+                    <button class="button-37" role="button"
+                    onclick="changeTreatmentPlace()">Đổi khu điều trị</button>
+                </div>
+            </div>
             <table class="table">
                     <thead class="thead-light">
                         <tr>
@@ -215,13 +223,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
+                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete" onclick="deletePeople('{{user.MaNLQ}}')"></i>
                             </td>
                         </tr>
                         
                     </tbody>
             </table>
-            <div class="action">
+            <div class="action" style="margin-bottom: 20px;">
                 <div class="action-item">
                     <button class="button-37" role="button"
                     onclick="khoiBenh()">Đã khỏi bệnh</button>
@@ -265,7 +273,7 @@
                             <td>{{item.username}}</td>
                             <td>
                                 
-                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
+                                
                             </td>
                         </tr>
                         {{/each}}
@@ -301,7 +309,7 @@
                             <td>{{item.username}}</td>
                             <td>
                                 
-                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
+                                
                             </td>
                         </tr>
                         {{/each}}
@@ -338,7 +346,7 @@
                             <td>{{item.username}}</td>
                             <td>
                                 
-                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
+                                
                             </td>
                         </tr>
                         {{/each}}
@@ -350,23 +358,61 @@
     </div>
 </div>
 <script>
-    
+    let changeTreatmentPlace = () => {
+        Swal.fire('Đổi sang Âm phủ: Thành công')
+    }
     let khoiBenh = async () => {
         const { value: accept } = await Swal.fire({
-            title: 'Terms and conditions',
+            title: 'Xác nhận khỏi bệnh:',
             input: 'checkbox',
-            inputValue: 1,
+            inputValue: 0,
             inputPlaceholder:
-                'I agree with the terms and conditions',
+                'Xác nhận người này đã khỏi bệnh',
             confirmButtonText:
-                'Continue <i class="fa fa-arrow-right"></i>',
+                'Xác nhận <i class="fa fa-arrow-right"></i>',
             inputValidator: (result) => {
-                return !result && 'You need to agree with T&C'
+                return !result && 'Tích vào ô xác nhận để xác nhận xác nhận.'
             }
         })
 
         if (accept) {
             Swal.fire('You agreed with T&C :)')
+        }
+    }
+    let deletePeople = async (manlq) => {
+        const { value: accept } = await Swal.fire({
+            title: 'Xoá người liên quan',
+            input: 'checkbox',
+            inputValue: 1,
+            inputPlaceholder:
+                'Xác nhận xoá',
+            confirmButtonText:
+                'Xác nhận <i class="fa fa-arrow-right"></i>',
+            inputValidator: (result) => {
+                return !result && 'bạn phải đồng ý xoá'
+            }
+        })
+
+        if (accept) {
+            const data = { manlq: manlq };
+            console.log(data)
+            fetch('/admin/manage-account/delete-account', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.href = '/admin/manage-account?page=0'
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+            Swal.fire('Xoá thành công =))')
         }
     }
     let addF1 = async () => {

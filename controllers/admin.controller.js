@@ -44,12 +44,13 @@ router.get('/', async (req, res) => {
     res.redirect('/admin/manage-account?page=0')
 })
 
-router.get('/manage-account', async (req, res) => {
-    
+router.get('/manage-account', async (req, res) => {    
+    let manlqMax = 'NLQ0001';
     let makeColorPeople = (lu, min=0) => {
         // change key CMND/CCCD --> CCCD
+        lu.forEach(u => manlqMax = (manlqMax >= u['MaNLQ'] ? manlqMax :  u['MaNLQ']))
         let newLu = lu.slice(min, min+10)
-        console.log(newLu)
+        
         newLu.forEach((item)=>item.NgaySinh = item.NgaySinh.toDateString().split(' ')[2]+'/'+(item.NgaySinh.getMonth()+1)+'/'+item.NgaySinh.toDateString().split(' ')[3])
         newLu.forEach(async u => {
             let px = await wardModel.get(u['MaPhuongXa'])
@@ -59,8 +60,10 @@ router.get('/manage-account', async (req, res) => {
             u['TenPhuongXa'] = px['TenPhuongXa']
             u['TenQuanHuyen'] = qh['TenQuanHuyen']
             u['TenTinhTP'] = ttp['TenTinhTP']
+            
+            
         })
-        console.log("----------------------")
+        
         
         newLu.forEach((item)=>{
             return delete Object.assign(item, {['CCCD']: item['CMNDCCCD'] })['CMNDCCCD'];
@@ -75,9 +78,9 @@ router.get('/manage-account', async (req, res) => {
     let dsttp = await cityModel.all()
 
     let listUser = makeColorPeople(lu, parseInt(req.query.page)*10)
-    console.log(listUser)
-    let manlqMax = 'NLQ'+  (lu.slice(-1)[0]['MaNLQ'].slice(3,7)-0+1)
-
+    
+    manlqMax = 'NLQ'+  (manlqMax.slice(3,7)-0+1)
+    
     res.render('admin/account', {
         cssP: () => 'css',
         scriptsP: () => 'script',
@@ -99,7 +102,71 @@ router.post('/manage-account/add', async (req, res) =>{
     res.json(req.body)
 })
 
+router.post('/manage-account/search', async (req, res, next) => {
+    let manlqMax = 'NLQ0001';
+    let makeColorPeople = (lu) => {
+        // change key CMND/CCCD --> CCCD
+        lu.forEach(u => manlqMax = (manlqMax >= u['MaNLQ'] ? manlqMax :  u['MaNLQ']))
+        // let newLu = lu.slice(min, min+10)
+        
+        lu.forEach((item)=>item.NgaySinh = item.NgaySinh.toDateString().split(' ')[2]+'/'+(item.NgaySinh.getMonth()+1)+'/'+item.NgaySinh.toDateString().split(' ')[3])
+        lu.forEach(async u => {
+            let px = await wardModel.get(u['MaPhuongXa'])
+            let qh = await districtModel.get(px['MaQuanHuyen'])
+            let ttp = await cityModel.get(qh['MaTinhTP'])
+
+            u['TenPhuongXa'] = px['TenPhuongXa']
+            u['TenQuanHuyen'] = qh['TenQuanHuyen']
+            u['TenTinhTP'] = ttp['TenTinhTP']            
+        })
+        lu.forEach((item)=>{
+            return delete Object.assign(item, {['CCCD']: item['CMNDCCCD'] })['CMNDCCCD'];
+        })
+        
+        
+
+        return lu;
+        
+    }
+    let lu = await covidPeopleModel.getAll()
+    let dspx = await wardModel.all();
+    let dsqh = await districtModel.all();
+    let dsttp = await cityModel.all()
+
+    let listUser = makeColorPeople(lu)
+    let result = []
+    if( req.body.type == "id") {
+        result = listUser.filter(item => item['MaNLQ'].includes(req.body.search))
+    } else if( req.body.type == "name") {
+        result = listUser.filter(item => item['HoTen'].includes(req.body.search))
+    } else if( req.body.type == "cmnd") {
+        result = listUser.filter(item => item['CCCD'].includes(req.body.search))
+    } else if( req.body.type == "city") {
+        result = listUser.filter(item => item['TenTinhTP'].includes(req.body.search))
+    }  
+    
+    manlqMax = 'NLQ'+  (manlqMax.slice(3,7)-0+1)
+    // res.send(result)
+    res.render('admin/account', {
+        cssP: () => 'css',
+        scriptsP: () => 'script',
+        navP: () => 'nav',
+        footerP: () => 'footer',
+        isManageAccount: true,
+        listUser: result,
+        pageNow: parseInt(req.query.page),
+        maxPage: lu.length/10+1,
+        dspx: dspx,
+        dsqh: dsqh,
+        dsttp: dsttp,
+        manlqMAX: manlqMax,
+    });
+
+})
+
+
 router.get('/manage-account/account', async (req, res)=>{
+    
     let makeColorPeople= (newLu) => {
         // change key CMND/CCCD --> CCCD
         newLu.forEach((item)=>item.NgaySinh = item.NgaySinh.toDateString().split(' ')[2]+'/'+(item.NgaySinh.getMonth()+1)+'/'+item.NgaySinh.toDateString().split(' ')[3])

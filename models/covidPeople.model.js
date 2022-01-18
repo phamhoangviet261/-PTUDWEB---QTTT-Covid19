@@ -44,4 +44,7 @@ module.exports = {
         FROM "NguoiLienQuanCovid" 
         where "MaNLQ" IN (SELECT "MaNLQ" FROM "NguoiLienQuanCovid" where "MaNLQTruoc" = '${manlq}')`);   
     },
+    getAll: async () => {
+        return res = await db.run(`SELECT * FROM public."NguoiLienQuanCovid" ORDER BY "MaNLQ" ASC `);   
+    },
 }

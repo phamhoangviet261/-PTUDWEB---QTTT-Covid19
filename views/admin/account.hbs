@@ -95,15 +95,15 @@
     <div class="content"  style="padding:20px;">
         <div class="manage-neccessary">
             <div class="input-group">
-                <form action="" method="post">
-                    <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search...">
+                <form action="/admin/manage-account/search" method="post">
+                    <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search..." name="search">
                     <select name="type" id="typeSearch">
                         <option value="id">Mã NLQ</option>
                         <option value="name">Họ Tên</option>
                         <option value="CMND">CMND/CCCD</option>
                         <option value="city">Tỉnh/Thành Phố</option>
                     </select>
-                    <button class="button-37" role="button" onclick="">Tìm</button>
+                    <button class="button-37" role="button" onclick="" type="submit">Tìm</button>
                 </form>
             </div>
             <div class="action">

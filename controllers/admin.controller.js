@@ -18,24 +18,46 @@ const wardModel = require('../models/ward.model')
 
 const router = require('express').Router();
 
-router.get('/', async (req, res) => {
-    if(!req.cookies['admin-access-token']){
-        return res.redirect('/admin/login')
+router.use(function (req, res, next) {
+    if(req.body.username && req.body.password){
+        if(req.body.username == "admin" && req.body.password == "admin"){
+            console.log("ADMIN is logging in...")
+            res.cookie('admin-access-token', req.body.username, { expires: new Date(Date.now() + 900000), httpOnly: true })
+            next()
+        } else {
+            res.render('admin/login', {
+                cssP: () => 'css',
+                scriptsP: () => 'script',
+                navP: () => 'nav',
+                footerP: () => 'footer',   
+                mess: "Từ chối đăng nhập",     
+            });
+        }
     } else {
-    res.redirect('/admin/manage-account?page=0')
+        if(!req.cookies['admin-access-token']){
+            res.render('admin/login', {
+                cssP: () => 'css',
+                scriptsP: () => 'script',
+                navP: () => 'nav',
+                footerP: () => 'footer',        
+            });
+        } else {
+            next()
+        }
     }
+    
+    
+  })
+
+router.get('/', (req, res, next)  => {
+    res.redirect('/admin/manage-account')
 })
 
-router.get('/login', (req, res) => {
-    res.render('admin/login', {
-        cssP: () => 'css',
-        scriptsP: () => 'script',
-        navP: () => 'nav',
-        footerP: () => 'footer',        
-    });
+router.post('/login', (req, res, next) => {
+    res.redirect('/admin/manage-account')
 })
 
-router.get('/manage-account', async (req, res) => {    
+router.get('/manage-account', async (req, res, next) => {    
     let manlqMax = 'NLQ0001';
     let makeColorPeople = (lu, min=0) => {
         // change key CMND/CCCD --> CCCD
@@ -88,7 +110,7 @@ router.get('/manage-account', async (req, res) => {
     });
 })
 
-router.post('/manage-account/add', async (req, res) =>{
+router.post('/manage-account/add', async (req, res, next) =>{
     let p = await covidPeopleModel.add(req.body)
     res.json(req.body)
 })
@@ -156,7 +178,7 @@ router.post('/manage-account/search', async (req, res, next) => {
 })
 
 
-router.get('/manage-account/account', async (req, res)=>{
+router.get('/manage-account/account', async (req, res, next)=>{
     
     let makeColorPeople= (newLu) => {
         // change key CMND/CCCD --> CCCD
@@ -218,12 +240,12 @@ router.get('/manage-account/account', async (req, res)=>{
     
 })
 
-router.post('/manage-account/delete-account', async (req, res) => {
+router.post('/manage-account/delete-account', async (req, res, next) => {
     let p = await covidPeopleModel.delete(req.body.manlq)
     res.json(req.body)
 })
 
-router.get('/manage-product', async (req, res) => {
+router.get('/manage-product', async (req, res, next) => {
     let lp = await productModel.all()
     lp.map(product => {
         let temp = product.MaSP.substring(product.MaSP.length - 3) - 0;
@@ -240,25 +262,25 @@ router.get('/manage-product', async (req, res) => {
     });
 })
 
-router.post('/manage-product/add', async (req, res) => {
+router.post('/manage-product/add', async (req, res, next) => {
     let product = req.body;
     let temp = await productModel.add(product);
     res.json(product);
 })
 
-router.post('/manage-product/edit', async (req, res) => {
+router.post('/manage-product/edit', async (req, res, next) => {
     let product = req.body;
     let temp = await productModel.update(product.MaSP, product);
     res.json(product);
 })
 
-router.post('/manage-product/delete', async (req, res) => {
+router.post('/manage-product/delete', async (req, res, next) => {
     let product = req.body;
     let temp = await productModel.delete(product.MaSP);
     res.json(product);
 })
 
-router.get('/manage-neccessary', async (req, res) => {
+router.get('/manage-neccessary', async (req, res, next) => {
     let ln = await packageModel.all()
 
     // let nd = await neccessaryuDetailModel.all()
@@ -278,7 +300,7 @@ router.get('/manage-neccessary', async (req, res) => {
     res.redirect('/admin/manage-neccessary/'+ln[0]['MaNYP'])
 })
 
-router.get('/manage-neccessary/:id', async (req, res) => {
+router.get('/manage-neccessary/:id', async (req, res, next) => {
     let n = await packageModel.get(req.params.id)
     
     let ln = await packageModel.all()
@@ -301,22 +323,22 @@ router.get('/manage-neccessary/:id', async (req, res) => {
     });
 })
 
-router.post('/api/neccessaryDetail/add', async (req, res) => {
+router.post('/api/neccessaryDetail/add', async (req, res, next) => {
     let x = await packageDetailModel.add(req.body)
     res.json(req.body)
 })
 
-router.post('/api/neccessaryDetail/update', async (req, res) => {
+router.post('/api/neccessaryDetail/update', async (req, res, next) => {
     // let x = await neccessaryuDetailModel.add(req.body)
     res.json(req.body)
 })
 
-router.post('/api/neccessary/add', async (req, res) => {
+router.post('/api/neccessary/add', async (req, res, next) => {
     let x = await packageModel.add(req.body)
     res.json(req.body)
 })
 
-router.post('/api/neccessary/update', async (req, res) => {
+router.post('/api/neccessary/update', async (req, res, next) => {
     // get list neccessary -> get 1 neccessary to edit
     let n = await packageModel.get(req.body['MaNYP'])
     
@@ -324,7 +346,7 @@ router.post('/api/neccessary/update', async (req, res) => {
     res.json(req.body)
 })
 
-router.get('/api/product/getAll', async (req, res) => {
+router.get('/api/product/getAll', async (req, res, next) => {
     let p = await productModel.all();
     return res.json(p)
 })

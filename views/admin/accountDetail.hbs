@@ -52,6 +52,47 @@
         
         width: 100%;
     }
+
+        
+    
+
+    /* CSS */
+    .button-37 {
+        background-color: #13aa52;
+        border: 1px solid #13aa52;
+        border-radius: 4px;
+        box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        font-family: "Akzidenz Grotesk BQ Medium", -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        outline: none;
+        outline: 0;
+        padding: 10px 25px;
+        text-align: center;
+        transform: translateY(0);
+        transition: transform 150ms, box-shadow 150ms;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        margin-right: 20px;
+    }
+
+    .button-37:hover {
+        box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
+        transform: translateY(-2px);
+    }
+
+    @media (min-width: 768px) {
+        .button-37 {
+            padding: 10px 30px;
+        }
+    }
+    .action{
+        display: flex;
+    }
 </style>
 
 <div class="admin">
@@ -77,6 +118,9 @@
                         <th scope="col">Ngay Sinh</th>
                         <th scope="col">Gioi Tinh</th>
                         <th scope="col">Dia Chi</th>
+                        <th scope="col">Phuong/Xa</th>
+                        <th scope="col">Quan/Huyen</th>
+                        <th scope="col">Tinh/Thanh Pho</th>
                         <th scope="col">Username</th>
                         <th scope="col">Action</th>
                         </tr>
@@ -91,6 +135,9 @@
                             <td>{{user.NgaySinh}}</td>
                             <td>{{user.GioiTinh}}</td>
                             <td>{{user.DiaChi}}</td>
+                            <td>{{user.TenPhuongXa}}</td>
+                            <td>{{user.TenQuanHuyen}}</td>
+                            <td>{{user.TenTinhTP}}</td>
                             <td>{{user.username}}</td>
                             <td>
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEditProduct{{@index}}">
@@ -127,13 +174,37 @@
                                                     <div class="form-group">
                                                         <label for="sl-edit" class="col-form-label">Gioi Tinh:</label>                                        
                                                         <select class="form-control" id="gioitinh">                                                            
-                                                            <option>Nam</option>
-                                                            <option>Nu</option>                                                            
+                                                            <option value="Nam">Nam</option>
+                                                            <option value="Nu">Nu</option>                                                            
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="dvdl-edit" class="col-form-label">Dia Chi:</label>                                        
                                                         <input class="form-control" id="diachi" value="{{user.DiaChi}}" type="datetime"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="sl-edit" class="col-form-label">Tinh/Thanh Pho:</label>                                        
+                                                        <select class="form-control" id="phuongxa">                                                            
+                                                            {{#each dsttp}}                                                      
+                                                            <option value="{{this.TenTinhTP}}">{{this.TenTinhTP}}</option>
+                                                            {{/each}}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="sl-edit" class="col-form-label">Quan/Huyen:</label>                                        
+                                                        <select class="form-control" id="phuongxa">                                                            
+                                                            {{#each dsqh}}                                                      
+                                                            <option value="{{this.TenQuanHuyen}}">{{this.TenQuanHuyen}}</option>
+                                                            {{/each}}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="sl-edit" class="col-form-label">Phuong/Xa:</label>                                        
+                                                        <select class="form-control" id="phuongxa">                                                            
+                                                            {{#each dspx}}                                                      
+                                                            <option value="{{this.TenPhuongXa}}">{{this.TenPhuongXa}}</option>
+                                                            {{/each}}
+                                                        </select>
                                                     </div>
                                                 </form>
                                             </div>
@@ -150,8 +221,58 @@
                         
                     </tbody>
             </table>
-
+            <div class="action">
+                <div class="action-item">
+                    <button class="button-37" role="button"
+                    onclick="khoiBenh()">Đã khỏi bệnh</button>
+                </div>
+                <div class="action-item">
+                    <button class="button-37" role="button" 
+                    onclick="addF1()">Thêm F1</button>
+                </div>
+                <div class="action-item">
+                    <button class="button-37" role="button"
+                    onclick="addF2()">Thêm F2</button>
+                </div>
+            </div>
             <h3>Danh sach nguoi lien quan:</h3>
+
+            <h4>F0: </h4>
+            <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                        
+                        <th scope="col">Ma NLQ</th>
+                        <th scope="col">Ho Ten</th>                        
+                        <th scope="col">CMND/CCCD</th>
+                        <th scope="col">Ngay Sinh</th>
+                        <th scope="col">Gioi Tinh</th>
+                        <th scope="col">Dia Chi</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each listF0 as |item i| }}
+                        <tr>
+                            
+                            <td><a class="link-hover" href="/admin/manage-account/account?manlq={{item.MaNLQ}}">{{item.MaNLQ}}</a></td>
+                            <td>{{item.HoTen}}</td>
+                            <td>{{item.CCCD}}</td>                            
+                            <td>{{item.NgaySinh}}</td>
+                            <td>{{item.GioiTinh}}</td>
+                            <td>{{item.DiaChi}}</td>
+                            <td>{{item.username}}</td>
+                            <td>
+                                
+                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+            </table>
+
+
             <h4>F1: </h4>
             <table class="table">
                     <thead class="thead-light">
@@ -228,3 +349,61 @@
         </div>
     </div>
 </div>
+<script>
+    
+    let khoiBenh = async () => {
+        const { value: accept } = await Swal.fire({
+            title: 'Terms and conditions',
+            input: 'checkbox',
+            inputValue: 1,
+            inputPlaceholder:
+                'I agree with the terms and conditions',
+            confirmButtonText:
+                'Continue <i class="fa fa-arrow-right"></i>',
+            inputValidator: (result) => {
+                return !result && 'You need to agree with T&C'
+            }
+        })
+
+        if (accept) {
+            Swal.fire('You agreed with T&C :)')
+        }
+    }
+    let addF1 = async () => {
+        const { value: id } = await Swal.fire({
+            title: 'Nhập mã F1',
+            input: 'text',
+            inputLabel: 'Mã người liên quan',
+            inputPlaceholder: 'Nhập MaNLQ...'
+        })
+
+        if (id) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your work has been saved',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
+    }
+
+    let addF2 = async () => {
+        const { value: id } = await Swal.fire({
+            title: 'Nhập mã F2',
+            input: 'text',
+            inputLabel: 'Mã người liên quan',
+            inputPlaceholder: 'Nhập MaNLQ...'
+        })
+
+        if (id) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your work has been saved',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
+    }
+</script>

@@ -88,7 +88,7 @@ exports.getN = async (n) => {
 }
 
 exports.run = async (s) => {
-    console.log("Q: ", s)
+    // console.log("Q: ", s)
     const res = await db.any(s);
     return res;
 }

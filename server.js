@@ -137,6 +137,7 @@ app.get('/', async (req, res) =>{
         scriptsP: () => 'script',
         navP: () => 'nav',
         footerP: () => 'footer',
+        title: "Trang chủ",
         current: req.session.name,
         isLogin: req.session.user,
         notloginandsignup: 1,
@@ -178,6 +179,7 @@ app.use('/product', require('./controllers/product.controller'))
 app.use('/package', require('./controllers/package.controller'))
 app.use('/cart', require('./controllers/cart.controller'))
 app.use('/admin', require('./controllers/admin.controller'))
+app.use('/user', require('./controllers/user.controller'))
 
 serverAuth.listen(3001, () => {
     console.log(`Auth Server is listening on port ${3001}`);

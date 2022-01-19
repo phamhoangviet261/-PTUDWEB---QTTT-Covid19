@@ -105,7 +105,10 @@
         margin:30px 0; 
     }
 
-    .input-group form {
+    form {
+        width: 100%;
+    }
+    .input-group form div {
         display: flex;
         width: 100%;
         height: 38px;
@@ -130,6 +133,27 @@
         {{#if isManageProduct}}
         <div class="input-group">
             <form action="/admin/manage-product/search" method="post">
+            <div style="margin-bottom: 20px;">
+                <select name="arrange" id="arrange" style="margin: 0 10px 0 0;">
+                    <option value="all">Mặc Định</option>
+                    <option value="up">Giá Tăng Dần</option>
+                    <option value="down">Giá Giảm Dần</option>
+                </select>
+                <select name="filter" id="filter" style="margin: 0 10px;">
+                    <option value="all">Tất Cả</option>
+                    <option value="10k">Dưới 10.000vnd</option>
+                    <option value="50k">10.000vnd - 50.000vnd</option>
+                    <option value="50k+">Trên 50.000vnd</option>
+                </select>
+                <select name="package" id="productInPackage" style="margin: 0 10px;">
+                    <option value="all">Tất Cả</option>
+                    {{#each packages}}
+                        <option value="{{this.MaNYP}}">{{this.TenGoi}}</option>
+                    {{/each}}
+                    
+                </select>
+            </div>
+            <div>
                 <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search..."
                     name="search">
                 <select name="type" id="typeSearch" style="margin: 0 10px;">
@@ -137,6 +161,7 @@
                     <option value="name">Tên Sản Phẩm</option>
                 </select>
                 <button class="button-37" role="button" onclick="" type="submit" style="padding: 0px !important; width: 100px;">Tìm</button>
+            </div>
             </form>
         </div>
         <div class="manage-neccessary">
@@ -150,6 +175,9 @@
                         <i class="fas fa-plus"></i>
                     </button>
                 </p>
+                <form action="" method="post">
+
+                </form>
                 <!-- Modal -->
                 <div class="modal fade" id="modalAddProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">

@@ -284,6 +284,7 @@ router.post('/manage-people/delete-people', async (req, res, next) => {
 
 router.get('/manage-product', async (req, res, next) => {
     let lp = await productModel.all()
+    let ln = await packageModel.all()
     lp.map(product => {
         let temp = product.MaSP.substring(product.MaSP.length - 3) - 0;
         product["key"] = temp;
@@ -301,6 +302,7 @@ router.get('/manage-product', async (req, res, next) => {
         footerP: () => 'footer',
         isManageProduct: true,
         products: lp,
+        packages: ln,
         newProductID: lp[lp.length-1].MaSP.substring(0, lp[lp.length-1].MaSP.length - 3) + '0' + (max + 1).toString()
     });
 })
@@ -329,6 +331,11 @@ router.post('/manage-product/search', async (req, res, next) => {
     console.log(strSearch);
     console.log(req.body.type);
     let lp = await productModel.all();
+    let ln = await packageModel.all();
+    
+    if (req.body.package != "all"){
+        lp = await productModel.getProductInPackage(req.body.package);
+    }
     lp.forEach(item => {
         item['newTenSP'] = nonAccentVietnamese(item.TenSP);
     })
@@ -338,6 +345,47 @@ router.post('/manage-product/search', async (req, res, next) => {
     else {
         result = lp.filter(item => item.newTenSP.includes(strSearch));
     }
+
+    if (req.body.filter == "10k"){
+        result = result.filter(item => item.GiaTien <= 10000);
+    }
+    else if (req.body.filter == "50k") {
+        result = result.filter(item => item.GiaTien > 10000);
+        result = result.filter(item => item.GiaTien <= 50000);
+    }
+    else if (req.body.filter == "50k+") {
+        result = result.filter(item => item.GiaTien > 50000);
+    }
+
+    function comparePriceUp(a, b){
+        if (a.GiaTien > b.GiaTien){
+            return 1;
+        }
+        else if (a.GiaTien < b.GiaTien){
+            return -1;
+        }
+        return 0;
+    }
+
+    function comparePriceDown(a, b){
+        if (a.GiaTien > b.GiaTien){
+            return -1;
+        }
+        else if (a.GiaTien < b.GiaTien){
+            return 1;
+        }
+        return 0;
+    }
+
+    if (req.body.arrange == "up"){
+        result.sort(comparePriceUp);
+    }
+    else {
+        result.sort(comparePriceDown);
+    }
+
+    
+
     lp.map(product => {
         let temp = product.MaSP.substring(product.MaSP.length - 3) - 0;
         product["key"] = temp;
@@ -355,6 +403,7 @@ router.post('/manage-product/search', async (req, res, next) => {
         footerP: () => 'footer',
         isManageProduct: true,
         products: result,
+        packages: ln,
         newProductID: lp[lp.length-1].MaSP.substring(0, lp[lp.length-1].MaSP.length - 3) + '0' + (max + 1).toString()
     });
 })

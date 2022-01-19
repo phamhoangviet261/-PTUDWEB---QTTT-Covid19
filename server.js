@@ -70,7 +70,15 @@ function nonAccentVietnamese(str) {
     return str;
 }
 
-app.get('/', async (req, res) =>{ 
+
+// route check token == null => need change password
+app.use(function (req, res, next) {
+    // check have access token
+    next()
+})
+
+
+app.get('/', async (req, res, next) =>{ 
     var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
     console.log("Full url: ", fullUrl)
     if(req.originalUrl.includes('&token')){
@@ -162,6 +170,19 @@ app.get('/login', (req, res) =>{
     });
 });
 
+app.get('/change-password', (req, res, next) => {
+    return res.render('account/changePassword', {
+        cssP: () => 'css',
+        scriptsP: () => 'script',
+        navP: () => 'nav',
+        footerP: () => 'footer',
+        username: req.query.username,
+    });
+})
+
+app.post('/change-password', (req, res, next) => {
+    res.json({})
+})
 
 app.post('/signin', (req, res) => {
     req.session.user = req.body.user

@@ -53,7 +53,14 @@ app.post('/login', async (req, res) => {
 	console.log("Username in req: ", username)
 	const user = await userModel.get(username);
 	console.log("User in DB:      ", user)
-
+	if(user.token==null){
+		return res.redirect(url.format({
+			pathname:"http://localhost:3000/change-password",
+			query: {
+				username: user.username,
+			 }
+		  }));
+	}
     
 	// const user = users.find(user => user.username === username)
     // console.log(user)

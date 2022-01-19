@@ -68,10 +68,8 @@ router.use(function (req, res, next) {
         } else {
             next()
         }
-    }
-    
-    
-  })
+    }    
+})
 
 router.get('/', (req, res, next)  => {
     res.redirect('/admin/manage-people')

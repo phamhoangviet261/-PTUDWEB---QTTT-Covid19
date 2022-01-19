@@ -27,7 +27,31 @@
     .hightlight-neccessary:hover{
         color: aqua;
     }
-
+    .manage-neccessary{
+        display: flex;
+        
+    }
+    .neccessary-heading{
+        font-size: 16px;
+        font-weight: 600;
+        border-bottom: 1px solid #a5a5a5;
+        padding: 5px;
+        margin: 5px;
+        cursor: pointer;
+    }
+    .neccessary-heading:hover{
+        color:aqua;
+    }
+    .list-neccessary{
+        width: 20%;
+        height: 100vh;
+        border-right: 1px solid #a5a5a5;
+        border-right: 1px solid #a5a5a5;
+    }
+    .neccessary-info{
+        width: 70%;
+        margin: 20px;
+    }
     .a-heading{
         display: block;
         font-size: 16px;
@@ -35,49 +59,26 @@
         padding: 20px 10px;
         text-transform: uppercase;
     }
-
-    /* CSS */
-    .button-37 {
-        background-color: #13aa52;
-        border: 1px solid #13aa52;
-        border-radius: 4px;
-        box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
-        box-sizing: border-box;
-        color: #fff;
-        cursor: pointer;
-        font-family: "Akzidenz Grotesk BQ Medium", -apple-system, BlinkMacSystemFont, sans-serif;
-        font-size: 16px;
-        font-weight: 400;
-        outline: none;
-        outline: 0;
-        padding: 10px 25px;
-        text-align: center;
-        transform: translateY(0);
-        transition: transform 150ms, box-shadow 150ms;
-        user-select: none;
-        -webkit-user-select: none;
-        touch-action: manipulation;
-        margin-right: 20px;
+    .table-product-image{
+        width: 100px;
     }
 
-    .button-37:hover {
-        box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
-        transform: translateY(-2px);
-    }
-
-    @media (min-width: 768px) {
-        .button-37 {
-            padding: 10px 30px;
-        }
-    }
-    .action{
+    {{!-- STATISTIC --}}
+    .content{
         display: flex;
-        margin:30px 0; 
+        flex-direction: column;
+        padding: 20px;
     }
-
-    .input-group form {
+    .statistic-block{
+        margin-bottom: 20px;
+    }
+    .block-title{
         display: flex;
-        width: 100%;
+    }
+    .block-title::before{
+        content: '';
+        border-left: 4px solid var(--primary-color);
+        padding-right: 10px;
         height: 38px;
     }
 </style>
@@ -87,185 +88,14 @@
         <h2>ADMIN</h2>
         <ul>
             <li class="manage-account {{#if isManageAccount}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-account">Manage account</a></li>
+            <li class="manage-account {{#if isManagePeople}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-people">Manage people</a></li>
             <li class="manage-product {{#if isManageProduct}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-product">Manage product</a></li>
             <li class="manage-neccessary {{#if isManageNeccessary}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-neccessary">Manage Neccessary</a></li>
             <li class="manage-neccessary {{#if isStatistic}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/statistic">Statistic</a></li>
         </ul>
         
     </div>
-    <div class="content"  style="padding:20px;">
-        <div class="manage-neccessary">
-            <div class="input-group">
-                <form action="/admin/manage-account/search" method="post">
-                    <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search..." name="search">
-                    <select name="type" id="typeSearch">
-                        <option value="id">Mã NLQ</option>
-                        <option value="name">Họ Tên</option>
-                        <option value="CMND">CMND/CCCD</option>
-                        <option value="city">Tỉnh/Thành Phố</option>
-                    </select>
-                    <button class="button-37" role="button" onclick="" type="submit">Tìm</button>
-                </form>
-            </div>
-            <div class="action">
-                <div class="action-item">
-                    <button class="button-37" role="button"                    
-                    data-toggle="modal" data-target="#modalAddPeople">Thêm người liên quan</button>
-                    
-                    <!-- Modal -->
-                    <div class="modal fade" id="modalAddPeople" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Chỉnh Sửa Tai Khoan</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="masp-edit" class="col-form-label">Mã NLQ:</label>
-                                            <input style="min-width: 200px;" type="text" class="form-control" id="manlq" value="{{manlqMAX}}" disabled/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="tensp-edit" class="col-form-label">Tên NLQ:</label>
-                                            <input type="text" class="form-control" id="hoten" value=""></input>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="gt-edit" class="col-form-label">CMND/CCCD:</label>
-                                            <input type="number" min="0" class="form-control" id="cccd" value=""></input>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="dvdl-edit" class="col-form-label">Ngay Sinh:</label>                                        
-                                            <input class="form-control" id="ngaysinh" value="" type="datetime"></input>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="sl-edit" class="col-form-label">Gioi Tinh:</label>                                        
-                                            <select class="form-control" id="gioitinh">                                                            
-                                                <option value="Nam">Nam</option>
-                                                <option value="Nu">Nu</option>                                                            
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="dvdl-edit" class="col-form-label">Dia Chi:</label>                                        
-                                            <input class="form-control" id="diachi" value="" type="datetime"></input>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="sl-edit" class="col-form-label">Tinh/Thanh Pho:</label>                                        
-                                            <select class="form-control" id="tinhthanhpho">                                                            
-                                                {{#each dsttp}}                                                      
-                                                <option value="{{this.TenTinhTP}}">{{this.TenTinhTP}}</option>
-                                                {{/each}}
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="sl-edit" class="col-form-label">Quan/Huyen:</label>                                        
-                                            <select class="form-control" id="quanhuyen">                                                            
-                                                {{#each dsqh}}                                                      
-                                                <option value="{{this.TenQuanHuyen}}">{{this.TenQuanHuyen}}</option>
-                                                {{/each}}
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="sl-edit" class="col-form-label">Phuong/Xa:</label>                                        
-                                            <select class="form-control" id="phuongxa">                                                            
-                                                {{#each dspx}}                                                      
-                                                <option value="{{this.MaPhuongXa}}">{{this.TenPhuongXa}}</option>
-                                                {{/each}}
-                                            </select>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ Bỏ</button>
-                                    <button type="button" class="btn btn-primary" onclick="submitAddpeople()">Xác Nhận</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="action-item">
-                    <button class="button-37" role="button" 
-                    onclick="">Thêm F1</button>
-                </div>
-                <div class="action-item">
-                    <button class="button-37" role="button"
-                    onclick="">Thêm F2</button>
-                </div>
-            </div>
-            <table class="table">
-                    <thead class="thead-light">
-                        <tr>
-                        
-                        <th scope="col">Ma NLQ</th>
-                        <th scope="col">Ho Ten</th>                        
-                        <th scope="col">CMND/CCCD</th>
-                        <th scope="col">Ngay Sinh</th>
-                        <th scope="col">Gioi Tinh</th>
-                        <th scope="col">Dia Chi</th>
-                        <th scope="col">Phuong/Xa</th>
-                        <th scope="col">Quan/Huyen</th>
-                        <th scope="col">Tinh/Thanh Pho</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each listUser as |item i| }}
-                        <tr>
-                            
-                            <td><a href="/admin/manage-account/account?manlq={{item.MaNLQ}}">{{item.MaNLQ}}</a></td>
-                            <td>{{item.HoTen}}</td>
-                            <td>{{item.CCCD}}</td>                            
-                            <td>{{item.NgaySinh}}</td>
-                            <td>{{item.GioiTinh}}</td>
-                            <td>{{item.DiaChi}}</td>
-                            <td>{{item.TenPhuongXa}}</td>
-                            <td>{{item.TenQuanHuyen}}</td>
-                            <td>{{item.TenTinhTP}}</td>
-                            <td>{{item.username}}</td>
-                            <td>
-                                <i class="fas fa-edit" data-toggle="tooltip" data-placement="right" title="Edit"></i>
-                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
-                            </td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-            </table>
-        </div>
+    <div class="content">
+   
     </div>
 </div>
-<script>
-    let submitAddpeople = () => {
-        $(function () {
-            $('#modalAddPeople').modal('toggle');
-            let data = {
-                "MaNLQ": $('#manlq').val(),
-                "HoTen": $('#hoten').val(),
-                "CMNDCCCD": $('#cccd').val(),
-                "NgaySinh": $('#ngaysinh').val(),
-                "GioiTinh": $('#gioitinh').val(),
-                "DiaChi": $('#diachi').val(),
-                "MaPhuongXa": $('#phuongxa').val(),
-                "username": $('#manlq').val(),
-                            }
-            console.log(data)
-            fetch('/admin/manage-account/add', {
-                method: 'POST', // or 'PUT'
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                window.location.reload();
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        });
-    }
-</script>

@@ -74,14 +74,29 @@ router.use(function (req, res, next) {
   })
 
 router.get('/', (req, res, next)  => {
-    res.redirect('/admin/manage-account')
+    res.redirect('/admin/manage-people')
 })
 
 router.post('/login', (req, res, next) => {
-    res.redirect('/admin/manage-account')
+    res.redirect('/admin/manage-people')
 })
 
-router.get('/manage-account', async (req, res, next) => {    
+// MANAGE ACCOUTN OF PEOPLE COVID
+router.get('/manage-account', async (req, res, next) => {
+    res.render('admin/account', {
+        cssP: () => 'css',
+        scriptsP: () => 'script',
+        navP: () => 'nav',
+        footerP: () => 'footer',
+        isManageAccount: true,
+    });
+})
+
+// MANAGE PEOPLE COVID
+router.get('/manage-people', async (req, res, next) => {    
+    if(!req.query.page){
+        return res.redirect('/admin/manage-people?page=0')
+    }
     let manlqMax = 'NLQ0001';
     let makeColorPeople = (lu, min=0) => {
         // change key CMND/CCCD --> CCCD
@@ -118,12 +133,12 @@ router.get('/manage-account', async (req, res, next) => {
     
     manlqMax = 'NLQ'+  (manlqMax.slice(3,7)-0+1)
     
-    res.render('admin/account', {
+    res.render('admin/people', {
         cssP: () => 'css',
         scriptsP: () => 'script',
         navP: () => 'nav',
         footerP: () => 'footer',
-        isManageAccount: true,
+        isManagePeople: true,
         listUser: listUser,
         pageNow: parseInt(req.query.page),
         maxPage: lu.length/10+1,
@@ -134,12 +149,12 @@ router.get('/manage-account', async (req, res, next) => {
     });
 })
 
-router.post('/manage-account/add', async (req, res, next) =>{
+router.post('/manage-people/add', async (req, res, next) =>{
     let p = await covidPeopleModel.add(req.body)
     res.json(req.body)
 })
 
-router.post('/manage-account/search', async (req, res, next) => {
+router.post('/manage-people/search', async (req, res, next) => {
     let manlqMax = 'NLQ0001';
     let makeColorPeople = (lu) => {
         // change key CMND/CCCD --> CCCD
@@ -184,12 +199,12 @@ router.post('/manage-account/search', async (req, res, next) => {
     
     manlqMax = 'NLQ'+  (manlqMax.slice(3,7)-0+1)
     // res.send(result)
-    res.render('admin/account', {
+    res.render('admin/people', {
         cssP: () => 'css',
         scriptsP: () => 'script',
         navP: () => 'nav',
         footerP: () => 'footer',
-        isManageAccount: true,
+        isManagePeople: true,
         listUser: result,
         pageNow: parseInt(req.query.page),
         maxPage: lu.length/10+1,
@@ -202,7 +217,7 @@ router.post('/manage-account/search', async (req, res, next) => {
 })
 
 
-router.get('/manage-account/account', async (req, res, next)=>{
+router.get('/manage-people/people', async (req, res, next)=>{
     
     let makeColorPeople= (newLu) => {
         // change key CMND/CCCD --> CCCD
@@ -242,12 +257,12 @@ router.get('/manage-account/account', async (req, res, next)=>{
         let ndt_ttp = await cityModel.get(ndt_qh['MaTinhTP'])
         // console.log(u)
         
-        res.render('admin/accountDetail', {
+        res.render('admin/peopleDetail', {
             cssP: () => 'css',
             scriptsP: () => 'script',
             navP: () => 'nav',
             footerP: () => 'footer',
-            isManageAccount: true,
+            isManagePeople: true,
             user: u,
             listF0: makeColorPeople(f0),
             listF1: makeColorPeople(f1),
@@ -264,7 +279,7 @@ router.get('/manage-account/account', async (req, res, next)=>{
     
 })
 
-router.post('/manage-account/delete-account', async (req, res, next) => {
+router.post('/manage-people/delete-people', async (req, res, next) => {
     let p = await covidPeopleModel.delete(req.body.manlq)
     res.json(req.body)
 })

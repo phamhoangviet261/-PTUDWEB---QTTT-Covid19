@@ -100,6 +100,7 @@
         <h2>ADMIN</h2>
         <ul>
             <li class="manage-account {{#if isManageAccount}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-account">Manage account</a></li>
+            <li class="manage-account {{#if isManagePeople}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-people">Manage people</a></li>
             <li class="manage-product {{#if isManageProduct}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-product">Manage product</a></li>
             <li class="manage-neccessary {{#if isManageNeccessary}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-neccessary">Manage Neccessary</a></li>
             <li class="manage-neccessary {{#if isStatistic}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/statistic">Statistic</a></li>
@@ -265,7 +266,7 @@
                         {{#each listF0 as |item i| }}
                         <tr>
                             
-                            <td><a class="link-hover" href="/admin/manage-account/account?manlq={{item.MaNLQ}}">{{item.MaNLQ}}</a></td>
+                            <td><a class="link-hover" href="/admin/manage-people/people?manlq={{item.MaNLQ}}">{{item.MaNLQ}}</a></td>
                             <td>{{item.HoTen}}</td>
                             <td>{{item.CCCD}}</td>                            
                             <td>{{item.NgaySinh}}</td>
@@ -301,7 +302,7 @@
                         {{#each listF1 as |item i| }}
                         <tr>
                             
-                            <td><a class="link-hover" href="/admin/manage-account/account?manlq={{item.MaNLQ}}">{{item.MaNLQ}}</a></td>
+                            <td><a class="link-hover" href="/admin/manage-people/people?manlq={{item.MaNLQ}}">{{item.MaNLQ}}</a></td>
                             <td>{{item.HoTen}}</td>
                             <td>{{item.CCCD}}</td>                            
                             <td>{{item.NgaySinh}}</td>
@@ -337,8 +338,8 @@
                         {{#each listF2 as |item i| }}
                         <tr>
                             
-                            <td><a class="link-hover" href="/admin/manage-account/account?manlq={{item.MaNLQ}}">{{item.MaNLQ}}</a></td>
-                            <td><a class="link-hover" href="/admin/manage-account/account?manlq={{item.MaNLQTruoc}}">{{item.MaNLQTruoc}}</a></td>
+                            <td><a class="link-hover" href="/admin/manage-people/people?manlq={{item.MaNLQ}}">{{item.MaNLQ}}</a></td>
+                            <td><a class="link-hover" href="/admin/manage-people/people?manlq={{item.MaNLQTruoc}}">{{item.MaNLQTruoc}}</a></td>
                             <td>{{item.HoTen}}</td>
                             <td>{{item.CCCD}}</td>                            
                             <td>{{item.NgaySinh}}</td>
@@ -397,7 +398,7 @@
         if (accept) {
             const data = { manlq: manlq };
             console.log(data)
-            fetch('/admin/manage-account/delete-account', {
+            fetch('/admin/manage-people/delete-people', {
                 method: 'POST', // or 'PUT'
                 headers: {
                     'Content-Type': 'application/json',
@@ -407,7 +408,7 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
-                window.location.href = '/admin/manage-account?page=0'
+                window.location.href = '/admin/manage-people?page=0'
             })
             .catch((error) => {
                 console.error('Error:', error);

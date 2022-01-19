@@ -351,4 +351,14 @@ router.get('/api/product/getAll', async (req, res, next) => {
     return res.json(p)
 })
 
+router.get('/statistic', async (req, res, next) => {
+    res.render('admin/statistic', {
+        cssP: () => 'css',
+        scriptsP: () => 'script',
+        navP: () => 'nav',
+        footerP: () => 'footer',
+        isStatistic: true,
+    });
+})
+
 module.exports = router;

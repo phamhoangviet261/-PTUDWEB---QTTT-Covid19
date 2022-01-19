@@ -1,0 +1,132 @@
+<style>
+    .admin{
+        display: grid;
+        grid-template-columns: 1fr 7fr;
+    }
+    .sidebar{
+        background: rgb(102,103,171);
+        background: linear-gradient(90deg, rgba(102,103,171,1) 0%, rgba(75,75,200,1) 50%);
+        height: 100vh;
+        color: #ffffff;
+    }
+    .sidebar > ul > li{
+        border-bottom: 1px solid #1f1f1f;
+        cursor: pointer;
+    }
+    .sidebar > ul > li:hover{
+        color: #b8b8b8;
+    }
+
+    .choosen{
+        background-color: #ffffff;
+        color: #000000;
+    }
+    {{!-- Account --}}
+    {{!-- Product --}}
+    {{!-- Neccessary --}}
+    .hightlight-neccessary:hover{
+        color: aqua;
+    }
+    .manage-neccessary{
+        display: flex;
+        
+    }
+    .neccessary-heading{
+        font-size: 16px;
+        font-weight: 600;
+        border-bottom: 1px solid #a5a5a5;
+        padding: 5px;
+        margin: 5px;
+        cursor: pointer;
+    }
+    .neccessary-heading:hover{
+        color:aqua;
+    }
+    .list-neccessary{
+        width: 20%;
+        height: 100vh;
+        border-right: 1px solid #a5a5a5;
+        border-right: 1px solid #a5a5a5;
+    }
+    .neccessary-info{
+        width: 70%;
+        margin: 20px;
+    }
+    .a-heading{
+        display: block;
+        font-size: 16px;
+        font-weight: 900;
+        padding: 20px 10px;
+        text-transform: uppercase;
+    }
+    .table-product-image{
+        width: 100px;
+    }
+
+    {{!-- STATISTIC --}}
+    .content{
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+    .statistic-block{
+        margin-bottom: 20px;
+    }
+    .block-title{
+        display: flex;
+    }
+    .block-title::before{
+        content: '';
+        border-left: 4px solid var(--primary-color);
+        padding-right: 10px;
+        height: 38px;
+    }
+</style>
+
+<div class="admin">
+    <div class="sidebar">
+        <h2>ADMIN</h2>
+        <ul>
+            <li class="manage-account {{#if isManageAccount}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-account">Manage account</a></li>
+            <li class="manage-product {{#if isManageProduct}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-product">Manage product</a></li>
+            <li class="manage-neccessary {{#if isManageNeccessary}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-neccessary">Manage Neccessary</a></li>
+            <li class="manage-neccessary {{#if isStatistic}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/statistic">Statistic</a></li>
+        </ul>
+        
+    </div>
+    <div class="content">
+        <div class="statistic-block">
+            <div class="block-title">
+                <h2>Thống kê số lượng người ở từng trạng thái theo thời gian</h2>
+            </div>
+            <div class="ui labeled button" tabindex="0">
+  <div class="ui button">
+    <i class="heart icon"></i> Like
+  </div>
+  <a class="ui basic label">
+    2,048
+  </a>
+</div>
+        </div>
+        <div class="statistic-block">
+            <div class="block-title">
+                <h2>Thống kê các thông tin có thể như: số chuyển trạng thái, khỏi bệnh,…</h2>
+            </div>
+        </div>
+        <div class="statistic-block">
+            <div class="block-title">
+                <h2>Thống kê tiêu thụ các gói Nhu yếu phẩm</h2>
+            </div>
+        </div>
+        <div class="statistic-block">
+            <div class="block-title">
+                <h2>Thống kê tiêu thụ sản phẩm</h2>
+            </div>
+        </div>
+        <div class="statistic-block">
+            <div class="block-title">
+                <h2>Thống kê dư nợ, thanh toán</h2>
+            </div>
+        </div>
+    </div>
+</div>

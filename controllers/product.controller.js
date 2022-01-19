@@ -59,7 +59,10 @@ router.post('/search', async (req, res) => {
 
 router.get('/:productName', async (req, res) => {
     let idParam = req.params.productName.split("-").pop()
+    console.log(req.params)
+    console.log("idParam", idParam)
     let id = "SP0" + (idParam.length == 2 ? idParam : "0" + idParam)
+    console.log("ID p:", id)
     let p = await productModel.get(id)
     p['key'] = idParam;
     let listPackage = await productModel.getPackage(id)

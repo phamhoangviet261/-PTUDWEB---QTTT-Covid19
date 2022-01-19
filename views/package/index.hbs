@@ -2,7 +2,7 @@
     .package{
         display: flex;
         flex-direction: column;
-        padding: 60px 250px;
+        padding: 60px 300px;
     }
     .product--package{
         font-size: 22px;
@@ -47,6 +47,9 @@
     box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
     transition-duration: .1s;
     }
+    .button-37{
+        margin-left: 20px ;
+    }
 
     @media (min-width: 768px) {
     .button-36 {
@@ -64,7 +67,7 @@
     .listproduct > a{
         display: flex;
         box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
-        height: 200px;
+        height: max-content;
         margin: 0 150px 50px 0;
         border-radius: 20px;
         padding: 50px;
@@ -88,6 +91,34 @@
     h2{
         font-weight: bold;
     }
+    @media only screen and (max-width: 426px){
+        .package{
+            padding: 80px 20px;
+            
+        }
+        .button--36{
+            margin-top: 20px !important;
+        }
+        .button-37{
+            margin-left: 0 !important ;
+            margin-top: 20px;
+        }
+        .listproduct{
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);            
+        }
+        .listproduct > a{
+            margin: 10px 25px;
+            padding:20px 10px;
+        }
+        .product--image{
+            width: 100%;
+        }
+        .product--image > img{
+            max-width: 90%;
+            max-height: 80%;
+        }
+    }
 </style>
 
 <div class="package">
@@ -99,13 +130,13 @@
         <div class="package--timelimit"><span class="package--title">Thời gian giới hạn:</span> {{package.ThoiGianGioiHan}} ngày</div>
         <div class="button--buy">
             <button class="button-36" role="button">MUA NGAY</button>
-            <button class="button-36" role="button" style="margin-left: 20px;">THÊM VÀO GIỎ HÀNG</button>
+            <button class="button-36 button-37" role="button">THÊM VÀO GIỎ HÀNG</button>
         </div>
     </div>
     <h2 style="margin-top: 50px; margin-bottom: 30px;">Gói bao gồm các sản phẩm:</h2>
-    <div class="listproduct">
+    <div class="listproduct"  class="uk-child-width-1-3@m" uk-grid uk-scrollspy="cls: uk-animation-fade; target: .uk-card; delay: 500; repeat: true">
         {{#each listProduct}}
-            <a href="/product/{{this.link}}">
+            <a href="/product/{{this.link}}" class="uk-card uk-card-default uk-card-body">
                 <div class="product--image">
                     <img src="/products/{{this.key}}/1.jpg" alt="{{this.TenSP}}">
                 </div>

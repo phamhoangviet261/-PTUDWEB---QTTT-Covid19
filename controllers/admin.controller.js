@@ -480,13 +480,24 @@ router.get('/api/product/getAll', async (req, res, next) => {
 })
 
 router.get('/statistic', async (req, res, next) => {
+    const numberhumanbystatusandtime = await statusHistoryModel.getnumberhumanbystatusandtime();
+    console.log(numberhumanbystatusandtime);
+    const temp = [];
+    const temp2 = [];
+    numberhumanbystatusandtime.forEach(cell => temp.push(+cell.SoLuong))        
+    numberhumanbystatusandtime.forEach(cell => temp2.push(cell.Nam + '/' + cell.Thang + '  F' + cell.TrangThai))        
+    console.log(temp);
+    console.log(temp2);
     res.render('admin/statistic', {
         cssP: () => 'css',
         scriptsP: () => 'script',
         navP: () => 'nav',
         footerP: () => 'footer',
         isStatistic: true,
+        temp: JSON.stringify(temp),
+        temp2: JSON.stringify(temp2)
     });
 })
+
 
 module.exports = router;

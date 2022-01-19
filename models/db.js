@@ -92,3 +92,10 @@ exports.run = async (s) => {
     const res = await db.any(s);
     return res;
 }
+
+
+//special query
+exports.getnumberhumanbystatusandtime = async () => {
+    const res = await db.any('select extract(year from "NgayTao") as "Nam", extract(month from "NgayTao") as "Thang", "TrangThai", count(*) as "SoLuong" from public."LichSuTrangThai" group by extract(year from "NgayTao"), extract(month from "NgayTao"), "TrangThai" order by "Nam", "Thang", "TrangThai";');
+    return res;
+}

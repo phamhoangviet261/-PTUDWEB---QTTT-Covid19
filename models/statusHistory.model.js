@@ -25,5 +25,8 @@ module.exports = {
     },
     update: async (id, dataUpdate) => {
         return res = await db.update(tbName, dataUpdate, idFieldName, id);        
+    },
+    getnumberhumanbystatusandtime: async () => {
+        return res = await db.getnumberhumanbystatusandtime();
     }
 }

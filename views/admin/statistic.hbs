@@ -96,12 +96,16 @@
         
     </div>
     <div class="content">
+        
         <div class="statistic-block">
             <div class="block-title">
                 <h2>Thống kê số lượng người ở từng trạng thái theo thời gian</h2>
             </div>
 
         </div>
+        
+        <canvas id="myChart" width="400" height="400"></canvas>
+
         <div class="statistic-block">
             <div class="block-title">
                 <h2>Thống kê các thông tin có thể như: số chuyển trạng thái, khỏi bệnh,…</h2>
@@ -123,4 +127,38 @@
             </div>
         </div>
     </div>
+    <input id="ip1" type="text" value={{ temp }}>
+    <input id="ip2" type="text" value='{{ temp2 }}'>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script>
+    function getRgba(number, max) {
+        return `rgba(0, 0, 255, ${number/max})`
+    };
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const temp = JSON.parse(document.getElementById('ip1').value);
+    const temp2 = JSON.parse(document.getElementById('ip2').value);
+    const colors = [];
+    temp.forEach((temp, i, arr) => colors.push(getRgba(temp,Math.max(...arr))));
+    console.log(colors);
+    //                backgroundColor: [{}]
+    const myChart = new Chart(ctx, {
+        type: 'horizontalBar',
+        data: {
+            labels: temp2 ,
+            datasets: [{
+                label: 'Lượng người',
+                data:  temp,
+                backgroundColor: colors
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

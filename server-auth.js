@@ -50,16 +50,17 @@ const updateRefreshToken = (username, refreshToken) => {
 
 app.post('/login', async (req, res) => {
 	const username = req.body.username
-	console.log("Username in req: ", username)
+
 	const user = await userModel.get(username);
-	console.log("User in DB:      ", user)
+
 	if(user.token==null){
+		req.body={username: user.username}
 		return res.redirect(url.format({
 			pathname:"http://localhost:3000/change-password",
 			query: {
 				username: user.username,
-			 }
-		  }));
+			}
+		}));
 	}
     
 	// const user = users.find(user => user.username === username)
@@ -102,6 +103,36 @@ app.post('/token', (req, res) => {
 		console.log(error)
 		res.sendStatus(403)
 	}
+})
+
+app.post('/change-password', async (req, res, next) => {
+	req.body.username =  req.query.username
+	
+	const username = req.body.username
+
+	const user = await userModel.get(username);
+  
+	// const user = users.find(user => user.username === username)
+    // console.log(user)
+	if (!user) return res.sendStatus(401)
+
+	const tokens = generateTokens(user)
+	updateRefreshToken(username, tokens.refreshToken)
+
+	const setToken = await userModel.updateToken(user.username, {"token":tokens.refreshToken})
+
+	// res.redirect("http://localhost:3000/?token="+tokens.accessToken+"?refreshToken="+tokens.)
+	res.redirect(url.format({
+		pathname:"http://localhost:3000/",
+		query: {
+		   "a": 1,
+		   "b": 2,
+		   "token":tokens.accessToken,
+		   "refreshToken": tokens.refreshToken 
+		 }
+	  }));
+	
+	return;
 })
 
 app.delete('/logout', verifyToken, (req, res) => {

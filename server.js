@@ -171,6 +171,8 @@ app.get('/login', (req, res) =>{
 });
 
 app.get('/change-password', (req, res, next) => {
+    console.log(req.body);
+    
     return res.render('account/changePassword', {
         cssP: () => 'css',
         scriptsP: () => 'script',
@@ -181,7 +183,7 @@ app.get('/change-password', (req, res, next) => {
 })
 
 app.post('/change-password', (req, res, next) => {
-    res.json({})
+    return res.json(req.body)
 })
 
 app.post('/signin', (req, res) => {

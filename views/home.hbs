@@ -312,7 +312,7 @@
         padding-right: 10px;
     }
     .product--item{
-        height: calc(35 * var(--primary-font-size));
+        height: calc(37 * var(--primary-font-size));
         
         display: flex;
         flex-direction: column;
@@ -322,6 +322,7 @@
         border: 1px solid #ffffff;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         transition-duration: .5s;
+        border-radius: 6px;
 
     }
     .product--item:hover{
@@ -393,7 +394,7 @@
             <img src="/products/{{product.key}}/1.jpg" alt="hihi" />
             <div class="product--item__info">
                 <h4>{{product.TenSP}}</h4>
-                <p>{{product.GiaTien}} dong</p>
+                <p>{{product.GiaTien}} đồng</p>
             </div>
         </a>  
         {{/each}}

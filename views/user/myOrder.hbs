@@ -22,20 +22,19 @@
     <div class="wrap-left">
         <ul class="list">
             <h3>Người liên quan 0001</h3>
-            <li class="list-item"><a href="/user">Thông tin của tôi</a></li>
+            <li class="list-item"><a href="/user/info/{{current}}">Thông tin của tôi</a></li>
             <li class="list-item active-wrap"><a
                     class="active"
                     href="/user/my-order"
                 >Đơn hàng của tôi</a></li>
             <li class="list-item"><a href="/user/payment">Lịch sử thanh toán</a></li>
-            <li class="list-item"><a href="/user/banlance">Xem dư nợ</a></li>
-            <li class="list-item"><a href="/user/change-password">Đổi mật khẩu</a></li>
-            <li class="list-item"><a href="/user/history-management">Lịch sử
+            <li class="list-item"><a href="/user/history-management/{{current}}">Lịch sử
                     được quản lí</a></li>
+            <li class="list-item"><a href="/user/change-password">Đổi mật khẩu</a></li>
         </ul>
     </div>
     <div class="wrap-right">
-        <div class="wrap-right--order">
+        <div class="wrap-right--table">
             <h3>Đơn hàng</h3>
             <table class="table">
                 <thead>
@@ -58,7 +57,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="wrap-right--detail">
+        <div class="wrap-right--table">
             <h3>Chi tiết đơn Hàng</h3>
             <table class="table">
                 <thead>

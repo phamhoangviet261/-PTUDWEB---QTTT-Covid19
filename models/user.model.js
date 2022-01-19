@@ -41,4 +41,20 @@ module.exports = {
         where "MaNLQ" = '${id}' and n."MaPhuongXa" = px."MaPhuongXa" and px."MaQuanHuyen" = qh."MaQuanHuyen"
         and qh."MaTinhTP" = t."MaTinhTP"`);   
     },
+    getHistoryManagement: async (id) => {
+        return res = await db.run(`select * 
+        from public."LichSuQuanLy" ls, public."NguoiQuanLy" n
+        where ls."MaNQL" = n."MaNQL" and ls."MaNLQ" = '${id}'`);   
+    },
+    getHistoryStatus: async (id) => {
+        return res = await db.run(`select * 
+        from public."LichSuTrangThai" 
+        where "MaNLQ" = '${id}'`);   
+    },
+    getHistoryHospital: async (id) => {
+        return res = await db.run(`select * 
+        from public."LichSuNoiDieuTri" ls, public."NoiDieuTri" ndt, public."PhuongXa" px, public."QuanHuyen" qh, public."TinhThanhPho" t
+        where ls."MaNLQ" = '${id}'and ls."MaNDT" = ndt."MaNDT" and ndt."MaPhuongXa" = px."MaPhuongXa" 
+        and px."MaQuanHuyen" = qh."MaQuanHuyen" and t."MaTinhTP" = qh."MaTinhTP"`);   
+    },
 }

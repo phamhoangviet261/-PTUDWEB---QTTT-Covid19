@@ -5,13 +5,15 @@
     }
     .content {
         padding: 15px;
-
+        padding-left: 190px;
+        width: 100vw;
     }
     .sidebar{
         background: rgb(102,103,171);
         background: linear-gradient(90deg, rgba(102,103,171,1) 0%, rgba(75,75,200,1) 50%);
         height: 100vh;
         color: #ffffff;
+        width: 170px;
     }
     .sidebar > ul > li{
         border-bottom: 1px solid #1f1f1f;
@@ -53,7 +55,7 @@
         border-right: 1px solid #a5a5a5;
     }
     .neccessary-info{
-        width: 70%;
+        width: 80%;
         margin: 20px;
     }
     .a-heading{
@@ -116,7 +118,7 @@
 </style>
 
 <div class="admin">
-    <div class="sidebar">
+    <div class="sidebar" style="position: fixed;">
         <h2>ADMIN</h2>
         <ul>
             <li class="manage-account {{#if isManageAccount}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-account">Manage account</a></li>

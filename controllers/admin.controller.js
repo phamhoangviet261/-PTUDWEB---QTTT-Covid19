@@ -457,7 +457,12 @@ router.post('/api/neccessaryDetail/add', async (req, res, next) => {
 })
 
 router.post('/api/neccessaryDetail/update', async (req, res, next) => {
-    // let x = await neccessaryuDetailModel.add(req.body)
+    let x = await packageDetailModel.update(req.body)
+    res.json(req.body)
+})
+
+router.post('/api/neccessaryDetail/delete', async (req, res, next) => {
+    let x = await packageDetailModel.delete(req.body.MaNYP, req.body.MaSP)
     res.json(req.body)
 })
 
@@ -467,10 +472,12 @@ router.post('/api/neccessary/add', async (req, res, next) => {
 })
 
 router.post('/api/neccessary/update', async (req, res, next) => {
-    // get list neccessary -> get 1 neccessary to edit
-    let n = await packageModel.get(req.body['MaNYP'])
-    
-    let x = await packageModel.update(n['MaNYP'], req.body)
+    let x = await packageModel.update(req.body.MaNYP, req.body)
+    res.json(req.body)
+})
+
+router.post('/api/neccessary/delete', async (req, res, next) => {
+    let x = await packageModel.delete(req.body.MaNYP);
     res.json(req.body)
 })
 

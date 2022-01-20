@@ -23,7 +23,10 @@ module.exports = {
         const res = await db.add(tbName, user);
         return res;
     },
-    update: async (id, dataUpdate) => {
-        return res = await db.update(tbName, dataUpdate, idFieldName, id);        
+    update: async (dataUpdate) => {
+        return res = await db.run(`UPDATE "ChiTietNhuYeuPham" SET "SoLuong" = ${dataUpdate.SoLuong}, "GioiHanSL" = ${dataUpdate.GioiHanSL} WHERE "MaNYP" = '${dataUpdate.MaNYP}' AND "MaSP" = '${dataUpdate.MaSP}'`);        
+    },
+    delete: async (idPackage, idProduct) => {
+        return res = await db.run(`DELETE FROM "ChiTietNhuYeuPham" WHERE "MaNYP" = '${idPackage}' AND "MaSP" = '${idProduct}'`);        
     }
 }

@@ -339,6 +339,32 @@
         </div>
         {{/if}}
         {{#if isManageNeccessary}}
+        <div class="input-group">
+            <form action="/admin/manage-neccessary/search" method="post">
+            <div style="margin-bottom: 20px;">
+                <select name="arrange" id="" style="margin: 0 10px 0 0;">
+                    <option value="all">Mặc Định</option>
+                    <option value="up">Giá Tăng Dần</option>
+                    <option value="down">Giá Giảm Dần</option>
+                </select>
+                <select name="filter" id="" style="margin: 0 10px;">
+                    <option value="all">Tất Cả</option>
+                    <option value="10k">Dưới 10.000vnd</option>
+                    <option value="50k">10.000vnd - 50.000vnd</option>
+                    <option value="50k+">Trên 50.000vnd</option>
+                </select>
+            </div>
+            <div>
+                <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search..."
+                    name="search">
+                <select name="type" id="typeSearch" style="margin: 0 10px;">
+                    <option value="id">Mã Sản Phẩm</option>
+                    <option value="name">Tên Sản Phẩm</option>
+                </select>
+                <button class="button-37" role="button" onclick="" type="submit" style="padding: 0px !important; width: 100px;">Tìm</button>
+            </div>
+            </form>
+        </div>
         <div class="manage-neccessary">
             <div class="list-neccessary">
                 <h4 style="margin-top: 10px; font-weight: 700;">Cac goi nhu yeu pham: </h4>
@@ -446,7 +472,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
+                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete" onclick="handleSubmitModalDeleteNeccessary('{{neccessary.MaNYP}}')"></i>
                             </td>
                         </tr>
                     </tbody>
@@ -547,23 +573,19 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="msp-2-{{@index}}" class="col-form-label">Ma San Pham:</label>                                        
-                                                        <select class="form-control" id="msp-2-{{@index}}">
-                                                            {{#each listProduct}}
-                                                            <option>{{this.MaSP}}</option>
-                                                            {{/each}}
-                                                        </select>
+                                                        <input type="text" class="form-control" id="masp-2-{{@index}}" value="{{item.MaSP}}" disabled style="min-width: fit-content;"></input>
 
                                                     </div>
                                                 </form>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                <button type="button" class="btn btn-primary" onclick="handleSubmitModalEditProductNeccessary()">Save changes</button>
+                                                <button type="button" class="btn btn-primary" onclick="handleSubmitModalEditProductNeccessary({{@index}})">Save changes</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
+                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete" onclick="handleSubmitModalDeleteProductNeccessary('{{this.MaNYP}}', '{{this.MaSP}}')"></i>
                             </td>
                         </tr>
                         {{/each}}
@@ -685,14 +707,14 @@
         });
     }
 
-    function handleSubmitModalEditProductNeccessary() {
+    function handleSubmitModalEditProductNeccessary(index) {
         $(function () {
-            $('#modalAddProductNeccessary').modal('toggle');
+            $(`#modalEditProductNeccessary${index}`).modal('toggle');
             let data = {
-                "MaNYP": $('#manyp-2').val(),
-                "SoLuong": $('#sl-2').val(),
-                "GioiHanSL": $('#ghsl-2').val(),
-                "MaSP": $('#msp-2').val(),
+                "MaNYP": $(`#manyp-2-${index}`).val(),
+                "SoLuong": $(`#sl-2-${index}`).val(),
+                "GioiHanSL": $(`#ghsl-2-${index}`).val(),
+                "MaSP": $(`#masp-2-${index}`).val()
             }
             console.log(data)
             fetch('/admin/api/neccessaryDetail/update', {
@@ -705,7 +727,32 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
-                {{!-- window.location.reload(); --}}
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
+    function handleSubmitModalDeleteProductNeccessary(MaNYP, MaSP) {
+        $(function () {
+            let data = {
+                "MaNYP": MaNYP,
+                "MaSP": MaSP
+            }
+            console.log(data)
+            fetch('/admin/api/neccessaryDetail/delete', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.reload();
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -761,7 +808,31 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
-                {{!-- window.location.reload(); --}}
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
+    function handleSubmitModalDeleteNeccessary(MaNYP) {
+        $(function () {
+            let data = {
+                "MaNYP": MaNYP
+            }
+            console.log(data)
+            fetch('/admin/api/neccessary/delete', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.reload();
             })
             .catch((error) => {
                 console.error('Error:', error);

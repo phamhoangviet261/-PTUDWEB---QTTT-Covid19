@@ -29,5 +29,9 @@ module.exports = {
     getSPfromNYP: async (nypid) => {
         return res = await db.run(`select * from "SanPham"
         where "MaSP" in (SELECT "MaSP" FROM "ChiTietNhuYeuPham" where "MaNYP" = '${nypid}')`);  
+    },
+    delete: async (PackageID) => {
+        await db.run(`DELETE FROM "ChiTietNhuYeuPham" WHERE "MaNYP" = '${PackageID}'`); 
+        return res = await db.run(`DELETE FROM "GoiNhuYeuPham" WHERE "MaNYP" = '${PackageID}'`);  
     }
 }

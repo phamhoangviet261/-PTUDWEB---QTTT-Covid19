@@ -157,7 +157,7 @@
             items: [],
             count: 0,
         };
-        if(cartObj['items'].includes(manyp)){
+        if(cartObj['items'].includes(manyp) && cartObj['userId' == manlq]){
             console.log("MANYP existed.")
             Swal.fire({
                 icon: 'error',
@@ -177,8 +177,28 @@
         )
 
         let badge = document.getElementById("cartBadge")
-        badge.innerText = JSON.parse(localStorage.getItem("cart"))['count']     
-        
-          
+        badge.innerText = JSON.parse(localStorage.getItem("cart"))['count']
+
+
+        let data = {
+                "MaNLQ": manlq,
+                "MaNYP": manyp
+            }
+            fetch('/cart/add-to-cart', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
     }
 </script>

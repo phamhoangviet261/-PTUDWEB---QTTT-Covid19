@@ -1,13 +1,4 @@
 <style>
-    body {
-        background: #ddd;
-        min-height: 100vh;
-        vertical-align: middle;
-        display: flex;
-        font-family: sans-serif;
-        font-size: 0.8rem;
-        font-weight: bold
-    }
 
     .title {
         margin-bottom: 5vh
@@ -15,7 +6,6 @@
 
     .card {
         margin: auto;
-        max-width: 950px;
         width: 90%;
         box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         border-radius: 1rem;
@@ -80,58 +70,6 @@
         width: 100%
     }
 
-    .col-2,
-    .col {
-        padding: 0 1vh
-    }
-
-    a {
-        padding: 0 1vh
-    }
-
-    .close {
-        margin-left: auto;
-        font-size: 0.7rem
-    }
-
-    img {
-        width: 3.5rem
-    }
-
-    .back-to-shop {
-        margin-top: 4.5rem
-    }
-
-    h5 {
-        margin-top: 4vh
-    }
-
-    hr {
-        margin-top: 1.25rem
-    }
-
-    form {
-        padding: 2vh 0
-    }
-
-    select {
-        border: 1px solid rgba(0, 0, 0, 0.137);
-        padding: 1.5vh 1vh;
-        margin-bottom: 4vh;
-        outline: none;
-        width: 100%;
-        background-color: rgb(247, 247, 247)
-    }
-
-    input {
-        border: 1px solid rgba(0, 0, 0, 0.137);
-        padding: 1vh;
-        margin-bottom: 4vh;
-        outline: none;
-        width: 100%;
-        background-color: rgb(247, 247, 247)
-    }
-
     input:focus::-webkit-input-placeholder {
         color: transparent
     }
@@ -141,7 +79,9 @@
         border-color: #000;
         color: white;
         width: 100%;
+        height: 30px;
         font-size: 0.7rem;
+        font-weight: bold;
         margin-top: 4vh;
         padding: 1vh;
         border-radius: 0
@@ -170,57 +110,53 @@
         text-decoration: none
     }
 
-    #code {
-        background-image: linear-gradient(to left, rgba(255, 255, 255, 0.253), rgba(255, 255, 255, 0.185)), url("https://img.icons8.com/small/16/000000/long-arrow-right.png");
-        background-repeat: no-repeat;
-        background-position-x: 95%;
-        background-position-y: center
+    .border{
+        margin: 0 10px;
+        text-align: center;
+        display: inline-block;
+        width: 30px;
     }
+
 </style>
-<div class="card" style="margin-top: 120px;">
+<div class="card" style="margin-top: 60px;">
     <div class="row">
         <div class="col-md-8 cart">
             <div class="title">
                 <div class="row">
                     <div class="col">
-                        <h4><b>Shopping Cart</b></h4>
+                        <h4><b>Giỏ Hàng</b></h4>
                     </div>
-                    <div class="col align-self-center text-right text-muted">3 items</div>
+                    <div class="col align-self-center text-right text-muted">3 Sản Phẩm</div>
                 </div>
             </div>
             <div class="row border-top border-bottom">
+                {{#each listCart}}
                 <div class="row main align-items-center">
                     <div class="col-2"><img class="img-fluid" src="https://i.imgur.com/1GrakTl.jpg"></div>
                     <div class="col">
-                        <div class="row text-muted">Shirt</div>
-                        <div class="row">Cotton T-shirt</div>
+                        <div class="row">{{this.TenGoi}}</div>
                     </div>
-                    <div class="col"> <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a> </div>
-                    <div class="col">&euro; 44.00 <span class="close">&#10005;</span></div>
+                    <div class="col"> <a href="#" style="font-size: 24px;">-</a><a href="#" class="border">1</a><a href="#" style="font-size: 24px;">+</a> </div>
+                    <div class="col"> {{this.GiaTien}} vnd <span class="close">&#10005;</span></div>
                 </div>
+                {{/each}}
             </div>
             
-            <div class="back-to-shop"><a href="#">&leftarrow;</a><span class="text-muted">Back to shop</span></div>
+            <div class="back-to-shop"><a href="#">&leftarrow;<span class="text-muted">Tiếp Tục Mua Sắm</span></a></div>
         </div>
         <div class="col-md-4 summary">
             <div>
-                <h5><b>Summary</b></h5>
+                <h5><b>Tổng Cộng</b></h5>
             </div>
             <hr>
             <div class="row">
                 <div class="col" style="padding-left:0;">ITEMS 3</div>
                 <div class="col text-right">&euro; 132.00</div>
             </div>
-            <form>
-                <p>SHIPPING</p> <select>
-                    <option class="text-muted">Standard-Delivery- &euro;5.00</option>
-                </select>
-                <p>GIVE CODE</p> <input id="code" placeholder="Enter your code">
-            </form>
             <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                 <div class="col">TOTAL PRICE</div>
                 <div class="col text-right">&euro; 137.00</div>
-            </div> <button class="btn">CHECKOUT</button>
+            </div> <button class="btn">THANH TOÁN</button>
         </div>
     </div>
 </div>

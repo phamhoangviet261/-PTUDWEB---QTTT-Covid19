@@ -33,5 +33,10 @@ module.exports = {
     delete: async (PackageID) => {
         await db.run(`DELETE FROM "ChiTietNhuYeuPham" WHERE "MaNYP" = '${PackageID}'`); 
         return res = await db.run(`DELETE FROM "GoiNhuYeuPham" WHERE "MaNYP" = '${PackageID}'`);  
+    },
+    getPrice: async (packageID) => {
+        return res = await db.run(`SELECT G."TenGoi", Sum(S."GiaTien" * C."SoLuong") as "TongTien" FROM public."GoiNhuYeuPham" G, public."ChiTietNhuYeuPham" C, public."SanPham" S
+        WHERE C."MaNYP" = G."MaNYP" AND C."MaSP" = S."MaSP" AND G."MaNYP" = '${packageID}'
+        GROUP BY G."MaNYP"`);
     }
 }

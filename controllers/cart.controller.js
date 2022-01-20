@@ -4,6 +4,7 @@ router.use(require('express').json())
 
 const packageModel = require('../models/package.model')
 const productModel = require('../models/product.model')
+const cartModel = require('../models/cart.model')
 
 function nonAccentVietnamese(str) {
     str = str.toLowerCase();
@@ -28,7 +29,22 @@ function nonAccentVietnamese(str) {
     return str;
 }
 
+async function fgetPrice(listcart){
+    await listcart.forEach(async item => {
+        let temp = await packageModel.getPrice(item.MaNYP)
+        console.log(temp);
+        item["GiaTien"] = temp[0].TongTien;
+        item["TenGoi"] = temp[0].TenGoi;
+    });
+    return listcart;
+}
+
 router.get('/', async (req, res) => {
+    console.log(req.session.name);
+    let listCart = await cartModel.ofOne(req.session.name);
+    console.log(listCart);
+    listCart = await fgetPrice(listCart);
+    console.log(listCart);
     return res.render('cart/index', {
         cssP: () => 'css',
         scriptsP: () => 'script',
@@ -36,11 +52,14 @@ router.get('/', async (req, res) => {
         footerP: () => 'footer',
         current: req.session.name,
         isLogin: req.session.user,
+        listCart,
         notloginandsignup: 1,
     });
 })
 
-router.post('/addtocart', async (req, res) => {
-    return res.json({})
+router.post('/add-to-cart', async (req, res) => {
+    let c = await cartModel.addToCart(req.body.MaNLQ, req.body.MaNYP);
+    res.json(req.body)
 })
+
 module.exports = router;

@@ -28,7 +28,16 @@ function nonAccentVietnamese(str) {
     return str;
 }
 
-router.get('/:packageId', async (req, res) => {
+router.use('/', async (req, res, next) => {
+    if (!req.session.user){
+        return res.redirect('/login')
+    }
+    else {
+        next();
+    }
+})
+
+router.get('/:packageId', async (req, res, next) => {
     const packageId = req.params.packageId;
     const package = await packageModel.get(packageId)
     const listProduct = await packageModel.getSPfromNYP(packageId)
@@ -36,8 +45,9 @@ router.get('/:packageId', async (req, res) => {
     listProduct.forEach(item => {
         item["key"] = item.MaSP.substr(3, 2) - 0
         item['link'] = nonAccentVietnamese(item.TenSP).split(" ").join("-")+"-"+item["key"]
-        packagePrice+=item['GiaTien']
     })
+    packagePrice = await packageModel.getPrice(packageId);
+    console.log(packagePrice);
     
     res.render('package/index', {
         cssP: () => 'css',
@@ -49,7 +59,7 @@ router.get('/:packageId', async (req, res) => {
         notloginandsignup: 1,
         package: package,
         listProduct: listProduct,
-        GiaTien: packagePrice,
+        GiaTien: packagePrice[0].TongTien,
     });
 })
 

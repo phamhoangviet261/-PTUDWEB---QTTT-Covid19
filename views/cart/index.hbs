@@ -134,7 +134,7 @@
                 <div class="row main align-items-center">
                     <div class="col-2"><img class="img-fluid" src="logo-purple.png"></div>
                     <div class="col">
-                        <div class="row">{{this.TenGoi}}</div>
+                        <div class="row"><a href="/package/{{this.MaNYP}}">{{this.TenGoi}}</a></div>
                     </div>
                     <div class="col"> <a onclick="handleMinus('{{this.MaGH}}', '{{this.SoLuong}}')" style="font-size: 24px;">-</a><a class="border">{{this.SoLuong}}</a><a onclick="handlePlus('{{this.MaGH}}', '{{this.SoLuong}}')" style="font-size: 24px;">+</a> </div>
                     <div class="col"> {{this.TongTien}} vnd <span class="close" onclick="handleDeleteCart('{{this.MaGH}}')">&#10005;</span></div>
@@ -152,11 +152,46 @@
             <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                 <div class="col">Tổng Tiền</div>
                 <div class="col text-right">{{Total}} vnd</div>
-            </div> <button class="btn">THANH TOÁN</button>
+            </div> <button class="btn" onclick="checkout('{{current}}', {{Total}})">THANH TOÁN</button>
         </div>
     </div>
 </div>
 <script>
+    let checkout = (manlq, total) => {
+        let data = {
+                "MaNLQ": manlq,
+                "total": total
+            }
+            fetch('/cart/checkout', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                if(data.status){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thanh toán thành công!',
+                        text: 'Successfully!',                
+                    })
+                    window.location.reload()
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Thanh toán thất bại!',
+                        text: 'Successfully!',                
+                    })
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
     function handleDeleteCart(cartID) {
         $(function () {
             let data = {

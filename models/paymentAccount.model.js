@@ -25,5 +25,8 @@ module.exports = {
     },
     update: async (id, dataUpdate) => {
         return res = await db.update(tbName, dataUpdate, idFieldName, id);        
+    },
+    tinhTien: async (money, matktt) => {
+        return res = await db.run(`update public."TaiKhoanThanhToan" set "SoDu" = '${money}' where "MaTKTT" = '${matktt}'`);        
     }
 }

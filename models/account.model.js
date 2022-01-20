@@ -30,4 +30,13 @@ module.exports = {
         return res = await db.run(`update public."Account" 
         set "password" = '${newPassword}' where "username" = '${id}'`);   
     },
+    getAdmin: async () => {
+        return res = await db.run(`select count(*) from public."Account" where "accountType" = 0`);   
+    },
+    ban: async (u) => {
+        return res = await db.run(`update public."Account" set "status" = 'banned' where "username" = '${u}'`);   
+    },
+    unban: async (u) => {
+        return res = await db.run(`update public."Account" set "status" = 'active' where "username" = '${u}'`);   
+    }
 }

@@ -39,11 +39,12 @@ router.get('/info/:id',async (req, res, next) => {
 
 router.get('/my-order', async (req, res, next) => {
     // let listOrder = await userM.getListOrder(req.session.user.username)
-    let listOrder = await userM.getListOrder(req.session.username)
+    let listOrder = await userM.getListOrder(req.session.username || req.cookies['username'])
     listOrder.forEach((item) => {
         
         item.ThoiGian = item.ThoiGian.toTimeString().split(' ')[0] + ' - '+ item.ThoiGian.toDateString().split(' ')[2]+'/'+(item.ThoiGian.getMonth()+1)+'/'+item.ThoiGian.toDateString().split(' ')[3]
     })
+    
     res.render('user/myOrder',{
         cssP: () => 'css',
         scriptsP: () => 'script',
@@ -59,7 +60,7 @@ router.get('/my-order', async (req, res, next) => {
 
 router.get('/my-order/:id', async (req, res, next) => {
     let listDetailOrder = await userM.getListDetailOrder(req.params.id)
-    let listOrder = await userM.getListOrder('NLQ0001')
+    let listOrder = await userM.getListOrder(req.cookies['username'])
     listOrder.forEach((item) => {
         item.ThoiGian = item.ThoiGian.toTimeString().split(' ')[0] + ' - '+ item.ThoiGian.toDateString().split(' ')[2]+'/'+(item.ThoiGian.getMonth()+1)+'/'+item.ThoiGian.toDateString().split(' ')[3]
     })

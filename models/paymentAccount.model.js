@@ -28,5 +28,8 @@ module.exports = {
     },
     tinhTien: async (money, matktt) => {
         return res = await db.run(`update public."TaiKhoanThanhToan" set "SoDu" = '${money}' where "MaTKTT" = '${matktt}'`);        
+    },
+    naptien: async (money, matktt) => {
+        return res = await db.run(`update public."TaiKhoanThanhToan" set "SoDu" = "SoDu" + ${money} where "MaTKTT" = '${matktt}'`);        
     }
 }

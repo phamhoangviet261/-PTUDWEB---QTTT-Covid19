@@ -1,0 +1,67 @@
+<table class="table">
+            <thead class="thead-light">
+                <tr>
+
+                    <th scope="col">Mã TKTT</th>
+                    <th scope="col">Số dư</th>
+                    <th scope="col">Hạn mức</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each listAccount as |item i| }}
+                <tr>
+
+                    <td>{{item.MaTKTT}}</td>
+                    <td>{{item.SoDu}}</td>
+                    <td>{{item.HanMucToiThieu}}</td>
+                    <td>
+                        <i class="fas fa-plus" data-toggle="tooltip" data-placement="right" title="Nạp tiền" onclick="naptien('{{item.MaTKTT}}')"></i>
+                        <i class="fas fa-lock" data-toggle="tooltip" data-placement="right" title="Ban"
+                            onclick="ban('{{item.username}}')"></i>
+                        <i class="fas fa-lock-open" data-toggle="tooltip" data-placement="right" title="Unban"
+                            onclick="unban('{{item.username}}')"></i>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+<script>
+    let naptien = async (matktt) => {
+        console.log(matktt)
+        const { value: money } = await Swal.fire({
+        title: 'Nhập số tiền muốn nạp thêm:',
+        input: 'number',
+        })
+
+        if (money) {
+            let data = {
+                "MaTKTT": matktt,
+                money: money
+            }
+            console.log(data)
+            fetch('/admin/naptien', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                
+                if(data.status){
+                    Swal.fire(`Đã nạp: ${money}vnd cho tài khoản ${matktt}`)
+                    window.location.reload();
+                } else {
+                    Swal.fire(`Lỗi`)
+                }
+                
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+            
+        }
+    }
+</script>

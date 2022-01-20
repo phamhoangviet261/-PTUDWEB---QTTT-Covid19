@@ -7,11 +7,18 @@ const app = express()
 app.use(express.urlencoded({extended:true}));
 app.use(express.json())
 
+const shajs = require('sha.js')
+const pwdHasedLen = 64
+
+
 // database
 const userModel = require('./models/user.model')
+const accountModel = require('./models/account.model')
 let users = []
 
 // app
+const cors = require('cors')
+app.use(cors());
 
 const generateTokens = payload => {
 	const { username, password } = payload
@@ -50,10 +57,14 @@ const updateRefreshToken = (username, refreshToken) => {
 
 app.post('/login', async (req, res) => {
 	const username = req.body.username
+	const password = req.body.password
 
 	const user = await userModel.get(username);
-
-	if(user.token==null){
+	const salt = user.password.substring(pwdHasedLen)
+    const passwordHased = shajs('sha256').update(password + salt).digest('hex') + salt
+	if (!user) 	return res.redirect('http://localhost:3000/login')
+	
+	if(user.token==null && user.password === password){
 		req.body={username: user.username}
 		return res.redirect(url.format({
 			pathname:"http://localhost:3000/change-password",
@@ -62,27 +73,33 @@ app.post('/login', async (req, res) => {
 			}
 		}));
 	}
+	else if (user.password === passwordHased) {
+		console.log("cac")
+		const tokens = generateTokens(user)
+		updateRefreshToken(username, tokens.refreshToken)
+
+		const setToken = await userModel.updateToken(user.username, {"token":tokens.refreshToken})
+
+		res.redirect(url.format({
+			pathname:"http://localhost:3000/",
+			query: {
+			"a":1,
+			"b":2,
+			"token":tokens.accessToken,
+			"refreshToken": tokens.refreshToken 
+			}
+		}));
+		return;
+		
+	}
+	else {
+		
+		return res.redirect('http://localhost:3000/login')
+	}
     
 	// const user = users.find(user => user.username === username)
     // console.log(user)
-	if (!user) return res.sendStatus(401)
-
-	const tokens = generateTokens(user)
-	updateRefreshToken(username, tokens.refreshToken)
-
-	const setToken = await userModel.updateToken(user.username, {"token":tokens.refreshToken})
-
-	// res.redirect("http://localhost:3000/?token="+tokens.accessToken+"?refreshToken="+tokens.)
-	res.redirect(url.format({
-		pathname:"http://localhost:3000/",
-		query: {
-		   "a": 1,
-		   "b": 2,
-		   "token":tokens.accessToken,
-		   "refreshToken": tokens.refreshToken 
-		 }
-	  }));
-	return;
+	
 })
 
 app.post('/token', (req, res) => {
@@ -107,30 +124,51 @@ app.post('/token', (req, res) => {
 
 app.post('/change-password', async (req, res, next) => {
 	req.body.username =  req.query.username
-	
+	const password = req.body.new_password 
 	const username = req.body.username
 
-	const user = await userModel.get(username);
+	if (req.query.homepage) {
+		const oldPass = req.body.old
+		const user = await userModel.get(username);
+		const salt = user.password.substring(pwdHasedLen)
+    	const oldPasswordHased = shajs('sha256').update(oldPass + salt).digest('hex') + salt
+		if (user.password !== oldPasswordHased){
+			return res.json({
+				status: false
+			})
+		}
+	}
   
-	// const user = users.find(user => user.username === username)
-    // console.log(user)
-	if (!user) return res.sendStatus(401)
+	const salt = Date.now().toString(16)
+	console.log("hehe2",salt)
+
+    const passwordHased = shajs('sha256').update(password + salt).digest('hex') + salt
+
+	const rs = await accountModel.updatePassword(username, passwordHased)
+
+	const user = await userModel.get(username);
 
 	const tokens = generateTokens(user)
 	updateRefreshToken(username, tokens.refreshToken)
 
 	const setToken = await userModel.updateToken(user.username, {"token":tokens.refreshToken})
 
-	// res.redirect("http://localhost:3000/?token="+tokens.accessToken+"?refreshToken="+tokens.)
-	res.redirect(url.format({
-		pathname:"http://localhost:3000/",
-		query: {
-		   "a": 1,
-		   "b": 2,
-		   "token":tokens.accessToken,
-		   "refreshToken": tokens.refreshToken 
-		 }
-	  }));
+	if (req.query.homepage){
+		return res.json({
+			status: true
+		})
+	}
+
+	res.redirect("http://localhost:3000/login")
+	// res.redirect(url.format({
+	// 	pathname:"http://localhost:3000/",
+	// 	query: {
+	// 	   "a": 1,
+	// 	   "b": 2,
+	// 	   "token":tokens.accessToken,
+	// 	   "refreshToken": tokens.refreshToken 
+	// 	 }
+	//   }));
 	
 	return;
 })

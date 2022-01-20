@@ -39,6 +39,9 @@ app.use(session({
 app.use(express.urlencoded({extended:true}));
 app.use(express.json())
 
+const cors = require('cors')
+app.use(cors());
+
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 const jwt = require('jsonwebtoken')
@@ -72,11 +75,11 @@ function nonAccentVietnamese(str) {
 
 
 // route check token == null => need change password
-app.use(function (req, res, next) {
-    // check have access token
-    next()
-})
-
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 
 app.get('/', async (req, res, next) =>{ 
     var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
@@ -152,10 +155,10 @@ app.get('/', async (req, res, next) =>{
         banner: banner,
         products: products,
         productsHalfRun: productsHalfRun,
-    });
+    });    
 });
 
-app.get('/login', (req, res) =>{
+app.get('/login', (req, res, next) =>{
     if(req.cookies['access-token']){
         return res.redirect('/')
     }

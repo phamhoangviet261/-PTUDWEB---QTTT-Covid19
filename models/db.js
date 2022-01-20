@@ -65,7 +65,7 @@ exports.update = async (tbName, entity, fieldName, id) => {
         const res = await db.one(qStr)
         return res
     } catch (error) {
-        console.log('error db/update : ', error)
+        console.log('error db/hehe : ', error)
     }
 }
 
@@ -77,7 +77,7 @@ exports.updateToken = async (tbName, entity, fieldName, id) => {
         const res = await db.one(qStr)
         return res
     } catch (error) {
-        console.log('error db/update : ', error)
+        console.log('error db/update2 : ', error)
     }
 }
 

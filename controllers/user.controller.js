@@ -95,23 +95,17 @@ router.get('/history-management/:id', async (req, res) => {
 })
 
 
-router.get('/signin', async (req, res) => {
-    if (req.session.user) {
-            res.redirect('../categories/category');
-        return;
-    }
-    res.render('account/signin', {
+router.get('/change-password', async (req, res) => {
+    res.render('user/changePassword',{
         cssP: () => 'css',
         scriptsP: () => 'script',
         navP: () => 'nav',
         footerP: () => 'footer',
-        user: userRemem,
-        pass: passRemem,
+        title: "Lịch sử quản lý",
         current: req.session.name,
         isLogin: req.session.user,
-        signin: 1,
-        abcd: "Hello Signin",
-    });
+        notloginandsignup: 1,
+    })
 });
 
 router.post('/signin', async (req, res) => {

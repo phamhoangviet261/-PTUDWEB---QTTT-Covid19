@@ -129,6 +129,9 @@ router.post('/checkout', async (req, res, next) => {
     if(parseInt(soDu) < parseInt(req.body.total)){
         return res.json({status: false})
     }
+    // cong tien vao tai khoan admin
+    let congTien = await paymentAccountModel.naptien(parseInt(req.body.total), "admin")
+
     // tru tien o tai khoan thanh toan
     let tinhTien = await paymentAccountModel.tinhTien( parseInt(soDu) - parseInt(req.body.total), "TKTT"+req.body.MaNLQ.slice(3,7))
     // luu xuong table don hang
@@ -157,7 +160,7 @@ router.post('/checkout', async (req, res, next) => {
         getAllSPinNYP.forEach(async i => {
             let ctdh = await invoiceDetailModel.addNewRow(madh, i.MaSP, i.SoLuongBan)
         })
-        // let xx = await invoiceDetailModel.get()
+        
     })
     // xoa tat ca row trong gio hang    
     let clearCart = await cartModel.clearCart(req.body.MaNLQ)

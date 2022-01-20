@@ -518,15 +518,31 @@ router.get('/api/product/getAll', async (req, res, next) => {
     return res.json(p)
 })
 
+
 router.get('/statistic', async (req, res, next) => {
-    const numberhumanbystatusandtime = await statusHistoryModel.getnumberhumanbystatusandtime();
-    console.log(numberhumanbystatusandtime);
+    const numberHumanByStatusAndTime = await statusHistoryModel.getNumberHumanByStatusAndTime();
     const temp = [];
     const temp2 = [];
-    numberhumanbystatusandtime.forEach(cell => temp.push(+cell.SoLuong))        
-    numberhumanbystatusandtime.forEach(cell => temp2.push(cell.Nam + '/' + cell.Thang + '  F' + cell.TrangThai))        
-    console.log(temp);
-    console.log(temp2);
+    numberHumanByStatusAndTime.forEach(cell => temp.push(+cell.SoLuong))        
+    numberHumanByStatusAndTime.forEach(cell => temp2.push(cell.Nam + '/' + cell.Thang + '  F' + cell.TrangThai));
+
+    const nypSale = await statusHistoryModel.getNYPsale();
+    const slNYPsale = [];
+    const tenNYP = [];
+    nypSale.forEach(cell => slNYPsale.push(+cell.count));        
+    nypSale.forEach(cell => tenNYP.push(cell.TenGoi));
+
+    const spSale = await statusHistoryModel.getSPsale();
+    const slSPsale = [];
+    const tenSP = [];
+    spSale.forEach(cell => slSPsale.push(+cell.sum));
+    spSale.forEach(cell => tenSP.push(cell.TenSP));
+
+    const sevenueDNT = await statusHistoryModel.getSevenueDNT();
+    const sevenueDNTs = [];
+    const months = [];
+    sevenueDNT.forEach(cell => sevenueDNTs.push(+cell.SoTien));
+    sevenueDNT.forEach(cell => months.push(cell.Nam + '/' + cell.Thang));
     res.render('admin/statistic', {
         cssP: () => 'css',
         scriptsP: () => 'script',
@@ -534,9 +550,14 @@ router.get('/statistic', async (req, res, next) => {
         footerP: () => 'footer',
         isStatistic: true,
         temp: JSON.stringify(temp),
-        temp2: JSON.stringify(temp2)
+        temp2: JSON.stringify(temp2),
+        slNYPsale: JSON.stringify(slNYPsale),
+        tenNYP: JSON.stringify(tenNYP),
+        slSPsale: JSON.stringify(slSPsale),
+        tenSP: JSON.stringify(tenSP),
+        sevenueDNTs: JSON.stringify(sevenueDNTs),
+        months: JSON.stringify(months),
     });
 })
-
 
 module.exports = router;

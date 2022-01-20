@@ -81,6 +81,12 @@
         padding-right: 10px;
         height: 38px;
     }
+    canvas.chart {
+        display: none;
+    }
+    .show {
+        display: block;
+    }
 </style>
 
 <div class="admin">
@@ -101,49 +107,60 @@
             <div class="block-title">
                 <h2>Thống kê số lượng người ở từng trạng thái theo thời gian</h2>
             </div>
+        </div>        
+        <canvas id="FChart" width="400" height="400"></canvas>
+        <input id="ip1" type="text" value={{ temp }} style="visibility: hidden">
+        <input id="ip2" type="text" value='{{ temp2 }}' style="visibility: hidden">
 
+        <div class="statistic-block">
+            <div class="block-title">
+                <h2>Thống kê số lượng gói nhu yếu phẩm tiêu thụ</h2>
+            </div>
         </div>
-        
-        <canvas id="myChart" width="400" height="400"></canvas>
+        <canvas id="NYPChart" width="400" height="400"></canvas>
+        <input id="ipslNYPsale" type="text" value={{ slNYPsale }} style="visibility: hidden">
+        <input id="iptenNYP" type="text" value='{{ tenNYP }}' style="visibility: hidden">
 
         <div class="statistic-block">
             <div class="block-title">
-                <h2>Thống kê các thông tin có thể như: số chuyển trạng thái, khỏi bệnh,…</h2>
+                <h2>Thống kê số lượng sản phẩm tiêu thụ</h2>
             </div>
         </div>
+        <canvas id="SPChart" width="400" height="400"></canvas>
+        <input id="ipslSPsale" type="text" value={{ slSPsale }} style="visibility: hidden">
+        <input id="iptenSP" type="text" value='{{ tenSP }}' style="visibility: hidden">
+
         <div class="statistic-block">
             <div class="block-title">
-                <h2>Thống kê tiêu thụ các gói Nhu yếu phẩm</h2>
+                <h2>Thống kê doanh thu nạp tiền</h2>
             </div>
         </div>
-        <div class="statistic-block">
-            <div class="block-title">
-                <h2>Thống kê tiêu thụ sản phẩm</h2>
-            </div>
-        </div>
-        <div class="statistic-block">
-            <div class="block-title">
-                <h2>Thống kê dư nợ, thanh toán</h2>
-            </div>
-        </div>
+        <canvas id="SevenueChart" width="400" height="400"></canvas>
+        <input id="ipsevenueDNTs" type="text" value={{ sevenueDNTs }} style="visibility: hidden">
+        <input id="ipmonths" type="text" value='{{ months }}' style="visibility: hidden">
     </div>
-    <input id="ip1" type="text" value={{ temp }}>
-    <input id="ip2" type="text" value='{{ temp2 }}'>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <script>
+    function getRandomColor() {
+        let letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    };
     function getRgba(number, max) {
         return `rgba(0, 0, 255, ${number/max})`
     };
-    const ctx = document.getElementById('myChart').getContext('2d');
+
+    
+    let colors = [];
     const temp = JSON.parse(document.getElementById('ip1').value);
     const temp2 = JSON.parse(document.getElementById('ip2').value);
-    const colors = [];
-    temp.forEach((temp, i, arr) => colors.push(getRgba(temp,Math.max(...arr))));
-    console.log(colors);
-    //                backgroundColor: [{}]
-    const myChart = new Chart(ctx, {
+    temp.forEach((temp, i, arr) => colors.push(getRgba(temp, Math.max(...arr))));
+    const FChart = new Chart("FChart", {
         type: 'horizontalBar',
         data: {
             labels: temp2 ,
@@ -159,6 +176,59 @@
                     beginAtZero: true
                 }
             }
+        }
+    });
+
+    colors = [];
+    const slNYPsale = JSON.parse(document.getElementById('ipslNYPsale').value);
+    const tenNYP = JSON.parse(document.getElementById('iptenNYP').value);
+    slNYPsale.forEach(slNYPsale => colors.push(getRandomColor()));
+    const NYPChart = new Chart("NYPChart", {
+        type: 'pie',
+        data: {
+            labels: tenNYP,
+            datasets: [{
+                data:  slNYPsale,
+                backgroundColor: colors
+            }]
+        }
+    });
+
+    
+    colors = [];
+    const slSPsale = JSON.parse(document.getElementById('ipslSPsale').value);
+    const tenSP = JSON.parse(document.getElementById('iptenSP').value);
+    slSPsale.forEach(slSPsale => colors.push(getRandomColor()));
+    const SPChart = new Chart("SPChart", {
+        type: 'horizontalBar',
+        data: {
+            labels: tenSP,
+            datasets: [{
+                label: 'Lượng tiêu thụ',
+                data:  slSPsale,
+                backgroundColor: colors,
+            }]
+        }
+    });
+    
+    
+    const sevenueDNTs = JSON.parse(document.getElementById('ipsevenueDNTs').value);
+    const months = JSON.parse(document.getElementById('ipmonths').value);
+    const SevenueChart = new Chart("SevenueChart", {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: [{
+                pointRadius: 10,
+                label: 'Tổng nạp',
+                fill: false,
+                lineTension: 0,
+                data:  sevenueDNTs,
+                backgroundColor: "rgba(255, 0, 0, 1.0)",
+                borderColor: "rgba(255, 0, 0, 0.4)",
+            }]
+        },
+        options: {
         }
     });
 </script>

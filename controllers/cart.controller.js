@@ -67,16 +67,25 @@ router.get('/', async (req, res, next) => {
 
 router.post('/add-to-cart', async (req, res, next) => {
     let a = await cartModel.ofOne(req.body.MaNLQ);
+    let dup = false;
     a.forEach(item => {
         if (req.body.MaNYP == item.MaNYP){
-            return res.json({
-                status: false
-            })
+            dup = true
         }
     })
-    let temp = await packageModel.getPrice(req.body.MaNYP)
-    let c = await cartModel.addToCart(req.body.MaNLQ, req.body.MaNYP, temp[0].TongTien, temp[0].TenGoi);
-    res.json(req.body)
+    if(dup){
+        return res.json({
+            status: false
+        })
+    } else {
+        let temp = await packageModel.getPrice(req.body.MaNYP)
+        let c = await cartModel.addToCart(req.body.MaNLQ, req.body.MaNYP, temp[0].TongTien, temp[0].TenGoi);
+        console.log("Body: ", req.body);
+        return res.json({
+            status: true
+        })
+    }
+    
 })
 
 router.post('/delete', async (req, res, next) => {

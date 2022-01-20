@@ -130,7 +130,7 @@
         <div class="package--timelimit"><span class="package--title">Thời gian giới hạn:</span> {{package.ThoiGianGioiHan}} ngày</div>
         <div class="button--buy">
             <button class="button-36" role="button">MUA NGAY</button>
-            <button class="button-36 button-37" role="button">THÊM VÀO GIỎ HÀNG</button>
+            <button class="button-36 button-37" role="button" onclick="addToCart('{{package.MaNYP}}', '{{current}}')">THÊM VÀO GIỎ HÀNG</button>
         </div>
     </div>
     <h2 style="margin-top: 50px; margin-bottom: 30px;">Gói bao gồm các sản phẩm:</h2>
@@ -151,7 +151,32 @@
     </div>
 </div>
 <script>
-    function addToCart(id){
+    function addToCart(manyp, manlq){
+        let cartObj = JSON.parse(localStorage.getItem("cart")) || {
+            userId: `${manlq}`,
+            items: [],
+            count: 0,
+        };
+        if(cartObj['items'].includes(manyp)){
+            console.log("MANYP existed.")
+            Swal.fire({
+                icon: 'error',
+                title: 'Thêm vào giỏ hàng thất bại!',
+                text: 'Something went wrong!',                
+            })
+            return
+        }
+        cartObj['items'].push(manyp)
+        cartObj['count']++
+        console.log(cartObj)
+        localStorage.setItem("cart",JSON.stringify(cartObj));
+        Swal.fire(
+            'Thêm vào giỏ hàng thành công!',
+            'Thêm vào giỏ hàng thành công!',
+            'success'
+        )
 
+        let badge = document.getElementById("cartBadge")
+        badge.innerText = JSON.parse(localStorage.getItem("cart"))['count']        
     }
 </script>

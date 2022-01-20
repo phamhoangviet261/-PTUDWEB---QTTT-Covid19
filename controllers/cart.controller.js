@@ -29,7 +29,15 @@ function nonAccentVietnamese(str) {
 }
 
 router.get('/', async (req, res) => {
-    res.json({})
+    return res.render('cart/index', {
+        cssP: () => 'css',
+        scriptsP: () => 'script',
+        navP: () => 'nav',
+        footerP: () => 'footer',
+        current: req.session.name,
+        isLogin: req.session.user,
+        notloginandsignup: 1,
+    });
 })
 
 module.exports = router;

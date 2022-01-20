@@ -147,8 +147,22 @@ router.get('/manage-people', async (req, res, next) => {
     });
 })
 
-router.post('/manage-people/add', async (req, res, next) =>{
+router.post('/manage-people/add', async (req, res, next) =>{    
+    let maPhuongXaNoiDieuTri = req.body['MaPhuongXaNoiDieuTri']
+    console.log(maPhuongXaNoiDieuTri);
+    delete req.body['MaPhuongXaNoiDieuTri']
     let p = await covidPeopleModel.add(req.body)
+    let tp = await (await treatmentPlaceHistoryModel.all()).pop()['MaLSNDT'].slice(4,8)
+
+    let nql = await managerModel.getMaNQL(maPhuongXaNoiDieuTri)
+
+    let data = {
+        "MaLSNDT":"LSDT" + ((tp - 0 ) + 1),
+        "MaNDT": req.body.MaNLQ,
+        "MaNQL": nql[0]['MaNQL'],
+        "NgayTao": new Date(Date.now())
+    }
+    let addTp = await treatmentPlaceHistoryModel.add(data)
     res.json(req.body)
 })
 

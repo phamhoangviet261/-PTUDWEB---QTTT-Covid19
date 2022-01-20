@@ -25,5 +25,8 @@ module.exports = {
     },
     update: async (id, dataUpdate) => {
         return res = await db.update(tbName, dataUpdate, idFieldName, id);        
+    },
+    getMaNQL: async (mapx) => {
+        return res = await db.run(`select * from public."NguoiQuanLy" where "MaPhuongXa" = '${mapx}'`);  
     }
 }

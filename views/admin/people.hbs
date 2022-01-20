@@ -118,7 +118,7 @@
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Chỉnh Sửa Tai Khoan</h5>
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Thêm người liên quan</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                     </button>
@@ -176,6 +176,22 @@
                                                 {{/each}}
                                             </select>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="sl-edit" class="col-form-label">Nơi điều trị:</label>                                        
+                                            <select class="form-control" id="noidieutri">                                                            
+                                                {{#each dspx}}                                                      
+                                                <option value="{{this.MaPhuongXa}}">{{this.TenPhuongXa}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sl-edit" class="col-form-label">TrangThai:</label>                                        
+                                            <select class="form-control" id="trangthai">                                                            
+                                                <option value="F0">F0</option>                                                        
+                                                <option value="F1">F1</option>
+                                                <option value="F2">F2</option>
+                                            </select>
+                                        </div>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
@@ -216,7 +232,7 @@
                         {{#each listUser as |item i| }}
                         <tr>
                             
-                            <td><a href="/admin/manage-people/account?manlq={{item.MaNLQ}}">{{item.MaNLQ}}</a></td>
+                            <td><a href="/admin/manage-people/people?manlq={{item.MaNLQ}}">{{item.MaNLQ}}</a></td>
                             <td>{{item.HoTen}}</td>
                             <td>{{item.CCCD}}</td>                            
                             <td>{{item.NgaySinh}}</td>
@@ -249,8 +265,9 @@
                 "GioiTinh": $('#gioitinh').val(),
                 "DiaChi": $('#diachi').val(),
                 "MaPhuongXa": $('#phuongxa').val(),
+                "MaPhuongXaNoiDieuTri": $('#phuongxa').val(),
                 "username": $('#manlq').val(),
-                            }
+            }
             console.log(data)
             fetch('/admin/manage-people/add', {
                 method: 'POST', // or 'PUT'

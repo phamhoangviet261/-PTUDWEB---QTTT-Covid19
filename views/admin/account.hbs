@@ -195,7 +195,11 @@
             </div>
         </div>
         <div class="action-item">
-            <button class="button-37" role="button"><a href="/admin/manage-account/registerNQL">Thêm tài khoản Người Quản Lý</a></button>
+            <button class="button-37" role="button"><a href="/admin/manage-account/registerNQL">Thêm tài khoản Người Quản Lý</a></button>\
+            <button class="button-37" role="button" onclick="themNLQ()">Thêm tài khoản Người bị covid</button>
+        </div>
+        <div id="formRegister" style="display: none;">
+            <code>Tài khoản NLQ sẽ tự động tạo khi thêm người đó ở phần "Manage People".</code>
         </div>
         <table class="table">
             <thead class="thead-light">
@@ -231,6 +235,10 @@
 </div>
 
 <script>
+    let themNLQ = () => {
+        document.getElementById('formRegister').style.display = 'block'
+    }
+
     let addAccountForNQL = async () => {
         const { value: formValues } = await Swal.fire({
         title: 'Tạo tài khoản NQL',
@@ -286,6 +294,7 @@
                 });
         }
     }
+    
     let ban = (username) => {
         console.log(username)
         let data = {

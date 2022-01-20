@@ -543,6 +543,10 @@ router.get('/statistic', async (req, res, next) => {
     const months = [];
     sevenueDNT.forEach(cell => sevenueDNTs.push(+cell.SoTien));
     sevenueDNT.forEach(cell => months.push(cell.Nam + '/' + cell.Thang));
+
+    const sevenueSP = await statusHistoryModel.getSevenueSP();
+    const sevenueSPs = [];
+    sevenueSP.forEach(cell => sevenueSPs.push(+cell.sum));
     res.render('admin/statistic', {
         cssP: () => 'css',
         scriptsP: () => 'script',
@@ -555,6 +559,7 @@ router.get('/statistic', async (req, res, next) => {
         tenNYP: JSON.stringify(tenNYP),
         slSPsale: JSON.stringify(slSPsale),
         tenSP: JSON.stringify(tenSP),
+        sevenueSPs: JSON.stringify(sevenueSPs),
         sevenueDNTs: JSON.stringify(sevenueDNTs),
         months: JSON.stringify(months),
     });

@@ -513,6 +513,39 @@ router.post('/api/neccessary/delete', async (req, res, next) => {
     res.json(req.body)
 })
 
+router.post('/api/neccessary/search', async (req, res, next) => {
+    let n = await packageModel.get(req.params.id)
+    let strSearch = nonAccentVietnamese(req.body.search);
+    let ln = await packageModel.all()
+    let id_next = ln.length
+    ln.forEach(item => item.newTenGoi = nonAccentVietnamese(item.TenGoi))
+    if (req.body.type == 'id'){
+        console.log(strSearch)
+        ln = ln.filter(item => item.MaNYP.includes(strSearch))
+    }
+    else {
+        console.log(strSearch)
+        ln = ln.filter(item => item.newTenGoi.includes(strSearch))
+    }
+    console.log(ln);
+    let nd = await packageDetailModel.get(req.params.id)
+    let listProduct = await productModel.all()
+    let xx = "NYP" + ((parseInt(id_next+1) <= 9 ? ("00" + (parseInt(id_next)+1)) : ("0" + (parseInt(id_next)+1))))
+    
+    res.render('admin/index', {
+        cssP: () => 'css',
+        scriptsP: () => 'script',
+        navP: () => 'nav',
+        footerP: () => 'footer',
+        isManageNeccessary: true,
+        neccessary: n,
+        listNeccessary: ln,
+        neccessaryDetail: nd,
+        listProduct: listProduct,
+        next_gnyp: xx,
+    });
+})
+
 router.get('/api/product/getAll', async (req, res, next) => {
     let p = await productModel.all();
     return res.json(p)

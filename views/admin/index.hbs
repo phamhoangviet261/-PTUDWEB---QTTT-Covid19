@@ -342,7 +342,7 @@
         {{/if}}
         {{#if isManageNeccessary}}
         <div class="input-group">
-            <form action="/admin/manage-neccessary/search" method="post">
+            <form action="/admin/api/neccessary/search" method="post">
             <div style="margin-bottom: 20px;">
                 <select name="arrange" id="" style="margin: 0 10px 0 0;">
                     <option value="all">Mặc Định</option>
@@ -360,8 +360,8 @@
                 <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search..."
                     name="search">
                 <select name="type" id="typeSearch" style="margin: 0 10px;">
-                    <option value="id">Mã Sản Phẩm</option>
-                    <option value="name">Tên Sản Phẩm</option>
+                    <option value="id">Mã Gói</option>
+                    <option value="name">Tên Gói</option>
                 </select>
                 <button class="button-37" role="button" onclick="" type="submit" style="padding: 0px !important; width: 100px;">Tìm</button>
             </div>
@@ -371,7 +371,7 @@
             <div class="list-neccessary">
                 <h4 style="margin-top: 10px; font-weight: 700;">Cac goi nhu yeu pham: </h4>
                 {{#each listNeccessary as |item| }}
-                <p class="neccessary-heading"><a class="hightlight-neccessary" href="/admin/manage-neccessary/{{item.MaNYP}}">{{item.MaNYP}}</a></p>
+                <p class="neccessary-heading"><a class="hightlight-neccessary" href="/admin/manage-neccessary/{{item.MaNYP}}">{{item.TenGoi}}</a></p>
                 {{/each}}
                 <p style="margin-top: 50px;">Them goi nhu yeu pham 
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAddNeccessary">

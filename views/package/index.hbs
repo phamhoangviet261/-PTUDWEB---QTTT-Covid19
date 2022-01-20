@@ -144,7 +144,7 @@
                     <div class="product--name"><span class="product--info">Tên sản phẩm: </span>{{this.TenSP}}</div>
                     <div class="product--price"><span class="product--info">Giá: </span>{{this.GiaTien}} đồng</div>
                     <div class="product--unit"><span class="product--info">Đơn vị tính: </span>{{this.DonViDinhLuong}}</div>
-                    <div class="product--quantity"><span class="product--info">Số lượng: </span>{{this.SoLuong}}</div>
+                    <div class="product--quantity"><span class="product--info">Số lượng: </span>{{this.SoLuongBan}}</div>
                 </div>
             </a>
         {{/each}}
@@ -152,34 +152,7 @@
 </div>
 <script>
     function addToCart(manyp, manlq){
-        let cartObj = JSON.parse(localStorage.getItem("cart")) || {
-            userId: `${manlq}`,
-            items: [],
-            count: 0,
-        };
-        if(cartObj['items'].includes(manyp) && cartObj['userId' == manlq]){
-            console.log("MANYP existed.")
-            Swal.fire({
-                icon: 'error',
-                title: 'Thêm vào giỏ hàng thất bại!',
-                text: 'Something went wrong!',                
-            })
-            return
-        }
-        cartObj['items'].push(manyp)
-        cartObj['count']++
-        console.log(cartObj)
-        localStorage.setItem("cart",JSON.stringify(cartObj));
-        Swal.fire(
-            'Thêm vào giỏ hàng thành công!',
-            'Thêm vào giỏ hàng thành công!',
-            'success'
-        )
-
-        let badge = document.getElementById("cartBadge")
-        badge.innerText = JSON.parse(localStorage.getItem("cart"))['count']
-
-
+        
         let data = {
                 "MaNLQ": manlq,
                 "MaNYP": manyp
@@ -193,8 +166,20 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
-                window.location.reload();
+                if (data.status == false){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gói đã tồn tại trong giỏ hàng!',
+                        text: 'Something went wrong!',                
+                    })
+                }
+                else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thêm vào giỏ hàng thành công!',
+                        text: 'Successfully!',                
+                    })
+                }
             })
             .catch((error) => {
                 console.error('Error:', error);

@@ -126,37 +126,105 @@
                     <div class="col">
                         <h4><b>Giỏ Hàng</b></h4>
                     </div>
-                    <div class="col align-self-center text-right text-muted">3 Sản Phẩm</div>
+                    <div class="col align-self-center text-right text-muted"></div>
                 </div>
             </div>
             <div class="row border-top border-bottom">
                 {{#each listCart}}
                 <div class="row main align-items-center">
-                    <div class="col-2"><img class="img-fluid" src="https://i.imgur.com/1GrakTl.jpg"></div>
+                    <div class="col-2"><img class="img-fluid" src="logo-purple.png"></div>
                     <div class="col">
                         <div class="row">{{this.TenGoi}}</div>
                     </div>
-                    <div class="col"> <a href="#" style="font-size: 24px;">-</a><a href="#" class="border">1</a><a href="#" style="font-size: 24px;">+</a> </div>
-                    <div class="col"> {{this.GiaTien}} vnd <span class="close">&#10005;</span></div>
+                    <div class="col"> <a onclick="handleMinus('{{this.MaGH}}', '{{this.SoLuong}}')" style="font-size: 24px;">-</a><a class="border">{{this.SoLuong}}</a><a onclick="handlePlus('{{this.MaGH}}', '{{this.SoLuong}}')" style="font-size: 24px;">+</a> </div>
+                    <div class="col"> {{this.TongTien}} vnd <span class="close" onclick="handleDeleteCart('{{this.MaGH}}')">&#10005;</span></div>
                 </div>
                 {{/each}}
             </div>
             
-            <div class="back-to-shop"><a href="#">&leftarrow;<span class="text-muted">Tiếp Tục Mua Sắm</span></a></div>
+            <div class="back-to-shop" style="margin-top: 20px; color: #6667ab;"><a href="/">&leftarrow;<span class="text-muted">Tiếp Tục Mua Sắm</span></a></div>
         </div>
         <div class="col-md-4 summary">
             <div>
                 <h5><b>Tổng Cộng</b></h5>
             </div>
             <hr>
-            <div class="row">
-                <div class="col" style="padding-left:0;">ITEMS 3</div>
-                <div class="col text-right">&euro; 132.00</div>
-            </div>
             <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-                <div class="col">TOTAL PRICE</div>
-                <div class="col text-right">&euro; 137.00</div>
+                <div class="col">Tổng Tiền</div>
+                <div class="col text-right">{{Total}} vnd</div>
             </div> <button class="btn">THANH TOÁN</button>
         </div>
     </div>
 </div>
+<script>
+    function handleDeleteCart(cartID) {
+        $(function () {
+            let data = {
+                "MaGH": cartID
+            }
+            fetch('/cart/delete', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
+    function handlePlus(cartID, count) {
+        $(function () {
+            let data = {
+                "MaGH": cartID,
+                "SoLuong": count
+            }
+            fetch('/cart/plus', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
+    function handleMinus(cartID, count) {
+        $(function () {
+            let data = {
+                "MaGH": cartID,
+                "SoLuong": count
+            }
+            fetch('/cart/minus', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    }
+</script>

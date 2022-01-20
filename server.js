@@ -144,7 +144,6 @@ app.get('/', async (req, res, next) =>{
         item['link'] = nonAccentVietnamese(item.TenSP).split(" ").join("-")+"-"+item["key"]
     })
 
-
     res.render('home', {
         cssP: () => 'css',
         scriptsP: () => 'script',
@@ -197,6 +196,7 @@ app.post('/signin', (req, res) => {
 })
 
 app.get('/signout', (req, res) => {
+    req.session.destroy();
     res.clearCookie("refresh-token") 
     res.clearCookie("access-token") 
     res.clearCookie("username") 

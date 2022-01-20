@@ -4,7 +4,10 @@ router.use(require('express').json())
 
 const packageModel = require('../models/package.model')
 const productModel = require('../models/product.model')
+const paymentAccountModel = require('../models/paymentAccount.model')
 const cartModel = require('../models/cart.model')
+const invoiceModel = require('../models/invoice.model')
+const invoiceDetailModel = require('../models/invoiceDetail.model')
 
 function nonAccentVietnamese(str) {
     str = str.toLowerCase();
@@ -67,16 +70,25 @@ router.get('/', async (req, res, next) => {
 
 router.post('/add-to-cart', async (req, res, next) => {
     let a = await cartModel.ofOne(req.body.MaNLQ);
+    let dup = false;
     a.forEach(item => {
         if (req.body.MaNYP == item.MaNYP){
-            return res.json({
-                status: false
-            })
+            dup = true
         }
     })
-    let temp = await packageModel.getPrice(req.body.MaNYP)
-    let c = await cartModel.addToCart(req.body.MaNLQ, req.body.MaNYP, temp[0].TongTien, temp[0].TenGoi);
-    res.json(req.body)
+    if(dup){
+        return res.json({
+            status: false
+        })
+    } else {
+        let temp = await packageModel.getPrice(req.body.MaNYP)
+        let c = await cartModel.addToCart(req.body.MaNLQ, req.body.MaNYP, temp[0].TongTien, temp[0].TenGoi);
+        console.log("Body: ", req.body);
+        return res.json({
+            status: true
+        })
+    }
+    
 })
 
 router.post('/delete', async (req, res, next) => {
@@ -109,4 +121,46 @@ router.post('/minus', async (req, res, next) => {
     }
 })
 
+router.post('/checkout', async (req, res, next) => {
+    // kiem tra so du tai khoan
+    console.log(req.body);
+    let pa = await paymentAccountModel.get("TKTT"+req.body.MaNLQ.slice(3,7))
+    let soDu = pa.SoDu 
+    if(parseInt(soDu) < parseInt(req.body.total)){
+        return res.json({status: false})
+    }
+    // tru tien o tai khoan thanh toan
+    let tinhTien = await paymentAccountModel.tinhTien( parseInt(soDu) - parseInt(req.body.total), "TKTT"+req.body.MaNLQ.slice(3,7))
+    // luu xuong table don hang
+    let maxListDH = await (await invoiceModel.all()).pop()['MaDH']
+    let listNYP = await cartModel.getByMaNLQ(req.body.MaNLQ)
+    
+    listNYP.forEach(async item => {
+        let data = {
+            "MaDH": "DH"+(parseInt(maxListDH.slice(2, maxListDH.length))+1),
+            "TongTien": item.TongTien, 
+            "ThoiGian": new Date(Date.now()),
+            "MaNLQ": req.body.MaNLQ,
+            "MaNYP": item.MaNYP,
+        }
+        
+        let donHang = await invoiceModel.add(data);
+    })
+    
+    // luu xuong table chi tiet don hang
+    listNYP.forEach(async item => {
+        console.log("item: ", item);
+        let madh = "DH"+(parseInt(maxListDH.slice(2, maxListDH.length))+1)
+
+        let getAllSPinNYP = await packageModel.getSPfromNYP(item.MaNYP)
+        console.log("getAllSPinNYP", getAllSPinNYP);
+        getAllSPinNYP.forEach(async i => {
+            let ctdh = await invoiceDetailModel.addNewRow(madh, i.MaSP, i.SoLuongBan)
+        })
+        // let xx = await invoiceDetailModel.get()
+    })
+    // xoa tat ca row trong gio hang    
+    let clearCart = await cartModel.clearCart(req.body.MaNLQ)
+    return res.json({status: true})
+})
 module.exports = router;

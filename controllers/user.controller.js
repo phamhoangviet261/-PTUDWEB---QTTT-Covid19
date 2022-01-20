@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const userM = require('../models/user.model');
+const paymentAccountModel = require('../models/paymentAccount.model')
+const donNapTienModel = require('../models/donNapTien.model')
 const shajs = require('sha.js');
 const passwordHashedLen = 64;
 let userRemem = '';
@@ -37,11 +39,12 @@ router.get('/info/:id',async (req, res, next) => {
 
 router.get('/my-order', async (req, res, next) => {
     // let listOrder = await userM.getListOrder(req.session.user.username)
-    let listOrder = await userM.getListOrder('NLQ0001')
+    let listOrder = await userM.getListOrder(req.session.username || req.cookies['username'])
     listOrder.forEach((item) => {
         
         item.ThoiGian = item.ThoiGian.toTimeString().split(' ')[0] + ' - '+ item.ThoiGian.toDateString().split(' ')[2]+'/'+(item.ThoiGian.getMonth()+1)+'/'+item.ThoiGian.toDateString().split(' ')[3]
     })
+    
     res.render('user/myOrder',{
         cssP: () => 'css',
         scriptsP: () => 'script',
@@ -57,7 +60,7 @@ router.get('/my-order', async (req, res, next) => {
 
 router.get('/my-order/:id', async (req, res, next) => {
     let listDetailOrder = await userM.getListDetailOrder(req.params.id)
-    let listOrder = await userM.getListOrder('NLQ0001')
+    let listOrder = await userM.getListOrder(req.cookies['username'])
     listOrder.forEach((item) => {
         item.ThoiGian = item.ThoiGian.toTimeString().split(' ')[0] + ' - '+ item.ThoiGian.toDateString().split(' ')[2]+'/'+(item.ThoiGian.getMonth()+1)+'/'+item.ThoiGian.toDateString().split(' ')[3]
     })
@@ -168,5 +171,29 @@ router.post('/signin', async (req, res, next) => {
         return;
     }
 });
+
+router.get('/payment', async (req, res, next) => {
+    if(req.cookies['username']){
+        console.log("user", req.cookies['username'].slice(3,7));
+        let xx = await paymentAccountModel.get("TKTT"+req.cookies['username'].slice(3, 7))
+        console.log("xx", xx.SoDu);
+        let his = await donNapTienModel.getByMaTKTT("TKTT"+req.cookies['username'].slice(3, 7))
+        console.log("his", his);
+        his.forEach((item)=>item.ThoiGian = item.ThoiGian.toDateString().split(' ')[2]+'/'+(item.ThoiGian.getMonth()+1)+'/'+item.ThoiGian.toDateString().split(' ')[3])
+        return res.render('user/payment',{
+            cssP: () => 'css',
+            scriptsP: () => 'script',
+            navP: () => 'nav',
+            footerP: () => 'footer',
+            title: "Tài khoản của tôi",
+            current: req.session.name,
+            isLogin: req.session.user,
+            notloginandsignup: 1,
+            soDu: xx.SoDu,
+            lichSu: his,
+        })
+    }
+    return res.redirect('/')
+})
 
 module.exports = router;

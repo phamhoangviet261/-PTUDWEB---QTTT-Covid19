@@ -1,4 +1,5 @@
 // MODEL
+const accountModel = require('../models/account.model')
 const activityHistoryModel = require('../models/activityHistory.model')
 const cityModel = require('../models/city.model')
 const covidPeopleModel = require('../models/covidPeople.model')
@@ -42,33 +43,47 @@ function nonAccentVietnamese(str) {
 }
 
 
-router.use(function (req, res, next) {
-    if(req.body.username && req.body.password){
-        if(req.body.username == "admin" && req.body.password == "admin"){
-            console.log("ADMIN is logging in...")
-            res.cookie('admin-access-token', req.body.username, { expires: new Date(Date.now() + 900000), httpOnly: true })
-            next()
-        } else {
-            res.render('admin/login', {
-                cssP: () => 'css',
-                scriptsP: () => 'script',
-                navP: () => 'nav',
-                footerP: () => 'footer',   
-                mess: "Từ chối đăng nhập",     
-            });
-        }
+router.use(async function (req, res, next) {
+    let adm = await accountModel.getAdmin();
+    
+    if(adm[0].count == 0){
+        // tao tai khoan admin
+        return res.render('admin/register', {
+            cssP: () => 'css',
+            scriptsP: () => 'script',
+            navP: () => 'nav',
+            footerP: () => 'footer',   
+            mess: "",     
+        });
     } else {
-        if(!req.cookies['admin-access-token']){
-            res.render('admin/login', {
-                cssP: () => 'css',
-                scriptsP: () => 'script',
-                navP: () => 'nav',
-                footerP: () => 'footer',        
-            });
+        if(req.body.username && req.body.password){
+            if(req.body.username == "admin" && req.body.password == "admin"){
+                console.log("ADMIN is logging in...")
+                res.cookie('admin-access-token', req.body.username, { expires: new Date(Date.now() + 900000), httpOnly: true })
+                next()
+            } else {
+                res.render('admin/login', {
+                    cssP: () => 'css',
+                    scriptsP: () => 'script',
+                    navP: () => 'nav',
+                    footerP: () => 'footer',   
+                    mess: "Từ chối đăng nhập",     
+                });
+            }
         } else {
-            next()
-        }
-    }    
+            if(!req.cookies['admin-access-token']){
+                res.render('admin/login', {
+                    cssP: () => 'css',
+                    scriptsP: () => 'script',
+                    navP: () => 'nav',
+                    footerP: () => 'footer',        
+                });
+            } else {
+                next()
+            }
+        }  
+    }
+      
 })
 
 router.get('/', (req, res, next)  => {
@@ -81,12 +96,57 @@ router.post('/login', (req, res, next) => {
 
 // MANAGE ACCOUTN OF PEOPLE COVID
 router.get('/manage-account', async (req, res, next) => {
+    let listAccount = await accountModel.all()
     res.render('admin/account', {
         cssP: () => 'css',
         scriptsP: () => 'script',
         navP: () => 'nav',
         footerP: () => 'footer',
         isManageAccount: true,
+        listAccount: listAccount
+    });
+})
+
+router.post('/manage-account/ban', async (req, res, next) => {
+    console.log(req.body);
+    let ban = await accountModel.ban(req.body.username)
+    return res.json({status: true});
+})
+
+router.post('/manage-account/unban', async (req, res, next) => {
+    console.log(req.body);
+    let unban = await accountModel.unban(req.body.username)
+    return res.json({status: true});
+})
+
+router.get('/manage-account/registerNQL', async (req, res, next) => {
+    return res.render('admin/register', {
+        cssP: () => 'css',
+        scriptsP: () => 'script',
+        navP: () => 'nav',
+        footerP: () => 'footer',   
+        mess: "",     
+    });
+})
+
+router.post('/manage-account/search', async (req, res, next) => {
+    let listAccount = await accountModel.all()
+    let result = []
+    if( req.body.type == "username") {
+        result = listAccount.filter(item => item.username.includes(req.body.search))
+    } else if( req.body.type == "status") {
+        result = listAccount.filter(item => item.status == req.body.search)
+    } else if( req.body.type == "accountType") {
+        result = listAccount.filter(item => item.accountType == req.body.search)
+    } 
+    console.log("R: ", result);
+    res.render('admin/account', {
+        cssP: () => 'css',
+        scriptsP: () => 'script',
+        navP: () => 'nav',
+        footerP: () => 'footer',
+        isManageAccount: true,
+        listAccount: result
     });
 })
 
@@ -576,6 +636,10 @@ router.get('/statistic', async (req, res, next) => {
     const months = [];
     sevenueDNT.forEach(cell => sevenueDNTs.push(+cell.SoTien));
     sevenueDNT.forEach(cell => months.push(cell.Nam + '/' + cell.Thang));
+
+    const sevenueSP = await statusHistoryModel.getSevenueSP();
+    const sevenueSPs = [];
+    sevenueSP.forEach(cell => sevenueSPs.push(+cell.sum));
     res.render('admin/statistic', {
         cssP: () => 'css',
         scriptsP: () => 'script',
@@ -588,6 +652,7 @@ router.get('/statistic', async (req, res, next) => {
         tenNYP: JSON.stringify(tenNYP),
         slSPsale: JSON.stringify(slSPsale),
         tenSP: JSON.stringify(tenSP),
+        sevenueSPs: JSON.stringify(sevenueSPs),
         sevenueDNTs: JSON.stringify(sevenueDNTs),
         months: JSON.stringify(months),
     });

@@ -38,4 +38,7 @@ module.exports = {
     getSevenueDNT: async () => {
         return res = await db.run('select extract(year from "ThoiGian") as "Nam", extract(month from "ThoiGian") as "Thang", sum("SoTien") as "SoTien" from public."DonNapTien" group by extract(year from "ThoiGian"), extract(month from "ThoiGian") order by "Nam", "Thang";');
     },
+    getSevenueSP:  async () => {
+        return res = await db.run('select s."TenSP", sum(ct."SoLuong" * s."GiaTien") from public."ChiTietDonHang" ct, public."SanPham" s, public."DonHang" d where ct."MaSP"=s."MaSP" and d."MaDH"=ct."MaDH" group by s."MaSP", s."TenSP";');
+    },
 }

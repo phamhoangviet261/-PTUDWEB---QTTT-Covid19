@@ -1,37 +1,59 @@
 <style>
-    .admin{
+    .admin {
         display: grid;
         grid-template-columns: 1fr 7fr;
     }
-    .sidebar{
-        background: rgb(102,103,171);
-        background: linear-gradient(90deg, rgba(102,103,171,1) 0%, rgba(75,75,200,1) 50%);
+
+    .sidebar {
+        background: rgb(102, 103, 171);
+        background: linear-gradient(90deg, rgba(102, 103, 171, 1) 0%, rgba(75, 75, 200, 1) 50%);
         height: 100vh;
         color: #ffffff;
+        position: fixed;
     }
-    .sidebar > ul > li{
+
+    .sidebar>ul>li {
         border-bottom: 1px solid #1f1f1f;
         cursor: pointer;
     }
-    .sidebar > ul > li:hover{
+
+    .sidebar>ul>li:hover {
         color: #b8b8b8;
     }
 
-    .choosen{
+    .choosen {
         background-color: #ffffff;
         color: #000000;
     }
-    {{!-- Account --}}
-    {{!-- Product --}}
-    {{!-- Neccessary --}}
-    .hightlight-neccessary:hover{
+
+        {
+            {
+             !-- Account --
+        }
+    }
+
+        {
+            {
+             !-- Product --
+        }
+    }
+
+        {
+            {
+             !-- Neccessary --
+        }
+    }
+
+    .hightlight-neccessary:hover {
         color: aqua;
     }
-    .manage-neccessary{
+
+    .manage-neccessary {
         display: flex;
-        
+
     }
-    .neccessary-heading{
+
+    .neccessary-heading {
         font-size: 16px;
         font-weight: 600;
         border-bottom: 1px solid #a5a5a5;
@@ -39,47 +61,102 @@
         margin: 5px;
         cursor: pointer;
     }
-    .neccessary-heading:hover{
-        color:aqua;
+
+    .neccessary-heading:hover {
+        color: aqua;
     }
-    .list-neccessary{
+
+    .list-neccessary {
         width: 20%;
         height: 100vh;
         border-right: 1px solid #a5a5a5;
         border-right: 1px solid #a5a5a5;
     }
-    .neccessary-info{
+
+    .neccessary-info {
         width: 70%;
         margin: 20px;
     }
-    .a-heading{
+
+    .a-heading {
         display: block;
         font-size: 16px;
         font-weight: 900;
         padding: 20px 10px;
         text-transform: uppercase;
     }
-    .table-product-image{
+
+    .table-product-image {
         width: 100px;
     }
 
-    {{!-- STATISTIC --}}
-    .content{
+        {
+            {
+             !-- STATISTIC --
+        }
+    }
+
+    .content {
         display: flex;
         flex-direction: column;
-        padding: 20px;
+        padding-top: 30px;
+        padding-left: 12%;
+        width: calc(100vw - 50px);
     }
-    .statistic-block{
+
+    .statistic-block {
         margin-bottom: 20px;
     }
-    .block-title{
+
+    .block-title {
         display: flex;
     }
-    .block-title::before{
+
+    .block-title::before {
         content: '';
         border-left: 4px solid var(--primary-color);
         padding-right: 10px;
         height: 38px;
+    }
+
+    .input-group form {
+        display: flex;
+        width: 100%;
+        height: 38px;
+    }
+
+    .button-37 {
+        background-color: #13aa52;
+        border: 1px solid #13aa52;
+        border-radius: 4px;
+        box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        font-family: "Akzidenz Grotesk BQ Medium", -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        outline: none;
+        outline: 0;
+        padding: 10px 25px;
+        text-align: center;
+        transform: translateY(0);
+        transition: transform 150ms, box-shadow 150ms;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        margin-right: 20px;
+    }
+
+    .button-37:hover {
+        box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
+        transform: translateY(-2px);
+    }
+
+    @media (min-width: 768px) {
+        .button-37 {
+            padding: 10px 30px;
+        }
     }
 </style>
 
@@ -87,15 +164,195 @@
     <div class="sidebar">
         <h2>ADMIN</h2>
         <ul>
-            <li class="manage-account {{#if isManageAccount}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-account">Manage account</a></li>
-            <li class="manage-account {{#if isManagePeople}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-people">Manage people</a></li>
-            <li class="manage-product {{#if isManageProduct}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-product">Manage product</a></li>
-            <li class="manage-neccessary {{#if isManageNeccessary}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-neccessary">Manage Neccessary</a></li>
-            <li class="manage-neccessary {{#if isStatistic}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/statistic">Statistic</a></li>
+            <li class="manage-account {{#if isManageAccount}}choosen{{/if}}"><a class="hightlight-neccessary a-heading"
+                    href="/admin/manage-account">Manage account</a></li>
+            <li class="manage-account {{#if isManagePeople}}choosen{{/if}}"><a class="hightlight-neccessary a-heading"
+                    href="/admin/manage-people">Manage people</a></li>
+            <li class="manage-product {{#if isManageProduct}}choosen{{/if}}"><a class="hightlight-neccessary a-heading"
+                    href="/admin/manage-product">Manage product</a></li>
+            <li class="manage-neccessary {{#if isManageNeccessary}}choosen{{/if}}"><a
+                    class="hightlight-neccessary a-heading" href="/admin/manage-neccessary">Manage Neccessary</a></li>
+            <li class="manage-neccessary {{#if isStatistic}}choosen{{/if}}"><a class="hightlight-neccessary a-heading"
+                    href="/admin/statistic">Statistic</a></li>
         </ul>
-        
+
     </div>
     <div class="content">
-   
+        <div class="manage-neccessary">
+            <div class="input-group" style="margin-bottom: 20px;">
+
+                <form action="/admin/manage-account/search" method="post">
+                    <input type="text" class="form-control" aria-label="Text input with dropdown button"
+                        placeholder="Search..." name="search">
+                    <select name="type" id="typeSearch">
+                        <option value="username">username</option>
+                        <option value="status">Status</option>
+                        <option value="accountType">Account Type</option>
+
+                    </select>
+                    <button class="button-37" role="button" onclick="" type="submit">Tìm</button>
+                </form>
+            </div>
+        </div>
+        <div class="action-item">
+            <button class="button-37" role="button"><a href="/admin/manage-account/registerNQL">Thêm tài khoản Người Quản Lý</a></button>
+        </div>
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+
+                    <th scope="col">Username</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each listAccount as |item i| }}
+                <tr>
+
+                    <td>{{item.username}}</td>
+                    <td>{{item.password}}</td>
+                    <td>{{item.accountType}}</td>
+                    <td>{{item.status}}</td>
+                    <td>
+                        <i class="fas fa-edit" data-toggle="tooltip" data-placement="right" title="Edit"></i>
+                        <i class="fas fa-lock" data-toggle="tooltip" data-placement="right" title="Ban"
+                            onclick="ban('{{item.username}}')"></i>
+                        <i class="fas fa-lock-open" data-toggle="tooltip" data-placement="right" title="Unban"
+                            onclick="unban('{{item.username}}')"></i>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
     </div>
 </div>
+
+<script>
+    let addAccountForNQL = async () => {
+        const { value: formValues } = await Swal.fire({
+        title: 'Tạo tài khoản NQL',
+        html:
+            '<label style="color: #fff;">Username</label><input id="swal-input1" class="swal2-input" name="username">' +
+            '<label style="color: #fff;">Pasword</label><input id="swal-input2" class="swal2-input" name="password">'+
+            '<label style="color: #fff;">Re-pasword</label><input id="swal-input3" class="swal2-input" name="re_password">',
+        focusConfirm: false,
+        preConfirm: () => {
+            return [
+            document.getElementById('swal-input1').value,
+            document.getElementById('swal-input2').value,
+            document.getElementById('swal-input3').value
+            ]
+        }
+        })
+
+        if (formValues) {
+            console.log(formValues)
+            Swal.fire(formValues)
+            let data = {
+                "username": formValues[0],
+                "password": formValues[1],
+                "re_password": formValues[2]
+            }
+            fetch('/admin/manage-people/addNQL', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    if (data.status) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thêm tài khoản NQL thành công!',
+                            text: 'Successfully!',
+                        })
+                        window.location.reload()
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Thêm tài khoản NQL thất bại: Sai mật khẩu xác nhận!',
+                            text: 'Successfully!',
+                        })
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+    }
+    let ban = (username) => {
+        console.log(username)
+        let data = {
+            "username": username
+        }
+        fetch('/admin/manage-account/ban', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                if (data.status) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Khoá tài khoản thành công!',
+                        text: 'Successfully!',
+                    })
+                    window.location.reload()
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Khoá tài khoản thất bại!',
+                        text: 'Successfully!',
+                    })
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
+    let unban = (username) => {
+        console.log(username)
+        let data = {
+            "username": username
+        }
+        fetch('/admin/manage-account/unban', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                if (data.status) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Mở khoá tài khoản thành công!',
+                        text: 'Successfully!',
+                    })
+                    window.location.reload()
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'mở khoá tài khoản thất bại!',
+                        text: 'Successfully!',
+                    })
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+</script>

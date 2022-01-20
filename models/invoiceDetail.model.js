@@ -25,5 +25,8 @@ module.exports = {
     },
     update: async (id, dataUpdate) => {
         return res = await db.update(tbName, dataUpdate, idFieldName, id);        
-    }
+    },
+    addNewRow: async (madh, masp, soluong) => {
+        return res = await db.run(`insert into public."ChiTietDonHang" ("MaDH", "MaSP", "SoLuong") values ('${madh}','${masp}','${soluong}')`);
+    },
 }

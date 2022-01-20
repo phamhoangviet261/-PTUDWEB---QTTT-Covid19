@@ -31,10 +31,11 @@ app.use(express.static('views/images'));
 
 const session = require('express-session');
 app.use(session({
-    secret: 'ahihi',
-    resave: false,
-    saveUninitialized: true
-}))
+    secret: 'v8bRRj7XVC6Dvp',
+    saveUninitialized: true,
+    resave: true,
+    cookie: {maxAge:900000} //here ,15 min session time
+}));
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json())
@@ -47,9 +48,8 @@ app.use(cookieParser());
 const jwt = require('jsonwebtoken')
 const verifyToken = require('./controllers/auth.controller')
 const serverAuth = require('./server-auth')
-
-const productModel = require('./models/product.model');
-const cartModel = require('./models/cart.model');
+const serverPayment = require('./server-payment')
+const productModel = require('./models/product.model')
 
 function nonAccentVietnamese(str) {
     str = str.toLowerCase();
@@ -87,7 +87,7 @@ app.get('/', async (req, res, next) =>{
     console.log("Full url: ", fullUrl)
     if(req.originalUrl.includes('&token')){
         res.cookie('access-token', req.query.token, { expires: new Date(Date.now() + 900000), httpOnly: true })
-        res.cookie('refresh-token', req.query.refreshToken, { expires: new Date(Date.now() + 900000), httpOnly: true })
+        res.cookie('refresh-token', req.query.refreshToken, { expires: new Date(Date.now() + 900000), httpOnly: true })        
         res.redirect(req.originalUrl.split("?").shift());
         return;
     }
@@ -110,6 +110,7 @@ app.get('/', async (req, res, next) =>{
             console.log("User PW: ", userPw)
             req.session.name = userId;
             req.session.user = decoded;
+            res.cookie('username', userId, { expires: new Date(Date.now() + 900000), httpOnly: true })
 		} catch (error) {
 			if(error.expiredAt){
                 console.log("Expired: ", error.expiredAt)
@@ -198,6 +199,7 @@ app.get('/signout', (req, res) => {
     req.session.destroy();
     res.clearCookie("refresh-token") 
     res.clearCookie("access-token") 
+    res.clearCookie("username") 
     res.redirect('/login')
 })
 
@@ -210,6 +212,10 @@ app.use('/user', require('./controllers/user.controller'))
 
 serverAuth.listen(3001, () => {
     console.log(`Auth Server is listening on port ${3001}`);
+});
+
+serverPayment.listen(3002, () => {
+    console.log(`Payment Server is listening on port ${3002}`);
 });
 
 app.listen(process.env.PORT || 3000, () => {

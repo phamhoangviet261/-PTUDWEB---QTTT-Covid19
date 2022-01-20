@@ -132,12 +132,22 @@
 
         <div class="statistic-block">
             <div class="block-title">
+                <h2>Thống kê doanh thu tiêu thụ sản phẩm</h2>
+            </div>
+        </div>
+        <canvas id="SeSPChart" width="400" height="400"></canvas>
+        <input id="ipsevenueSPs" type="text" value={{ sevenueSPs }} style="visibility: hidden">
+        <input id="iptenSP" type="text" value='{{ tenSP }}' style="visibility: hidden">
+
+        <div class="statistic-block">
+            <div class="block-title">
                 <h2>Thống kê doanh thu nạp tiền</h2>
             </div>
         </div>
         <canvas id="SevenueChart" width="400" height="400"></canvas>
         <input id="ipsevenueDNTs" type="text" value={{ sevenueDNTs }} style="visibility: hidden">
         <input id="ipmonths" type="text" value='{{ months }}' style="visibility: hidden">
+
     </div>
 </div>
 
@@ -206,6 +216,22 @@
             datasets: [{
                 label: 'Lượng tiêu thụ',
                 data:  slSPsale,
+                backgroundColor: colors,
+            }]
+        }
+    });
+
+    const sevenueSPs = JSON.parse(document.getElementById('ipsevenueSPs').value).filter((cell) => cell < 40000000);
+    console.log(sevenueSPs);
+    console.log(tenSP);
+    const tenSP2 = tenSP.filter(cell => !cell.includes('test  20'));
+    const SeSPChart = new Chart("SeSPChart", {
+        type: 'horizontalBar',
+        data: {
+            labels: tenSP2,
+            datasets: [{
+                label: 'Doanh thu',
+                data:  sevenueSPs,
                 backgroundColor: colors,
             }]
         }

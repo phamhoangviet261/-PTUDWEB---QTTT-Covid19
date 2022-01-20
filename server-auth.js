@@ -55,6 +55,42 @@ const updateRefreshToken = (username, refreshToken) => {
 	})
 }
 
+app.post('/register', async (req, res, next) => {
+	if(req.params.admin){
+		const username = req.body.username
+		const password = req.body.password
+
+		const salt = password.substring(pwdHasedLen)
+		const passwordHased = shajs('sha256').update(password + salt).digest('hex') + salt
+
+		let data = {"username": username, "password": passwordHased, "accountType": 0, "token": null, "status": "active"}
+		let insert = await accountModel.add(data)
+
+		const user = await userModel.get(username);
+		const tokens = generateTokens(user)
+		updateRefreshToken(username, tokens.refreshToken)
+
+		const setToken = await userModel.updateToken(user.username, {"token":tokens.refreshToken})
+		res.redirect('http://localhost:3000/admin')
+	} else {
+		const username = req.body.username
+		const password = req.body.password
+
+		const salt = password.substring(pwdHasedLen)
+		const passwordHased = shajs('sha256').update(password + salt).digest('hex') + salt
+
+		let data = {"username": username, "password": passwordHased, "accountType": 1, "token": null, "status": "active"}
+		let insert = await accountModel.add(data)
+
+		const user = await userModel.get(username);
+		const tokens = generateTokens(user)
+		updateRefreshToken(username, tokens.refreshToken)
+
+		const setToken = await userModel.updateToken(user.username, {"token":tokens.refreshToken})
+		res.redirect('http://localhost:3000/admin')
+	}
+})
+
 app.post('/login', async (req, res) => {
 	const username = req.body.username
 	const password = req.body.password

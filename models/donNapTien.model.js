@@ -1,6 +1,6 @@
 const db = require('./db');
-const tbName = 'TaiKhoanThanhToan';
-const idFieldName = 'MaTKTT'
+const tbName = 'DonNapTien';
+const idFieldName = 'MaDNT'
 
 module.exports = {
     all: async () => {
@@ -26,7 +26,7 @@ module.exports = {
     update: async (id, dataUpdate) => {
         return res = await db.update(tbName, dataUpdate, idFieldName, id);        
     },
-    tinhTien: async (money, matktt) => {
-        return res = await db.run(`update public."TaiKhoanThanhToan" set "SoDu" = '${money}' where "MaTKTT" = '${matktt}'`);        
-    }
+    getByMaTKTT: async (matktt) => {
+        return res = await db.run(`SELECT * FROM public."DonNapTien" where "MaTKTT" = '${matktt}'`);   
+    },
 }

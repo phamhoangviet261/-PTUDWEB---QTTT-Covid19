@@ -44,6 +44,12 @@ module.exports = {
     },
     minus: async (MaGH, GiaTien) => {
         return res = await db.run(`UPDATE public."GioHang" SET "SoLuong" = "SoLuong" - 1, "TongTien" = "TongTien" - ${GiaTien} WHERE "MaGH" = '${MaGH}'`);
-    }
+    },
+    clearCart: async (manlq) => {
+        return res = await db.run(`delete from public."GioHang" where "MaNLQ" = '${manlq}'`);
+    },
+    getByMaNLQ: async (manlq) => {
+        return res = await db.run(`select * from public."GioHang" where "MaNLQ" = '${manlq}'`);
+    },
 
 }

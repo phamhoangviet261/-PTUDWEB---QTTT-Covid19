@@ -27,8 +27,8 @@ module.exports = {
         return res = await db.update(tbName, dataUpdate, idFieldName, id);        
     },
     getSPfromNYP: async (nypid) => {
-        return res = await db.run(`select * from "SanPham"
-        where "MaSP" in (SELECT "MaSP" FROM "ChiTietNhuYeuPham" where "MaNYP" = '${nypid}')`);  
+        return res = await db.run(`select S.*, C."SoLuong" as "SoLuongBan" from "SanPham" S, "ChiTietNhuYeuPham" C
+        where S."MaSP" = C."MaSP" and "MaNYP" = '${nypid}'`);  
     },
     delete: async (PackageID) => {
         await db.run(`DELETE FROM "ChiTietNhuYeuPham" WHERE "MaNYP" = '${PackageID}'`); 
@@ -38,5 +38,8 @@ module.exports = {
         return res = await db.run(`SELECT G."TenGoi", Sum(S."GiaTien" * C."SoLuong") as "TongTien" FROM public."GoiNhuYeuPham" G, public."ChiTietNhuYeuPham" C, public."SanPham" S
         WHERE C."MaNYP" = G."MaNYP" AND C."MaSP" = S."MaSP" AND G."MaNYP" = '${packageID}'
         GROUP BY G."MaNYP"`);
+    },
+    getNYPfromGH: async (MaGH) => {
+        return res = await db.run(`SELECT * FROM public."GioHang" GH, public."GoiNhuYeuPham" G WHERE GH."MaNYP" = G."MaNYP" AND GH."MaGH" = '${MaGH}'`);
     }
 }

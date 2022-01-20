@@ -29,6 +29,15 @@ function nonAccentVietnamese(str) {
     return str;
 }
 
+router.use('/', async (req, res, next) => {
+    if (!req.session.user){
+        return res.redirect('/login')
+    }
+    else {
+        next();
+    }
+})
+
 async function fgetPrice(listcart){
     await listcart.forEach(async item => {
         let temp = await packageModel.getPrice(item.MaNYP)
@@ -39,12 +48,9 @@ async function fgetPrice(listcart){
     return listcart;
 }
 
-router.get('/', async (req, res) => {
-    console.log(req.session.name);
+router.get('/', async (req, res, next) => {
     let listCart = await cartModel.ofOne(req.session.name);
-    console.log(listCart);
-    listCart = await fgetPrice(listCart);
-    console.log(listCart);
+    let Total = await cartModel.getTotal(req.session.name);
     return res.render('cart/index', {
         cssP: () => 'css',
         scriptsP: () => 'script',
@@ -53,13 +59,54 @@ router.get('/', async (req, res) => {
         current: req.session.name,
         isLogin: req.session.user,
         listCart,
+        title: "Giỏ Hàng",
+        Total: Total[0].TongTien,
         notloginandsignup: 1,
     });
 })
 
-router.post('/add-to-cart', async (req, res) => {
-    let c = await cartModel.addToCart(req.body.MaNLQ, req.body.MaNYP);
+router.post('/add-to-cart', async (req, res, next) => {
+    let a = await cartModel.ofOne(req.body.MaNLQ);
+    a.forEach(item => {
+        if (req.body.MaNYP == item.MaNYP){
+            return res.json({
+                status: false
+            })
+        }
+    })
+    let temp = await packageModel.getPrice(req.body.MaNYP)
+    let c = await cartModel.addToCart(req.body.MaNLQ, req.body.MaNYP, temp[0].TongTien, temp[0].TenGoi);
     res.json(req.body)
+})
+
+router.post('/delete', async (req, res, next) => {
+    let a = await cartModel.delete(req.body.MaGH);
+    res.json(req.body)
+})
+
+router.post('/plus', async (req, res, next) => {
+    let p = await packageModel.getNYPfromGH(req.body.MaGH);
+    let temp = await packageModel.getPrice(p[0].MaNYP);
+    let limit = p[0].GioiHanGoiNguoi;
+    if (req.body.SoLuong == limit){
+        res.json(req.body)
+    }
+    else {
+        let a = await cartModel.plus(req.body.MaGH, temp[0].TongTien);
+        res.json(req.body)
+    }
+})
+
+router.post('/minus', async (req, res, next) => {
+    let p = await packageModel.getNYPfromGH(req.body.MaGH);
+    let temp = await packageModel.getPrice(p[0].MaNYP);
+    if (req.body.SoLuong == '1'){
+        res.json(req.body)
+    }
+    else {
+        let a = await cartModel.minus(req.body.MaGH, temp[0].TongTien);
+        res.json(req.body)
+    }
 })
 
 module.exports = router;

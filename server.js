@@ -48,7 +48,8 @@ const jwt = require('jsonwebtoken')
 const verifyToken = require('./controllers/auth.controller')
 const serverAuth = require('./server-auth')
 
-const productModel = require('./models/product.model')
+const productModel = require('./models/product.model');
+const cartModel = require('./models/cart.model');
 
 function nonAccentVietnamese(str) {
     str = str.toLowerCase();
@@ -142,7 +143,6 @@ app.get('/', async (req, res, next) =>{
         item['link'] = nonAccentVietnamese(item.TenSP).split(" ").join("-")+"-"+item["key"]
     })
 
-
     res.render('home', {
         cssP: () => 'css',
         scriptsP: () => 'script',
@@ -195,6 +195,7 @@ app.post('/signin', (req, res) => {
 })
 
 app.get('/signout', (req, res) => {
+    req.session.destroy();
     res.clearCookie("refresh-token") 
     res.clearCookie("access-token") 
     res.redirect('/login')

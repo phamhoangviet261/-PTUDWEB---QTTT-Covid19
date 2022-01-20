@@ -4,10 +4,22 @@ const productModel = require('../models/product.model')
 router.use(require('express').urlencoded({extended:true}));
 router.use(require('express').json())
 
-router.get('/api/getAll', async (req, res) => {
+router.use('/', async (req, res, next) => {
+    if (!req.session.user){
+        return res.redirect('/login')
+    }
+    else {
+        next();
+    }
+})
+
+
+router.get('/api/getAll', async (req, res, next) => {
     let p = await productModel.topN(12);
     return res.json(p)
 })
+
+
 
 function nonAccentVietnamese(str) {
     str = str.toLowerCase();
@@ -32,7 +44,7 @@ function nonAccentVietnamese(str) {
     return str;
 }
 
-router.post('/search', async (req, res) => {
+router.post('/search', async (req, res, next) => {
     let products = await productModel.all();
     let strSearch = nonAccentVietnamese(req.body.search)
     products.forEach(item => {
@@ -57,7 +69,7 @@ router.post('/search', async (req, res) => {
     });
 })
 
-router.get('/:productName', async (req, res) => {
+router.get('/:productName', async (req, res, next) => {
     let idParam = req.params.productName.split("-").pop()
     console.log(req.params)
     console.log("idParam", idParam)

@@ -30,8 +30,20 @@ module.exports = {
     ofOne: async (MaNLQ) => {
         return res = await db.run(`SELECT * FROM public."GioHang" WHERE "MaNLQ" = '${MaNLQ}'`);
     },
-    addToCart: async (MaNLQ, MaNYP) => {
-        return res = await db.run(`INSERT INTO public."GioHang"("MaNLQ", "MaNYP") VALUES ('${MaNLQ}', '${MaNYP}')`);
+    addToCart: async (MaNLQ, MaNYP, TongTien, TenGoi) => {
+        return res = await db.run(`INSERT INTO public."GioHang"("MaNLQ", "MaNYP", "SoLuong", "TongTien", "TenGoi") VALUES ('${MaNLQ}', '${MaNYP}', 1, ${TongTien}, '${TenGoi}')`);
+    },
+    getTotal: async (MaNLQ) => {
+        return res = await db.run(`SELECT Sum("TongTien") as "TongTien" FROM public."GioHang" WHERE "MaNLQ" = '${MaNLQ}'`);
+    },
+    delete: async (MaGH) => {
+        return res = await db.run (`DELETE FROM public."GioHang" WHERE "MaGH" = '${MaGH}'`);
+    },
+    plus: async (MaGH, GiaTien) => {
+        return res = await db.run(`UPDATE public."GioHang" SET "SoLuong" = "SoLuong" + 1, "TongTien" = "TongTien" + ${GiaTien} WHERE "MaGH" = '${MaGH}'`);
+    },
+    minus: async (MaGH, GiaTien) => {
+        return res = await db.run(`UPDATE public."GioHang" SET "SoLuong" = "SoLuong" - 1, "TongTien" = "TongTien" - ${GiaTien} WHERE "MaGH" = '${MaGH}'`);
     }
 
 }

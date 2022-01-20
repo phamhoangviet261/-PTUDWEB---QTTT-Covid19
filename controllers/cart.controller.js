@@ -40,4 +40,7 @@ router.get('/', async (req, res) => {
     });
 })
 
+router.post('/addtocart', async (req, res) => {
+    return res.json({})
+})
 module.exports = router;

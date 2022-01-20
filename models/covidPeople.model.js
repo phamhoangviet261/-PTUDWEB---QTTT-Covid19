@@ -48,6 +48,8 @@ module.exports = {
         return res = await db.run(`SELECT * FROM public."NguoiLienQuanCovid" ORDER BY "MaNLQ" ASC `);   
     },
     delete: async (manlq) => {
+        await db.run(`DELETE FROM public."LichSuNoiDieuTri" WHERE "MaNLQ" = '${manlq}'`);
+        await db.run(`DELETE FROM public."LichSuQuanLy" WHERE "MaNLQ" = '${manlq}'`);
         return res = await db.run(`DELETE FROM public."NguoiLienQuanCovid" WHERE "MaNLQ" = '${manlq}' `);   
     },
 }

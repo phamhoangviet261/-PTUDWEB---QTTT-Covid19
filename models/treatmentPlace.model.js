@@ -27,7 +27,10 @@ module.exports = {
         return res = await db.update(tbName, dataUpdate, idFieldName, id);        
     },
     getNDT: async (manlq) => {
-        return res = await db.run(`select * from public."NoiDieuTri"
-        where "MaNDT" =  (SELECT "MaNDT" FROM public."LichSuNoiDieuTri" where "MaNLQ" = '${manlq}')`);   
+        return res = await db.run(`SELECT * FROM public."NoiDieuTri"
+        WHERE "MaNDT" =  (SELECT "MaNDT" FROM public."LichSuNoiDieuTri" WHERE "MaNLQ" = '${manlq}')`);
     },
+    getNDT2: async (mapx) => {
+        return res = await db.run(`SELECT * FROM public."NoiDieuTri" WHERE "MaPhuongXa" = '${mapx}'`);
+    }
 }

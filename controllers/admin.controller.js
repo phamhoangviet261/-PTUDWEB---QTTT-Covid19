@@ -153,16 +153,29 @@ router.post('/manage-people/add', async (req, res, next) =>{
     delete req.body['MaPhuongXaNoiDieuTri']
     let p = await covidPeopleModel.add(req.body)
     let tp = await (await treatmentPlaceHistoryModel.all()).pop()['MaLSNDT'].slice(4,8)
-
+    let mp = await (await managementHistoryModel.all()).pop()['MaLSQL'].slice(4,8)
     let nql = await managerModel.getMaNQL(maPhuongXaNoiDieuTri)
-
-    let data = {
+    console.log(`'${maPhuongXaNoiDieuTri}'`);
+    let mandt = await treatmentPlaceModel.getNDT2(maPhuongXaNoiDieuTri)
+    let dataNDT = {
         "MaLSNDT":"LSDT" + ((tp - 0 ) + 1),
-        "MaNDT": req.body.MaNLQ,
-        "MaNQL": nql[0]['MaNQL'],
+        "MaNDT": mandt[0].MaNDT,
+        "MaNLQ": req.body.MaNLQ,
         "NgayTao": new Date(Date.now())
     }
-    let addTp = await treatmentPlaceHistoryModel.add(data)
+
+
+    let dataNQL = {
+        "MaLSQL":"LSQL" + ((mp - 0 ) + 1),
+        "MaNQL": nql[0]['MaNQL'],
+        "MaNLQ": req.body.MaNLQ,
+        "NgayTao": new Date(Date.now())
+    }
+
+    console.log("dataNDT: ", dataNDT);
+    console.log("dataNQL: ", dataNQL);
+    let addTp = await treatmentPlaceHistoryModel.add(dataNDT);
+    let addMp = await managementHistoryModel.add(dataNQL);
     res.json(req.body)
 })
 
@@ -289,6 +302,11 @@ router.get('/manage-people/people', async (req, res, next)=>{
         res.json({})
     }
     
+})
+
+router.post('/manage-people/delete', async (req, res, next) => {
+    let p = await covidPeopleModel.delete(req.body.MaNLQ)
+    res.json(req.body)
 })
 
 router.post('/manage-people/delete-people', async (req, res, next) => {

@@ -244,7 +244,7 @@
                             <td>{{item.username}}</td>
                             <td>
                                 <i class="fas fa-edit" data-toggle="tooltip" data-placement="right" title="Edit"></i>
-                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete"></i>
+                                <i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="right" title="Delete" onclick="submitDeletepeople('{{item.MaNLQ}}')"></i>
                             </td>
                         </tr>
                         {{/each}}
@@ -270,6 +270,30 @@
             }
             console.log(data)
             fetch('/admin/manage-people/add', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
+    let submitDeletepeople = (maNLQ) => {
+        $(function () {
+            let data = {
+                "MaNLQ": maNLQ
+            }
+            console.log(data)
+            fetch('/admin/manage-people/delete', {
                 method: 'POST', // or 'PUT'
                 headers: {
                     'Content-Type': 'application/json',

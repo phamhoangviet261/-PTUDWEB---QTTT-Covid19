@@ -97,7 +97,7 @@
 
 <div class="admin">
     <div class="sidebar">
-        <h2>ADMIN</h2>
+        <h2 style="padding: 10px 0 0 10px;">ADMIN</h2>
         <ul>
             <li class="manage-account {{#if isManageAccount}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-account">Manage account</a></li>
             <li class="manage-account {{#if isManagePeople}}choosen{{/if}}"><a class="hightlight-neccessary a-heading" href="/admin/manage-people">Manage people</a></li>
@@ -109,7 +109,13 @@
     </div>
     <div class="content">
         <div class="manage">
-            <h3>Trang thai hien tai: F<span>{{Fstatus}}</span> </h3>
+            {{#if Fstatus}}
+                <h3>Trạng thái hiện tại: F<span>{{Fstatus}}</span> </h3>
+            {{/if}}
+            {{#if beFine}}
+                <h3>Trạng thái hiện tại: <span>{{beFine}}</span> </h3>
+            {{/if}}
+            
             <div class="treatment-place" style="margin-bottom: 20px;">
                 <h5><b>Hiện đang điều trị tại:</b> <span>Khu điều trị {{ten_ndt}}</span> </h5>
                 <h5><b>Địa chỉ:</b> {{diachi_ndt}}</h5>
@@ -122,17 +128,17 @@
                     <thead class="thead-light">
                         <tr>
                         
-                        <th scope="col">Ma NLQ</th>
-                        <th scope="col">Ho Ten</th>                        
-                        <th scope="col">CMND/CCCD</th>
-                        <th scope="col">Ngay Sinh</th>
-                        <th scope="col">Gioi Tinh</th>
-                        <th scope="col">Dia Chi</th>
-                        <th scope="col">Phuong/Xa</th>
-                        <th scope="col">Quan/Huyen</th>
-                        <th scope="col">Tinh/Thanh Pho</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Action</th>
+                            <th scope="col">Mã NLQ</th>
+                            <th scope="col">Họ Tên</th>                        
+                            <th scope="col">CMND/CCCD</th>
+                            <th scope="col">Ngày Sinh</th>
+                            <th scope="col">Giới Tính</th>
+                            <th scope="col">Địa Chỉ</th>
+                            <th scope="col">Phường/Xã</th>
+                            <th scope="col">Quận/Huyện</th>
+                            <th scope="col">Tỉnh/Thành Phố</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -257,21 +263,20 @@
                     onclick="addF2()">Thêm F2</button>
                 </div>
             </div>
-            <h3>Danh sach nguoi lien quan:</h3>
+            <h3>Danh sách người liên quan:</h3>
 
             <h4>F0: </h4>
             <table class="table">
                     <thead class="thead-light">
                         <tr>
-                        
-                        <th scope="col">Ma NLQ</th>
-                        <th scope="col">Ho Ten</th>                        
-                        <th scope="col">CMND/CCCD</th>
-                        <th scope="col">Ngay Sinh</th>
-                        <th scope="col">Gioi Tinh</th>
-                        <th scope="col">Dia Chi</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Action</th>
+                            <th scope="col">Mã NLQ</th>
+                            <th scope="col">Họ Tên</th>                        
+                            <th scope="col">CMND/CCCD</th>
+                            <th scope="col">Ngày Sinh</th>
+                            <th scope="col">Giới Tính</th>
+                            <th scope="col">Địa Chỉ</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -300,14 +305,14 @@
                     <thead class="thead-light">
                         <tr>
                         
-                        <th scope="col">Ma NLQ</th>
-                        <th scope="col">Ho Ten</th>                        
-                        <th scope="col">CMND/CCCD</th>
-                        <th scope="col">Ngay Sinh</th>
-                        <th scope="col">Gioi Tinh</th>
-                        <th scope="col">Dia Chi</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Action</th>
+                            <th scope="col">Mã NLQ</th>
+                            <th scope="col">Họ Tên</th>                        
+                            <th scope="col">CMND/CCCD</th>
+                            <th scope="col">Ngày Sinh</th>
+                            <th scope="col">Giới Tính</th>
+                            <th scope="col">Địa Chỉ</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -334,16 +339,14 @@
             <table class="table">
                     <thead class="thead-light">
                         <tr>
-                        
-                        <th scope="col">Ma NLQ</th>
-                        <th scope="col">Ma NLQ Truoc</th>
-                        <th scope="col">Ho Ten</th>                        
-                        <th scope="col">CMND/CCCD</th>
-                        <th scope="col">Ngay Sinh</th>
-                        <th scope="col">Gioi Tinh</th>
-                        <th scope="col">Dia Chi</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Action</th>
+                            <th scope="col">Mã NLQ</th>
+                            <th scope="col">Họ Tên</th>                        
+                            <th scope="col">CMND/CCCD</th>
+                            <th scope="col">Ngày Sinh</th>
+                            <th scope="col">Giới Tính</th>
+                            <th scope="col">Địa Chỉ</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>

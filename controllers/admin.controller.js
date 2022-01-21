@@ -352,23 +352,46 @@ router.get('/manage-people/people', async (req, res, next)=>{
         let ndt_ttp = await cityModel.get(ndt_qh['MaTinhTP'])
         // console.log(u)
         
-        res.render('admin/peopleDetail', {
-            cssP: () => 'css',
-            scriptsP: () => 'script',
-            navP: () => 'nav',
-            footerP: () => 'footer',
-            isManagePeople: true,
-            user: u,
-            listF0: makeColorPeople(f0),
-            listF1: makeColorPeople(f1),
-            listF2: makeColorPeople(f2),
-            dspx: dspx,
-            dsqh: dsqh,
-            dsttp: dsttp,
-            ten_ndt: ndt[0]['TenNDT'],
-            diachi_ndt: ndt[0]['DiaChi']+", "+ndt_px['TenPhuongXa']+", "+ndt_qh['TenQuanHuyen']+", "+ndt_ttp['TenTinhTP'],
-            Fstatus: f[0].TrangThai,
-        });
+        if (f[0].TrangThai === -1){
+            res.render('admin/peopleDetail', {
+                cssP: () => 'css',
+                scriptsP: () => 'script',
+                navP: () => 'nav',
+                footerP: () => 'footer',
+                isManagePeople: true,
+                user: u,
+                listF0: makeColorPeople(f0),
+                listF1: makeColorPeople(f1),
+                listF2: makeColorPeople(f2),
+                dspx: dspx,
+                dsqh: dsqh,
+                dsttp: dsttp,
+                ten_ndt: ndt[0]['TenNDT'],
+                diachi_ndt: ndt[0]['DiaChi']+", "+ndt_px['TenPhuongXa']+", "+ndt_qh['TenQuanHuyen']+", "+ndt_ttp['TenTinhTP'],
+                beFine: "Đã khỏi bệnh",
+            });
+        }
+        else {
+            console.log("hello")
+            res.render('admin/peopleDetail', {
+                cssP: () => 'css',
+                scriptsP: () => 'script',
+                navP: () => 'nav',
+                footerP: () => 'footer',
+                isManagePeople: true,
+                user: u,
+                listF0: makeColorPeople(f0),
+                listF1: makeColorPeople(f1),
+                listF2: makeColorPeople(f2),
+                dspx: dspx,
+                dsqh: dsqh,
+                dsttp: dsttp,
+                ten_ndt: ndt[0]['TenNDT'],
+                diachi_ndt: ndt[0]['DiaChi']+", "+ndt_px['TenPhuongXa']+", "+ndt_qh['TenQuanHuyen']+", "+ndt_ttp['TenTinhTP'],
+                Fstatus: f[0].TrangThai+'',
+            });
+        }
+        
     } else {
         res.json({})
     }

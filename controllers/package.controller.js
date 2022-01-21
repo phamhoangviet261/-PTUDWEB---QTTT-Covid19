@@ -60,6 +60,7 @@ router.get('/:packageId', async (req, res, next) => {
         package: package,
         listProduct: listProduct,
         GiaTien: packagePrice[0].TongTien,
+        title: "Gói nhu yếu phẩm",
     });
 })
 

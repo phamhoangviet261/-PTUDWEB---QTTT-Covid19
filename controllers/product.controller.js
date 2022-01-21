@@ -66,6 +66,7 @@ router.post('/search', async (req, res, next) => {
         isLogin: req.session.user,
         notloginandsignup: 1,
         products: result,
+        title: "Sản phẩm",
     });
 })
 
@@ -89,6 +90,8 @@ router.get('/:productName', async (req, res, next) => {
         notloginandsignup: 1,
         product: p,
         package: listPackage,
+        title: "Sản phẩm",
+
     });
 })
 

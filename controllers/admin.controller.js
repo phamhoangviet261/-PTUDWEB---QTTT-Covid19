@@ -189,7 +189,7 @@ router.get('/manage-people', async (req, res, next) => {
         return newLu;
         
     }
-    let lu = await covidPeopleModel.all()
+    let lu = await covidPeopleModel.getAll()
     let dspx = await wardModel.all();
     let dsqh = await districtModel.all();
     let dsttp = await cityModel.all()

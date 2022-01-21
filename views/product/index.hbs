@@ -2,11 +2,12 @@
     .product--item{
         display: flex;
         justify-content: center;
-        padding-top: 60px;
+        padding-top: 20px;
     }
     
 
     .product--image{
+        padding-top: 70px;
         width: 50%;
         display: flex;
         align-items: flex-start;
@@ -14,7 +15,10 @@
     }
 
     .product--image img{
-        width: 60%;
+        width: 70%;
+        border-radius: 6px;
+        -webkit-box-shadow: -8px 6px 19px -1px rgba(0,0,0,0.42); 
+        box-shadow: -8px 6px 19px -1px rgba(0,0,0,0.42);
     }
 
     .product--info{
@@ -85,7 +89,7 @@
 <div class="product--item">
     <div class="product--image" uk-lightbox>
         <a class="uk-button" href="/products/{{product.key}}/1.jpg" data-alt="Image">
-        <img class="uk-button" src="/products/{{product.key}}/1.jpg" alt="Hihi" />
+        <img  src="/products/{{product.key}}/1.jpg" alt="Hihi" />
         </a>
     </div>
     <div class="product--info">

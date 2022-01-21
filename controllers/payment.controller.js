@@ -13,6 +13,7 @@ const managerModel = require('../models/manager.model')
 const packageModel = require('../models/package.model')
 const packageDetailModel = require('../models/packageDetail.model')
 const paymentAccountModel = require('../models/paymentAccount.model')
+const rechargeModel = require('../models/recharge.model')
 const productModel = require('../models/product.model')
 const statusHistoryModel = require('../models/statusHistory.model')
 const treatmentPlaceModel = require('../models/treatmentPlace.model')
@@ -102,6 +103,16 @@ router.get('/admin', async (req, res, next) => {
 router.post('/admin/naptien', async (req, res, next) => {
     console.log(req.body);
     let nap = await paymentAccountModel.naptien(req.body.money, req.body.MaTKTT);
+
+    let element = {
+        'ThoiGian': new Date(Date.now()),
+        'MaTKTT': req.body.MaTKTT,
+        'SoTien': req.body.money, 
+    }
+    console.log(element)
+
+    let rs = await rechargeModel.add(element)
+
     return res.json({status: true})
 })
 

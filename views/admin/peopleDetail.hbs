@@ -109,13 +109,13 @@
     </div>
     <div class="content">
         <div class="manage">
-            <h3>Trang thai hien tai: F <span></span> </h3>
+            <h3>Trang thai hien tai: F<span>{{Fstatus}}</span> </h3>
             <div class="treatment-place" style="margin-bottom: 20px;">
                 <h5><b>Hiện đang điều trị tại:</b> <span>Khu điều trị {{ten_ndt}}</span> </h5>
                 <h5><b>Địa chỉ:</b> {{diachi_ndt}}</h5>
                 <div class="action-item">
                     <button class="button-37" role="button"
-                    onclick="changeTreatmentPlace()">Đổi khu điều trị</button>
+                    onclick="changeTreatmentPlace('{{user.MaNLQ}}')">Đổi khu điều trị</button>
                 </div>
             </div>
             <table class="table">
@@ -234,19 +234,19 @@
             <div class="action" style="margin-bottom: 20px;">
                 <div class="action-item">
                     <button class="button-37" role="button"
-                    onclick="khoiBenh()">Đã khỏi bệnh</button>
+                    onclick="khoiBenh('{{user.MaNLQ}}')">Đã khỏi bệnh</button>
                 </div>
                 <div class="action-item">
                     <button class="button-37" role="button"
-                    onclick="addF2()">Chuyển thành F0</button>
+                    onclick="changeToF0('{{user.MaNLQ}}')">Chuyển thành F0</button>
                 </div>
                 <div class="action-item">
                     <button class="button-37" role="button" 
-                    onclick="addF1()">Chuyển thành F1</button>
+                    onclick="changeToF1('{{user.MaNLQ}}')">Chuyển thành F1</button>
                 </div>
                 <div class="action-item">
                     <button class="button-37" role="button"
-                    onclick="addF2()">Chuyển thành F2</button>
+                    onclick="changeToF2('{{user.MaNLQ}}')">Chuyển thành F2</button>
                 </div>
                 <div class="action-item">
                     <button class="button-37" role="button"
@@ -375,7 +375,9 @@
     let changeTreatmentPlace = () => {
         Swal.fire('Đổi sang ...: Thành công')
     }
-    let khoiBenh = async () => {
+    
+    let khoiBenh = async (manlq) => {
+        console.log(manlq)
         const { value: accept } = await Swal.fire({
             title: 'Xác nhận khỏi bệnh:',
             input: 'checkbox',
@@ -390,9 +392,34 @@
         })
 
         if (accept) {
-            Swal.fire('You agreed with T&C :)')
+            let data = {
+                "MaNLQ": manlq
+            }
+            console.log(data)
+            fetch('/admin/manage-people/befine', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                
+                if(data.status){
+                    Swal.fire(`Khoi benh roi.`)
+                    window.location.reload()
+                } else {
+                    Swal.fire(`Lỗi`)
+                }
+                
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
         }
     }
+    
     let deletePeople = async (manlq) => {
         const { value: accept } = await Swal.fire({
             title: 'Xoá người liên quan',
@@ -429,6 +456,7 @@
             Swal.fire('Xoá thành công =))')
         }
     }
+    
     let addF1 = async () => {
         const { value: id } = await Swal.fire({
             title: 'Nhập mã F1',
@@ -465,5 +493,89 @@
                 timer: 1500
             })
         }
+    }
+
+    let changeToF0 = async (manlq) => {
+        let data = {
+                "MaNLQ": manlq
+            }
+            console.log(data)
+            fetch('/admin/manage-people/bef0', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                
+                if(data.status){
+                    Swal.fire(`Đã chuyển thành F0.`)
+                    window.location.reload()
+                } else {
+                    Swal.fire(`Lỗi`)
+                }
+                
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
+    let changeToF1 = async (manlq) => {
+        let data = {
+                "MaNLQ": manlq
+            }
+            console.log(data)
+            fetch('/admin/manage-people/bef1', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                
+                if(data.status){
+                    Swal.fire(`Đã chuyển thành F1.`)
+                    window.location.reload()
+                } else {
+                    Swal.fire(`Lỗi`)
+                }
+                
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
+    let changeToF2 = async (manlq) => {
+        let data = {
+                "MaNLQ": manlq
+            }
+            console.log(data)
+            fetch('/admin/manage-people/bef2', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                
+                if(data.status){
+                    Swal.fire(`Đã chuyển thành F2.`)
+                    window.location.reload()
+                } else {
+                    Swal.fire(`Lỗi`)
+                }
+                
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
     }
 </script>

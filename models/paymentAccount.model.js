@@ -31,5 +31,8 @@ module.exports = {
     },
     naptien: async (money, matktt) => {
         return res = await db.run(`update public."TaiKhoanThanhToan" set "SoDu" = "SoDu" + ${money} where "MaTKTT" = '${matktt}'`);        
+    },
+    changelimit: async (money, matktt) => {
+        return res = await db.run(`update public."TaiKhoanThanhToan" set "HanMucToiThieu" = ${money} where "MaTKTT" = '${matktt}'`);        
     }
 }

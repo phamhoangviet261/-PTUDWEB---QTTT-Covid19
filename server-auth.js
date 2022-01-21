@@ -56,7 +56,7 @@ const updateRefreshToken = (username, refreshToken) => {
 }
 
 app.post('/register', async (req, res, next) => {
-	if(req.params.admin){
+	if(req.query.admin){
 		const username = req.body.username
 		const password = req.body.password
 
@@ -110,7 +110,7 @@ app.post('/login', async (req, res) => {
 		}));
 	}
 	else if (user.password === passwordHased) {
-		console.log("cac")
+		
 		const tokens = generateTokens(user)
 		updateRefreshToken(username, tokens.refreshToken)
 

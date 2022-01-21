@@ -49,7 +49,7 @@ module.exports = {
     getHistoryStatus: async (id) => {
         return res = await db.run(`select * 
         from public."LichSuTrangThai" 
-        where "MaNLQ" = '${id}'`);   
+        where "MaNLQ" = '${id}' order by "STT" ASC`);   
     },
     getHistoryHospital: async (id) => {
         return res = await db.run(`select * 

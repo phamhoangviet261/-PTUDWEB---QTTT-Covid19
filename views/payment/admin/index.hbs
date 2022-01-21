@@ -16,17 +16,57 @@
                     <td>{{item.SoDu}}</td>
                     <td>{{item.HanMucToiThieu}}</td>
                     <td>
-                        <i class="fas fa-plus" data-toggle="tooltip" data-placement="right" title="Nạp tiền" onclick="naptien('{{item.MaTKTT}}')"></i>
+                        <i class="fas fa-plus" data-toggle="tooltip" data-placement="right" title="Nạp tiền" 
+                            onclick="naptien('{{item.MaTKTT}}')"></i>
                         <i class="fas fa-lock" data-toggle="tooltip" data-placement="right" title="Ban"
                             onclick="ban('{{item.username}}')"></i>
                         <i class="fas fa-lock-open" data-toggle="tooltip" data-placement="right" title="Unban"
                             onclick="unban('{{item.username}}')"></i>
+                        <i class="fas fa-exchange-alt" data-toggle="tooltip" data-placement="right" title="Change limit" 
+                            onclick="changeLimit('{{item.MaTKTT}}')"></i>
                     </td>
                 </tr>
                 {{/each}}
             </tbody>
         </table>
 <script>
+    let changeLimit = async (matktt) => {
+        console.log(matktt)
+        const { value: money } = await Swal.fire({
+        title: 'Nhập số tiền hạn mức mới:',
+        input: 'number',
+        })
+        if (money) {
+            let data = {
+                "MaTKTT": matktt,
+                money: money
+            }
+            console.log(data)
+            fetch('/admin/changelimit', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                
+                if(data.status){
+                    Swal.fire(`Đã đổi hạn mức thành: ${money}vnd cho tài khoản ${matktt}`)
+                    window.location.reload();
+                } else {
+                    Swal.fire(`Lỗi`)
+                }
+                
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+            
+        }
+    }
+
     let naptien = async (matktt) => {
         console.log(matktt)
         const { value: money } = await Swal.fire({
@@ -64,4 +104,6 @@
             
         }
     }
+
+    let ban = () => {}
 </script>

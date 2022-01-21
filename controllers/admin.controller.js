@@ -18,7 +18,7 @@ const treatmentPlaceHistoryModel = require('../models/treatmentPlaceHistory.mode
 const wardModel = require('../models/ward.model')
 
 const router = require('express').Router();
-
+const shajs = require('sha.js')
 function nonAccentVietnamese(str) {
     str = str.toLowerCase();
 //     We can also use this instead of from line 11 to line 17
@@ -57,7 +57,14 @@ router.use(async function (req, res, next) {
         });
     } else {
         if(req.body.username && req.body.password){
-            if(req.body.username == "admin" && req.body.password == "admin"){
+            const pwdHasedLen = 64
+            let adm = await accountModel.getAccountAdmin();
+            
+            const salt = req.body.password.substring(pwdHasedLen)
+            const passwordHased = shajs('sha256').update(req.body.password + salt).digest('hex') + salt
+            console.log("p1: ", passwordHased);
+            console.log("p2: ", adm[0].password);
+            if(req.body.username == adm[0].username && passwordHased == adm[0].password){
                 console.log("ADMIN is logging in...")
                 res.cookie('admin-access-token', req.body.username, { expires: new Date(Date.now() + 900000), httpOnly: true })
                 next()
@@ -314,7 +321,10 @@ router.get('/manage-people/people', async (req, res, next)=>{
         return newLu;
         
     }
-    if(req.query.manlq){    
+    if(req.query.manlq){  
+        let maxstt = await statusHistoryModel.getMaxSTT(req.query.manlq)
+        let f = await statusHistoryModel.getF(req.query.manlq)
+        console.log("F: ", f);
         let u = await covidPeopleModel.get(req.query.manlq)
         u.NgaySinh = u.NgaySinh.toDateString().split(' ')[2]+'/'+(u.NgaySinh.getMonth()+1)+'/'+u.NgaySinh.toDateString().split(' ')[3]
         Object.assign(u, {['CCCD']: u['CMNDCCCD'] })['CMNDCCCD'];
@@ -357,11 +367,68 @@ router.get('/manage-people/people', async (req, res, next)=>{
             dsttp: dsttp,
             ten_ndt: ndt[0]['TenNDT'],
             diachi_ndt: ndt[0]['DiaChi']+", "+ndt_px['TenPhuongXa']+", "+ndt_qh['TenQuanHuyen']+", "+ndt_ttp['TenTinhTP'],
+            Fstatus: f[0].TrangThai,
         });
     } else {
         res.json({})
     }
     
+})
+
+router.post('/manage-people/befine', async (req, res, next) => {
+    let maxstt = await statusHistoryModel.getMaxSTT(req.body.MaNLQ)
+    console.log("maxstt", maxstt[0].STT);
+    // let kb = await statusHistoryModel.khoiBenh(parseInt(maxstt[0].STT)+1, req.body.MaNLQ, new Date(Date.now()))
+    let data = {
+        "STT": maxstt[0].STT+1,
+        "MaNLQ": req.body.MaNLQ,
+        "TrangThai": -1,
+        "NgayTao": new Date(Date.now())
+    }
+    let kb = await statusHistoryModel.add(data)
+    return res.json({status: true})
+})
+
+router.post('/manage-people/bef0', async (req, res, next) => {
+    let maxstt = await statusHistoryModel.getMaxSTT(req.body.MaNLQ)
+    console.log("maxstt", maxstt);
+    // let kb = await statusHistoryModel.khoiBenh(parseInt(maxstt[0].STT)+1, req.body.MaNLQ, new Date(Date.now()))
+    let data = {
+        "STT": maxstt[0].STT+1,
+        "MaNLQ": req.body.MaNLQ,
+        "TrangThai": 0,
+        "NgayTao": new Date(Date.now())
+    }
+    let kb = await statusHistoryModel.add(data)
+    return res.json({status: true})
+})
+
+router.post('/manage-people/bef1', async (req, res, next) => {
+    let maxstt = await statusHistoryModel.getMaxSTT(req.body.MaNLQ)
+    console.log("maxstt", maxstt[0].STT);
+    // let kb = await statusHistoryModel.khoiBenh(parseInt(maxstt[0].STT)+1, req.body.MaNLQ, new Date(Date.now()))
+    let data = {
+        "STT": maxstt[0].STT+1,
+        "MaNLQ": req.body.MaNLQ,
+        "TrangThai": 1,
+        "NgayTao": new Date(Date.now())
+    }
+    let kb = await statusHistoryModel.add(data)
+    return res.json({status: true})
+})
+
+router.post('/manage-people/bef2', async (req, res, next) => {
+    let maxstt = await statusHistoryModel.getMaxSTT(req.body.MaNLQ)
+    console.log("maxstt", maxstt[0].STT);
+    // let kb = await statusHistoryModel.khoiBenh(parseInt(maxstt[0].STT)+1, req.body.MaNLQ, new Date(Date.now()))
+    let data = {
+        "STT": maxstt[0].STT+1,
+        "MaNLQ": req.body.MaNLQ,
+        "TrangThai": 2,
+        "NgayTao": new Date(Date.now())
+    }
+    let kb = await statusHistoryModel.add(data)
+    return res.json({status: true})
 })
 
 router.post('/manage-people/delete', async (req, res, next) => {

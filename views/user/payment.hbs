@@ -115,7 +115,7 @@
             <h3>Người liên quan {{current}}</h3>
             <li class="list-item"><a href="/user/info/{{current}}">Thông tin của tôi</a></li>
             <li class="list-item"><a href="/user/my-order">Đơn hàng của tôi</a></li>
-            <li class="list-item active-wrap"><a class="active"  href="/user/payment">Lịch sử thanh toán</a></li>
+            <li class="list-item active-wrap"><a class="active"  href="/user/payment">Lịch sử nạp tiền</a></li>
             <li class="list-item"><a href="/user/history-management/{{current}}">Lịch sử được quản lí</a></li>
             <li class="list-item"><a href="/user/change-password">Đổi mật khẩu</a></li>
         </ul>
@@ -131,14 +131,31 @@
         </div>
         <br>
         <div class="wrap-bottom">     
-            <h3>Lịch sử thanh toán:</h3>       
-            {{#each lichSu as |item|}}            
-                <div class="lichsu-item" style="margin: 20px; border-bottom: 1px solid #000;">
-                    <h4>Mã thanh toán: <span>{{item.MaTKTT}}</span></h4>
-                    <h4>Số tiền thanh toán: <span>{{item.SoTien}}</span></h4>
-                    <h4>Thời gian: <span>{{item.ThoiGian}}</span></h4>
-                </div>
-            {{/each}}
+      
+
+            <div class="wrap-right--table">
+            <h3>Lịch sử nạp tiền:</h3> 
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Mã Thanh toán</th>
+                        <th scope="col">Số tiền thanh toán</th>
+                        <th scope="col">Thời gian</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each lichSu}}
+                    <tr>
+                        
+                        <td>{{this.MaTKTT}}</td>
+                        <td>{{this.SoTien}}</td>
+                        <td>{{this.ThoiGian}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
         </div>
     </div>
     

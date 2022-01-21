@@ -41,4 +41,14 @@ module.exports = {
     getSevenueSP:  async () => {
         return res = await db.run('select s."TenSP", sum(ct."SoLuong" * s."GiaTien") from public."ChiTietDonHang" ct, public."SanPham" s, public."DonHang" d where ct."MaSP"=s."MaSP" and d."MaDH"=ct."MaDH" group by s."MaSP", s."TenSP";');
     },
+    getMaxSTT: async (manlq) => {
+        return res = await db.run(`select * from public."LichSuTrangThai" a where "MaNLQ"='${manlq}' and a."STT" >= all (select b."STT" from public."LichSuTrangThai" b
+        where b."MaNLQ" = '${manlq}')`);
+    },
+    getF: async (manlq) => {
+        return res = await db.run(`SELECT LS."TrangThai" FROM public."LichSuTrangThai" LS, public."NguoiLienQuanCovid" NLQ WHERE LS."MaNLQ" = '${manlq}' AND LS."MaNLQ" = NLQ."MaNLQ" AND LS."NgayTao" >= ALL(SELECT LS2."NgayTao" FROM public."LichSuTrangThai" LS2 WHERE LS2."MaNLQ" = LS."MaNLQ")`);
+    },
+    khoiBenh: async (max, manlq, f, date) => {
+        return res = await db.run(`insert into public."LichSuTrangThai" values('${max}', '${manlq}', '${f}', '${date}')`);
+    },
 }

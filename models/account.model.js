@@ -33,6 +33,9 @@ module.exports = {
     getAdmin: async () => {
         return res = await db.run(`select count(*) from public."Account" where "accountType" = 0`);   
     },
+    getAccountAdmin: async () => {
+        return res = await db.run(`select * from public."Account" where "accountType" = 0`);   
+    },
     ban: async (u) => {
         return res = await db.run(`update public."Account" set "status" = 'banned' where "username" = '${u}'`);   
     },
